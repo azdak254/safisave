@@ -220,12 +220,11 @@
     <div class="logo-icon">💰</div>
     <h1>Safi<span>Save</span></h1>
   </div>
-  <nav class="nav">
+  <nav class="nav" id="desktop-nav">
     <button class="nav-item active" onclick="location.href='dashboard.html'"><span class="icon">🏠</span> Dashboard</button>
     <button class="nav-item"        onclick="location.href='mpesa.html'"><span class="icon">📱</span> M-Pesa Deposit</button>
     <button class="nav-item"        onclick="location.href='goals.html'"><span class="icon">🎯</span> Goals</button>
-    <!-- Admin only — shown by JS -->
-    <button class="nav-item" id="admin-nav" style="display:none" onclick="location.href='admin.html'"><span class="icon">🛡️</span> Admin Panel</button>
+    <!-- Admin nav item injected here by JS only for admin users -->
   </nav>
   <div class="sidebar-bottom">
     <div class="user-chip">
@@ -350,10 +349,7 @@
   <button class="mob-btn" onclick="toggleNotif()">
     <span class="mob-icon">🔔</span><span class="mob-label">Alerts</span>
   </button>
-  <!-- Admin button — hidden by default, shown only for admin -->
-  <button class="mob-btn" id="mobile-admin-btn" style="display:none" onclick="location.href='admin.html'">
-    <span class="mob-icon">🛡️</span><span class="mob-label" style="color:var(--yellow)">Admin</span>
-  </button>
+  <!-- No admin button here — injected by JS only for admin users -->
   <button class="mob-btn" onclick="logout()">
     <span class="mob-icon">🚪</span><span class="mob-label">Logout</span>
   </button>
@@ -399,18 +395,32 @@
   if (!member.interestEarned) member.interestEarned = 0;
 
   // ══════════════════════════════════════
-  //  ADMIN CHECK — show admin buttons ONLY for admin
+  //  ADMIN CHECK — inject admin UI only for admin
   // ══════════════════════════════════════
   const isAdmin = currentEmail === ADMIN_EMAIL;
+
   if (isAdmin) {
-    // Show admin nav in desktop sidebar
-    document.getElementById('admin-nav').style.display = 'flex';
+    // Update role label
     document.getElementById('user-role-label').textContent = 'Admin';
-    // Show admin button in mobile nav
-    const mb = document.getElementById('mobile-admin-btn');
-    if (mb) mb.style.display = 'flex';
+
+    // Inject Admin button into desktop sidebar nav
+    const desktopNav = document.getElementById('desktop-nav');
+    const adminNavBtn = document.createElement('button');
+    adminNavBtn.className = 'nav-item';
+    adminNavBtn.innerHTML = '<span class="icon">🛡️</span> Admin Panel';
+    adminNavBtn.onclick = () => location.href = 'admin.html';
+    desktopNav.appendChild(adminNavBtn);
+
+    // Inject Admin button into mobile nav (before the Logout button)
+    const mobileNav = document.getElementById('mobile-nav');
+    const logoutBtn = mobileNav.lastElementChild; // the logout button
+    const adminMobBtn = document.createElement('button');
+    adminMobBtn.className = 'mob-btn';
+    adminMobBtn.innerHTML = '<span class="mob-icon">🛡️</span><span class="mob-label" style="color:var(--yellow)">Admin</span>';
+    adminMobBtn.onclick = () => location.href = 'admin.html';
+    mobileNav.insertBefore(adminMobBtn, logoutBtn);
   }
-  // If NOT admin — admin buttons stay hidden (display:none by default)
+  // If NOT admin — no admin buttons appear anywhere
 
   function fmt(n) { return Number(n||0).toLocaleString(); }
 
@@ -443,11 +453,9 @@
     reloadData();
     const myDeposits = deposits.filter(d => d.memberEmail === member.email);
     myDeposits.forEach(d => {
-      // If approved and not yet credited to member
       if (d.status === 'approved' && !d.creditedToMember) {
         member.balance        = (member.balance||0) + d.amount;
         member.totalDeposited = (member.totalDeposited||0) + d.amount;
-        // Mark as credited so we don't double credit
         const allDeps = JSON.parse(localStorage.getItem('sacco_deposits')||'[]');
         const idx = allDeps.findIndex(x=>x.id===d.id);
         if (idx>=0) { allDeps[idx].creditedToMember = true; localStorage.setItem('sacco_deposits',JSON.stringify(allDeps)); }
@@ -457,7 +465,7 @@
   }
 
   function render() {
-    syncApprovedDeposits(); // auto-credit approved deposits
+    syncApprovedDeposits();
     reloadData();
 
     const firstName = member.name.split(' ')[0];
@@ -486,17 +494,14 @@
   function renderTransactions() {
     const allTx = [];
 
-    // Deposits
     deposits.filter(d=>d.memberEmail===member.email).forEach(d=>{
       allTx.push({ icon:'⬇️', type:'deposit', label:'M-Pesa Deposit', amount:d.amount, date:d.submittedAt||'—', status:d.status, sign:'+' });
     });
 
-    // Withdrawals
     withdrawals.filter(w=>w.memberEmail===member.email).forEach(w=>{
       allTx.push({ icon:'⬆️', type:'withdraw', label:'Withdrawal Request', amount:w.amount, date:w.date||'—', status:w.status, sign:'-' });
     });
 
-    // Interest
     (member.transactions||[]).filter(t=>t.type==='interest').forEach(t=>{
       allTx.push({ icon:'✨', type:'interest', label:'Daily Interest', amount:t.amount, date:t.date, status:'approved', sign:'+' });
     });
