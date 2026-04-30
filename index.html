@@ -7,269 +7,59 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --green: #00C853;
-      --dark-green: #007B33;
-      --black: #0a0a0a;
-      --card: #141414;
-      --border: #2a2a2a;
-      --muted: #888;
-      --white: #f5f5f5;
+      --green: #00C853; --dark-green: #007B33; --black: #0a0a0a;
+      --card: #141414; --border: #2a2a2a; --muted: #888; --white: #f5f5f5;
     }
-
-    body {
-      background: var(--black);
-      color: var(--white);
-      font-family: 'DM Sans', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      top: -50%; left: -50%;
-      width: 200%; height: 200%;
-      background: radial-gradient(ellipse at 30% 40%, rgba(0,200,83,0.07) 0%, transparent 50%),
-                  radial-gradient(ellipse at 70% 70%, rgba(0,123,51,0.05) 0%, transparent 50%);
-      animation: pulse 8s ease-in-out infinite alternate;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    @keyframes pulse {
-      from { transform: scale(1); }
-      to   { transform: scale(1.1); }
-    }
-
-    .wrapper {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 420px;
-      padding: 16px;
-      animation: fadeUp 0.6s ease both;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .logo {
-      text-align: center;
-      margin-bottom: 32px;
-    }
-
-    .logo-icon {
-      width: 52px; height: 52px;
-      background: linear-gradient(135deg, var(--green), var(--dark-green));
-      border-radius: 16px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 26px;
-      margin-bottom: 12px;
-      box-shadow: 0 0 30px rgba(0,200,83,0.3);
-    }
-
-    .logo h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -1px;
-    }
-
-    .logo h1 span { color: var(--green); }
-    .logo p { color: var(--muted); font-size: 13px; margin-top: 4px; }
-
-    .tabs {
-      display: flex;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 4px;
-      margin-bottom: 24px;
-    }
-
-    .tab-btn {
-      flex: 1;
-      padding: 10px;
-      border: none;
-      background: transparent;
-      color: var(--muted);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      font-weight: 500;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.25s;
-    }
-
-    .tab-btn.active {
-      background: var(--green);
-      color: #000;
-      font-weight: 700;
-      box-shadow: 0 4px 15px rgba(0,200,83,0.3);
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 28px 24px;
-    }
-
-    .form-section { display: none; }
-    .form-section.active { display: block; }
-
-    .form-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .form-subtitle {
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 24px;
-    }
-
-    .field { margin-bottom: 16px; }
-
-    label {
-      display: block;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 7px;
-    }
-
-    input {
-      width: 100%;
-      background: #1c1c1c;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px 14px;
-      color: var(--white);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    input:focus {
-      border-color: var(--green);
-      box-shadow: 0 0 0 3px rgba(0,200,83,0.1);
-    }
-
-    input::placeholder { color: #444; }
-
-    .btn {
-      width: 100%;
-      padding: 14px;
-      background: linear-gradient(135deg, var(--green), var(--dark-green));
-      color: #000;
-      font-family: 'Syne', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      margin-top: 8px;
-      transition: opacity 0.2s, transform 0.1s;
-      box-shadow: 0 4px 20px rgba(0,200,83,0.25);
-    }
-
-    .btn:hover { opacity: 0.9; transform: translateY(-1px); }
-
-    .btn-secondary {
-      width: 100%;
-      padding: 14px;
-      background: #1c1c1c;
-      color: var(--white);
-      font-family: 'Syne', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      cursor: pointer;
-      margin-top: 8px;
-    }
-
-    .divider {
-      text-align: center;
-      color: var(--muted);
-      font-size: 12px;
-      margin: 16px 0;
-      position: relative;
-    }
-
-    .divider::before, .divider::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      width: 38%;
-      height: 1px;
-      background: var(--border);
-    }
-    .divider::before { left: 0; }
-    .divider::after  { right: 0; }
-
-    .message {
-      padding: 11px 14px;
-      border-radius: 10px;
-      font-size: 13px;
-      margin-bottom: 16px;
-      display: none;
-    }
-
-    .message.success {
-      background: rgba(0,200,83,0.1);
-      border: 1px solid rgba(0,200,83,0.3);
-      color: var(--green);
-      display: block;
-    }
-
-    .message.error {
-      background: rgba(255,60,60,0.1);
-      border: 1px solid rgba(255,60,60,0.3);
-      color: #ff6b6b;
-      display: block;
-    }
-
-    .footer-note {
-      text-align: center;
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 20px;
-    }
-
-    .footer-note span { color: var(--green); }
+    body { background:var(--black); color:var(--white); font-family:'DM Sans',sans-serif; min-height:100vh; display:flex; align-items:center; justify-content:center; }
+    body::before { content:''; position:fixed; top:-50%; left:-50%; width:200%; height:200%; background:radial-gradient(ellipse at 30% 40%,rgba(0,200,83,0.07) 0%,transparent 50%),radial-gradient(ellipse at 70% 70%,rgba(0,123,51,0.05) 0%,transparent 50%); animation:pulse 8s ease-in-out infinite alternate; pointer-events:none; z-index:0; }
+    @keyframes pulse { from{transform:scale(1)} to{transform:scale(1.1)} }
+    .wrapper { position:relative; z-index:1; width:100%; max-width:420px; padding:16px; animation:fadeUp 0.6s ease both; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+    .logo { text-align:center; margin-bottom:32px; }
+    .logo-icon { width:52px; height:52px; background:linear-gradient(135deg,var(--green),var(--dark-green)); border-radius:16px; display:inline-flex; align-items:center; justify-content:center; font-size:26px; margin-bottom:12px; box-shadow:0 0 30px rgba(0,200,83,0.3); }
+    .logo h1 { font-family:'Syne',sans-serif; font-size:28px; font-weight:800; letter-spacing:-1px; }
+    .logo h1 span { color:var(--green); }
+    .logo p { color:var(--muted); font-size:13px; margin-top:4px; }
+    .tabs { display:flex; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:4px; margin-bottom:24px; }
+    .tab-btn { flex:1; padding:10px; border:none; background:transparent; color:var(--muted); font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; border-radius:10px; cursor:pointer; transition:all 0.25s; }
+    .tab-btn.active { background:var(--green); color:#000; font-weight:700; box-shadow:0 4px 15px rgba(0,200,83,0.3); }
+    .card { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:28px 24px; }
+    .form-section { display:none; }
+    .form-section.active { display:block; }
+    .form-title { font-family:'Syne',sans-serif; font-size:20px; font-weight:700; margin-bottom:6px; }
+    .form-subtitle { color:var(--muted); font-size:13px; margin-bottom:24px; }
+    .field { margin-bottom:16px; }
+    label { display:block; font-size:12px; font-weight:500; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:7px; }
+    input { width:100%; background:#1c1c1c; border:1px solid var(--border); border-radius:10px; padding:12px 14px; color:var(--white); font-family:'DM Sans',sans-serif; font-size:14px; outline:none; transition:border-color 0.2s,box-shadow 0.2s; }
+    input:focus { border-color:var(--green); box-shadow:0 0 0 3px rgba(0,200,83,0.1); }
+    input::placeholder { color:#444; }
+    .btn { width:100%; padding:14px; background:linear-gradient(135deg,var(--green),var(--dark-green)); color:#000; font-family:'Syne',sans-serif; font-size:15px; font-weight:700; border:none; border-radius:12px; cursor:pointer; margin-top:8px; transition:opacity 0.2s,transform 0.1s; box-shadow:0 4px 20px rgba(0,200,83,0.25); }
+    .btn:hover { opacity:0.9; transform:translateY(-1px); }
+    .btn:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+    .btn-secondary { width:100%; padding:14px; background:#1c1c1c; color:var(--white); font-family:'Syne',sans-serif; font-size:15px; font-weight:700; border:1px solid var(--border); border-radius:12px; cursor:pointer; margin-top:8px; }
+    .divider { text-align:center; color:var(--muted); font-size:12px; margin:16px 0; position:relative; }
+    .divider::before,.divider::after { content:''; position:absolute; top:50%; width:38%; height:1px; background:var(--border); }
+    .divider::before { left:0; } .divider::after { right:0; }
+    .message { padding:11px 14px; border-radius:10px; font-size:13px; margin-bottom:16px; display:none; }
+    .message.success { background:rgba(0,200,83,0.1); border:1px solid rgba(0,200,83,0.3); color:var(--green); display:block; }
+    .message.error { background:rgba(255,60,60,0.1); border:1px solid rgba(255,60,60,0.3); color:#ff6b6b; display:block; }
+    .footer-note { text-align:center; color:var(--muted); font-size:12px; margin-top:20px; }
+    .footer-note span { color:var(--green); }
   </style>
 </head>
 <body>
-
 <div class="wrapper">
   <div class="logo">
     <div class="logo-icon">💰</div>
     <h1>Safi<span>Save</span></h1>
     <p>Your trusted savings & investment SACCO</p>
   </div>
-
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('login')">Login</button>
     <button class="tab-btn" onclick="switchTab('register')">Register</button>
   </div>
-
   <div class="card">
-
     <!-- LOGIN -->
     <div class="form-section active" id="login">
       <div class="form-title">Welcome back 👋</div>
@@ -283,11 +73,10 @@
         <label>Password</label>
         <input type="password" id="login-password" placeholder="••••••••"/>
       </div>
-      <button class="btn" onclick="handleLogin()">Login to Account</button>
+      <button class="btn" id="login-btn" onclick="handleLogin()">Login to Account</button>
       <div class="divider">or</div>
       <button class="btn-secondary" onclick="switchTab('register')">Create New Account</button>
     </div>
-
     <!-- REGISTER -->
     <div class="form-section" id="register">
       <div class="form-title">Join SafiSave 🚀</div>
@@ -309,32 +98,48 @@
         <label>Password</label>
         <input type="password" id="reg-password" placeholder="Min. 6 characters"/>
       </div>
-      <button class="btn" onclick="handleRegister()">Create Account</button>
+      <button class="btn" id="register-btn" onclick="handleRegister()">Create Account</button>
       <div class="divider">or</div>
       <button class="btn-secondary" onclick="switchTab('login')">Already have an account</button>
     </div>
-
   </div>
-
-  <div class="footer-note">
-    Secured & regulated · <span>SafiSave SACCO © 2025</span>
-  </div>
+  <div class="footer-note">Secured & regulated · <span>SafiSave SACCO © 2025</span></div>
 </div>
 
-<script>
+<!-- Firebase -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged }
+    from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+  import { getFirestore, doc, setDoc, getDoc, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCqaRp4JNIp7DmTgo8JqOxfbGozRKxFsTw",
+    authDomain: "safisave-2a805.firebaseapp.com",
+    databaseURL: "https://safisave-2a805-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "safisave-2a805",
+    storageBucket: "safisave-2a805.firebasestorage.app",
+    messagingSenderId: "896636365110",
+    appId: "1:896636365110:web:f668dd2b2d5da3b11ceb97"
+  };
+
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db   = getFirestore(app);
+
+  const ADMIN_EMAIL = 'admin@safisave.com';
+
+  // If already logged in, redirect
+  onAuthStateChanged(auth, user => {
+    if (user) window.location.href = './dashboard.html';
+  });
+
   function switchTab(tab) {
     document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById(tab).classList.add('active');
     document.querySelectorAll('.tab-btn')[tab === 'login' ? 0 : 1].classList.add('active');
-  }
-
-  function getMembers() {
-    return JSON.parse(localStorage.getItem('sacco_members') || '[]');
-  }
-
-  function saveMembers(members) {
-    localStorage.setItem('sacco_members', JSON.stringify(members));
   }
 
   function showMsg(id, type, text) {
@@ -343,61 +148,82 @@
     el.textContent = text;
   }
 
-  function handleRegister() {
+  async function handleRegister() {
     const name     = document.getElementById('reg-name').value.trim();
     const email    = document.getElementById('reg-email').value.trim().toLowerCase();
     const phone    = document.getElementById('reg-phone').value.trim();
     const password = document.getElementById('reg-password').value;
 
-    if (!name || !email || !phone || !password) {
+    if (!name || !email || !phone || !password)
       return showMsg('register-msg', 'error', 'Please fill in all fields.');
-    }
-    if (password.length < 6) {
+    if (password.length < 6)
       return showMsg('register-msg', 'error', 'Password must be at least 6 characters.');
+
+    const btn = document.getElementById('register-btn');
+    btn.disabled = true; btn.textContent = 'Creating account...';
+
+    try {
+      showMsg('register-msg', 'success', 'Step 1: Creating auth account...');
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      const uid  = cred.user.uid;
+      const joined = new Date().toLocaleDateString('en-KE', { day:'2-digit', month:'short', year:'numeric' });
+
+      showMsg('register-msg', 'success', 'Step 2: Saving your profile...');
+      await setDoc(doc(db, 'members', uid), {
+        name, email, phone,
+        balance: 0, totalDeposited: 0, interestEarned: 0,
+        transactions: [], goals: [], joined,
+        role: email === ADMIN_EMAIL ? 'admin' : 'member',
+        createdAt: serverTimestamp()
+      });
+
+      showMsg('register-msg', 'success', 'Account created successfully! Redirecting to login... 🎉');
+      setTimeout(() => switchTab('login'), 2000);
+    } catch (err) {
+      const msgs = {
+        'auth/email-already-in-use': 'An account with this email already exists.',
+        'auth/invalid-email': 'Invalid email address.',
+        'auth/weak-password': 'Password too weak. Min 6 characters.',
+        'auth/network-request-failed': 'Network error. Check your internet connection.',
+        'permission-denied': 'Database permission denied. Contact admin.'
+      };
+      showMsg('register-msg', 'error', (msgs[err.code] || err.message) + ' [Code: ' + err.code + ']');
+      console.error('Registration error:', err);
+    } finally {
+      btn.disabled = false; btn.textContent = 'Create Account';
     }
-
-    const members = getMembers();
-    if (members.find(m => m.email === email)) {
-      return showMsg('register-msg', 'error', 'An account with this email already exists.');
-    }
-
-    members.push({
-      name, email, phone, password,
-      balance: 0,
-      totalDeposited: 0,
-      interestEarned: 0,
-      transactions: [],
-      joined: new Date().toLocaleDateString('en-KE', { day:'2-digit', month:'short', year:'numeric' })
-    });
-
-    saveMembers(members);
-    showMsg('register-msg', 'success', 'Account created! Please login. 🎉');
-    setTimeout(() => switchTab('login'), 1800);
   }
 
-  function handleLogin() {
+  async function handleLogin() {
     const email    = document.getElementById('login-email').value.trim().toLowerCase();
     const password = document.getElementById('login-password').value;
 
-    if (!email || !password) {
+    if (!email || !password)
       return showMsg('login-msg', 'error', 'Please enter your email and password.');
+
+    const btn = document.getElementById('login-btn');
+    btn.disabled = true; btn.textContent = 'Logging in...';
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      showMsg('login-msg', 'success', 'Login successful! Opening dashboard...');
+      // onAuthStateChanged will redirect
+    } catch (err) {
+      const msgs = {
+        'auth/invalid-credential': 'Incorrect email or password.',
+        'auth/user-not-found': 'No account found with this email.',
+        'auth/wrong-password': 'Incorrect password.',
+        'auth/invalid-email': 'Invalid email address.'
+      };
+      showMsg('login-msg', 'error', msgs[err.code] || 'Login failed. Try again.');
+      btn.disabled = false; btn.textContent = 'Login to Account';
     }
-
-    const members = getMembers();
-    const member  = members.find(m => m.email === email && m.password === password);
-
-    if (!member) {
-      return showMsg('login-msg', 'error', 'Incorrect email or password. Try again.');
-    }
-
-    localStorage.setItem('sacco_current', email);
-    showMsg('login-msg', 'success', 'Login successful! Opening dashboard...');
-
-    setTimeout(function() {
-      window.location.href = './dashboard.html';
-    }, 1500);
   }
-</script>
 
+  // Expose to onclick handlers
+  window.switchTab = switchTab;
+  window.handleRegister = handleRegister;
+  window.handleLogin = handleLogin;
+</script>
 </body>
 </html>
