@@ -12,21 +12,11 @@
       --card:#141414; --border:#2a2a2a; --muted:#777;
       --white:#f5f5f5; --red:#ff4f4f; --yellow:#FFD600; --blue:#2979FF;
     }
-
     body { background:var(--black); color:var(--white); font-family:'DM Sans',sans-serif; min-height:100vh; }
+    body::before { content:''; position:fixed; top:0; left:0; width:100%; height:300px; background:radial-gradient(ellipse at 20% 0%,rgba(0,200,83,0.08) 0%,transparent 60%); pointer-events:none; z-index:0; }
 
-    body::before {
-      content:''; position:fixed; top:0; left:0; width:100%; height:300px;
-      background:radial-gradient(ellipse at 20% 0%,rgba(0,200,83,0.08) 0%,transparent 60%);
-      pointer-events:none; z-index:0;
-    }
-
-    /* ═══════════ SIDEBAR (desktop only) ═══════════ */
-    .sidebar {
-      position:fixed; top:0; left:0; width:220px; height:100vh;
-      background:var(--card); border-right:1px solid var(--border);
-      display:flex; flex-direction:column; padding:28px 16px; z-index:10;
-    }
+    /* SIDEBAR */
+    .sidebar { position:fixed; top:0; left:0; width:220px; height:100vh; background:var(--card); border-right:1px solid var(--border); display:flex; flex-direction:column; padding:28px 16px; z-index:10; }
     .logo { display:flex; align-items:center; gap:10px; margin-bottom:36px; padding:0 6px; }
     .logo-icon { width:38px; height:38px; background:linear-gradient(135deg,var(--green),var(--dark-green)); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; }
     .logo h1 { font-family:'Syne',sans-serif; font-size:18px; font-weight:800; }
@@ -43,20 +33,20 @@
     .user-name { font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .user-role { font-size:11px; color:var(--muted); }
 
-    /* ═══════════ MAIN ═══════════ */
+    /* MAIN */
     .main { margin-left:220px; padding:28px 28px 40px; position:relative; z-index:1; }
 
-    /* ═══════════ TOPBAR ═══════════ */
+    /* TOPBAR */
     .topbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
     .topbar-left h2 { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; }
     .topbar-left p  { color:var(--muted); font-size:13px; margin-top:2px; }
     .topbar-right   { display:flex; gap:10px; align-items:center; }
     .icon-btn { width:38px; height:38px; border-radius:10px; background:var(--card); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; transition:background 0.2s; position:relative; }
     .icon-btn:hover { background:#1f1f1f; }
-
-    /* NOTIFICATION */
     .notif-dot { position:absolute; top:6px; right:6px; width:8px; height:8px; border-radius:50%; background:var(--red); display:none; }
     .notif-dot.show { display:block; }
+
+    /* NOTIFICATION PANEL */
     .notif-panel { position:fixed; top:70px; right:28px; width:300px; background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px; z-index:200; display:none; box-shadow:0 8px 32px rgba(0,0,0,0.4); }
     .notif-panel.open { display:block; }
     .notif-title { font-family:'Syne',sans-serif; font-size:14px; font-weight:800; margin-bottom:12px; }
@@ -69,7 +59,7 @@
     .notif-empty    { color:var(--muted); font-size:13px; text-align:center; padding:12px 0; }
     .notif-label    { font-weight:700; display:block; margin-bottom:2px; font-size:13px; }
 
-    /* ═══════════ BALANCE CARDS ═══════════ */
+    /* BALANCE CARDS */
     .balance-row { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:20px; }
     .balance-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:18px; position:relative; overflow:hidden; animation:fadeUp 0.5s ease both; }
     .balance-card.main-card { background:linear-gradient(135deg,#007B33 0%,#00C853 100%); border-color:transparent; }
@@ -81,10 +71,10 @@
     .card-sub { font-size:11px; color:var(--muted); }
     .main-card .card-sub { color:rgba(0,0,0,0.5); }
 
-    /* ═══════════ WITHDRAW NOTICE ═══════════ */
+    /* WITHDRAW NOTICE */
     .withdraw-notice { background:rgba(255,214,0,0.06); border:1px solid rgba(255,214,0,0.2); border-radius:12px; padding:12px 16px; margin-bottom:20px; font-size:13px; color:var(--yellow); display:flex; gap:10px; align-items:center; }
 
-    /* ═══════════ QUICK ACTIONS ═══════════ */
+    /* QUICK ACTIONS */
     .section-title { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; margin-bottom:14px; }
     .actions-row { display:flex; gap:12px; margin-bottom:24px; }
     .action-btn { flex:1; padding:14px 10px; border-radius:14px; border:1px solid var(--border); background:var(--card); color:var(--white); font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:8px; transition:all 0.2s; }
@@ -92,13 +82,13 @@
     .action-btn .a-icon { font-size:22px; }
     .action-btn.primary { background:rgba(0,200,83,0.1); border-color:rgba(0,200,83,0.3); color:var(--green); }
 
-    /* ═══════════ BOTTOM GRID ═══════════ */
+    /* BOTTOM GRID */
     .bottom-grid { display:grid; grid-template-columns:1.4fr 1fr; gap:20px; }
     .panel { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:18px; }
     .panel-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
     .panel-header .section-title { margin-bottom:0; }
 
-    /* ═══════════ TRANSACTIONS ═══════════ */
+    /* TRANSACTIONS */
     .tx-item { display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1px solid var(--border); }
     .tx-item:last-child { border-bottom:none; }
     .tx-icon { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
@@ -154,128 +144,71 @@
     .toast.green { border-color:rgba(0,200,83,0.4); color:var(--green); }
     .toast.red   { border-color:rgba(255,79,79,0.4); color:var(--red); }
 
-    /* ═══════════════════════════════════════════
-       MOBILE BOTTOM NAV — hidden on desktop
-    ═══════════════════════════════════════════ */
+    /* MOBILE NAV — hidden on desktop */
     .mobile-nav { display:none; }
 
-    /* ═══════════════════════════════════════════
-       MOBILE RESPONSIVE ≤ 768px
-    ═══════════════════════════════════════════ */
+    /* MOBILE RESPONSIVE */
     @media (max-width:768px) {
-
-      /* Hide desktop sidebar */
       .sidebar { display:none !important; }
-
-      /* Full width, padding bottom for nav bar */
       .main { margin-left:0 !important; padding:14px 12px 88px !important; }
-
-      /* Topbar */
       .topbar { margin-bottom:14px; }
       .topbar-left h2 { font-size:17px; }
       .topbar-left p  { font-size:11px; }
       .icon-btn { width:34px; height:34px; font-size:14px; }
-
-      /* Balance cards — 2 columns */
       .balance-row { grid-template-columns:1fr 1fr !important; gap:8px; margin-bottom:14px; }
       .balance-card { padding:12px; border-radius:12px; }
       .card-amount  { font-size:15px; }
       .card-label   { font-size:9px; margin-bottom:5px; }
       .card-sub     { font-size:9px; }
-
-      /* Withdraw notice */
       .withdraw-notice { font-size:11px; padding:8px 10px; margin-bottom:12px; }
-
-      /* Quick actions */
       .section-title { font-size:13px; margin-bottom:8px; }
       .actions-row   { gap:6px; margin-bottom:14px; }
       .action-btn    { padding:10px 4px; border-radius:10px; font-size:10px; gap:4px; }
       .action-btn .a-icon { font-size:18px; }
-
-      /* Bottom grid — single column */
       .bottom-grid { grid-template-columns:1fr !important; gap:12px; }
       .panel       { padding:12px; border-radius:12px; }
-
-      /* Transactions */
-      .tx-item   { gap:8px; padding:9px 0; }
-      .tx-icon   { width:30px; height:30px; font-size:13px; }
-      .tx-name   { font-size:12px; }
-      .tx-date   { font-size:10px; }
-      .tx-amount { font-size:11px; }
+      .tx-item     { gap:8px; padding:9px 0; }
+      .tx-icon     { width:30px; height:30px; font-size:13px; }
+      .tx-name     { font-size:12px; }
+      .tx-date     { font-size:10px; }
+      .tx-amount   { font-size:11px; }
       .status-badge { font-size:9px; padding:1px 6px; }
-
-      /* Interest panel */
       .interest-value { font-size:20px; }
       .rate-row { font-size:11px; padding:7px 0; }
-
-      /* Notification panel */
       .notif-panel { right:8px; left:8px; width:auto; top:60px; }
-
-      /* Toast above nav */
       .toast { bottom:76px; font-size:11px; padding:9px 14px; }
 
-      /* ── MOBILE BOTTOM NAV ── */
+      /* MOBILE NAV */
       .mobile-nav {
         display:flex !important;
-        position:fixed;
-        bottom:0; left:0; right:0;
+        position:fixed; bottom:0; left:0; right:0;
         background:var(--card);
         border-top:1px solid var(--border);
         z-index:100;
-        padding:5px 2px 10px;
+        padding:5px 0 10px;
         box-shadow:0 -4px 24px rgba(0,0,0,0.5);
         justify-content:space-around;
         align-items:center;
       }
 
-      /* Each nav button */
       .mob-btn {
-        flex:1;
-        display:flex !important;
-        flex-direction:column;
-        align-items:center;
-        justify-content:center;
-        gap:2px;
-        background:transparent;
-        border:none;
-        cursor:pointer;
-        padding:3px 1px;
+        flex:1; display:flex !important; flex-direction:column;
+        align-items:center; justify-content:center;
+        gap:2px; background:transparent; border:none;
+        cursor:pointer; padding:3px 1px;
         -webkit-tap-highlight-color:transparent;
         min-width:0;
-        max-width:60px;
       }
 
-      .mob-btn .mob-icon {
-        font-size:20px;
-        line-height:1;
-        display:block;
-      }
-
-      .mob-btn .mob-label {
-        font-family:'DM Sans',sans-serif;
-        font-size:9px;
-        font-weight:600;
-        color:var(--muted);
-        display:block;
-        text-align:center;
-        white-space:nowrap;
-        overflow:hidden;
-        text-overflow:ellipsis;
-        max-width:56px;
-        line-height:1.2;
-      }
-
+      .mob-icon  { font-size:19px; line-height:1; display:block; text-align:center; }
+      .mob-label { font-family:'DM Sans',sans-serif; font-size:9px; font-weight:600; color:var(--muted); display:block; text-align:center; white-space:nowrap; line-height:1.2; }
       .mob-btn.active .mob-label { color:var(--green); }
-      .mob-btn.admin-btn .mob-label { color:var(--yellow); }
     }
 
-    /* Very small screens */
     @media (max-width:360px) {
-      .mob-btn .mob-icon  { font-size:17px; }
-      .mob-btn .mob-label { font-size:8px; max-width:46px; }
+      .mob-icon  { font-size:16px; }
+      .mob-label { font-size:8px; }
       .card-amount { font-size:13px; }
-      .action-btn  { font-size:9px; }
-      .action-btn .a-icon { font-size:16px; }
     }
   </style>
 </head>
@@ -291,6 +224,7 @@
     <button class="nav-item active" onclick="location.href='dashboard.html'"><span class="icon">🏠</span> Dashboard</button>
     <button class="nav-item"        onclick="location.href='mpesa.html'"><span class="icon">📱</span> M-Pesa Deposit</button>
     <button class="nav-item"        onclick="location.href='goals.html'"><span class="icon">🎯</span> Goals</button>
+    <!-- Admin only — shown by JS -->
     <button class="nav-item" id="admin-nav" style="display:none" onclick="location.href='admin.html'"><span class="icon">🛡️</span> Admin Panel</button>
   </nav>
   <div class="sidebar-bottom">
@@ -370,16 +304,13 @@
 
   <!-- BOTTOM GRID -->
   <div class="bottom-grid">
-
     <div class="panel">
       <div class="panel-header">
         <div class="section-title">📋 Transactions</div>
         <span style="font-size:11px;color:var(--muted)" id="tx-count"></span>
       </div>
       <div id="tx-list">
-        <div style="color:var(--muted);font-size:13px;text-align:center;padding:28px 0;">
-          No transactions yet.<br/>Make your first deposit!
-        </div>
+        <div style="color:var(--muted);font-size:13px;text-align:center;padding:28px 0;">No transactions yet.<br/>Make your first deposit!</div>
       </div>
     </div>
 
@@ -396,45 +327,35 @@
       <div class="rate-row"><span>Last Interest</span><span id="last-interest">Never</span></div>
       <div class="rate-row"><span>Annual Gain</span><span id="projected-gain">KES 0</span></div>
     </div>
-
   </div>
 </main>
 
-<!-- ═══════════════════════════════════════════
-     MOBILE BOTTOM NAVIGATION BAR
-═══════════════════════════════════════════ -->
+<!-- ═══ MOBILE BOTTOM NAV ═══ -->
 <nav class="mobile-nav" id="mobile-nav">
   <button class="mob-btn active" onclick="location.href='dashboard.html'">
-    <span class="mob-icon">🏠</span>
-    <span class="mob-label">Home</span>
+    <span class="mob-icon">🏠</span><span class="mob-label">Home</span>
   </button>
   <button class="mob-btn" onclick="location.href='mpesa.html'">
-    <span class="mob-icon">📱</span>
-    <span class="mob-label">Deposit</span>
+    <span class="mob-icon">📱</span><span class="mob-label">Deposit</span>
   </button>
   <button class="mob-btn" onclick="openWithdraw()">
-    <span class="mob-icon">⬆️</span>
-    <span class="mob-label">Withdraw</span>
+    <span class="mob-icon">⬆️</span><span class="mob-label">Withdraw</span>
   </button>
   <button class="mob-btn" onclick="applyInterest()">
-    <span class="mob-icon">📈</span>
-    <span class="mob-label">Interest</span>
+    <span class="mob-icon">📈</span><span class="mob-label">Interest</span>
   </button>
   <button class="mob-btn" onclick="location.href='goals.html'">
-    <span class="mob-icon">🎯</span>
-    <span class="mob-label">Goals</span>
+    <span class="mob-icon">🎯</span><span class="mob-label">Goals</span>
   </button>
   <button class="mob-btn" onclick="toggleNotif()">
-    <span class="mob-icon">🔔</span>
-    <span class="mob-label">Alerts</span>
+    <span class="mob-icon">🔔</span><span class="mob-label">Alerts</span>
   </button>
-  <button class="mob-btn admin-btn" id="mobile-admin-btn" style="display:none" onclick="location.href='admin.html'">
-    <span class="mob-icon">🛡️</span>
-    <span class="mob-label">Admin</span>
+  <!-- Admin button — hidden by default, shown only for admin -->
+  <button class="mob-btn" id="mobile-admin-btn" style="display:none" onclick="location.href='admin.html'">
+    <span class="mob-icon">🛡️</span><span class="mob-label" style="color:var(--yellow)">Admin</span>
   </button>
   <button class="mob-btn" onclick="logout()">
-    <span class="mob-icon">🚪</span>
-    <span class="mob-label">Logout</span>
+    <span class="mob-icon">🚪</span><span class="mob-label">Logout</span>
   </button>
 </nav>
 
@@ -447,7 +368,7 @@
       <strong>ℹ️ How it works</strong>
       1. Enter amount & M-Pesa number<br/>
       2. Admin reviews & approves<br/>
-      3. Money sent to your phone ✅
+      3. Money sent to your M-Pesa ✅
     </div>
     <div class="warn-box" id="withdraw-warn"></div>
     <label>Amount (KES)</label>
@@ -472,21 +393,24 @@
   const currentEmail = localStorage.getItem('sacco_current');
   let member = members.find(m => m.email === currentEmail);
 
-  if (!member) {
-    member = { name:'Demo Member', email:'demo@demo.com', balance:0, totalDeposited:0, interestEarned:0, joined:'29 Apr 2026', transactions:[] };
-  }
+  if (!member) { member = { name:'Demo Member', email:'demo@demo.com', balance:0, totalDeposited:0, interestEarned:0, joined:'29 Apr 2026', transactions:[] }; }
   if (!member.transactions)   member.transactions   = [];
   if (!member.totalDeposited) member.totalDeposited = 0;
   if (!member.interestEarned) member.interestEarned = 0;
 
-  // Admin check
+  // ══════════════════════════════════════
+  //  ADMIN CHECK — show admin buttons ONLY for admin
+  // ══════════════════════════════════════
   const isAdmin = currentEmail === ADMIN_EMAIL;
   if (isAdmin) {
-    document.getElementById('admin-nav').style.display     = 'flex';
+    // Show admin nav in desktop sidebar
+    document.getElementById('admin-nav').style.display = 'flex';
     document.getElementById('user-role-label').textContent = 'Admin';
+    // Show admin button in mobile nav
     const mb = document.getElementById('mobile-admin-btn');
     if (mb) mb.style.display = 'flex';
   }
+  // If NOT admin — admin buttons stay hidden (display:none by default)
 
   function fmt(n) { return Number(n||0).toLocaleString(); }
 
@@ -507,10 +431,35 @@
     deposits    = JSON.parse(localStorage.getItem('sacco_deposits')    || '[]');
     withdrawals = JSON.parse(localStorage.getItem('sacco_withdrawals') || '[]');
     member = members.find(m=>m.email===currentEmail) || member;
+    if (!member.interestEarned) member.interestEarned = 0;
+    if (!member.totalDeposited) member.totalDeposited = 0;
+  }
+
+  // ══════════════════════════════════════
+  //  AUTO-CREDIT — when admin approves deposit,
+  //  balance updates automatically on member dashboard
+  // ══════════════════════════════════════
+  function syncApprovedDeposits() {
+    reloadData();
+    const myDeposits = deposits.filter(d => d.memberEmail === member.email);
+    myDeposits.forEach(d => {
+      // If approved and not yet credited to member
+      if (d.status === 'approved' && !d.creditedToMember) {
+        member.balance        = (member.balance||0) + d.amount;
+        member.totalDeposited = (member.totalDeposited||0) + d.amount;
+        // Mark as credited so we don't double credit
+        const allDeps = JSON.parse(localStorage.getItem('sacco_deposits')||'[]');
+        const idx = allDeps.findIndex(x=>x.id===d.id);
+        if (idx>=0) { allDeps[idx].creditedToMember = true; localStorage.setItem('sacco_deposits',JSON.stringify(allDeps)); }
+        saveAll();
+      }
+    });
   }
 
   function render() {
+    syncApprovedDeposits(); // auto-credit approved deposits
     reloadData();
+
     const firstName = member.name.split(' ')[0];
     const initials  = member.name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
     document.getElementById('greeting-name').textContent   = firstName;
@@ -523,33 +472,45 @@
     document.getElementById('total-deposited').textContent = 'KES '+fmt(member.totalDeposited);
     document.getElementById('withdrawable').textContent    = 'KES '+fmt(member.interestEarned);
     document.getElementById('interest-withdrawable').textContent = 'KES '+fmt(member.interestEarned);
-    document.getElementById('projected-gain').textContent  = 'KES '+fmt(Math.round(member.balance*0.10));
+    document.getElementById('projected-gain').textContent  = 'KES '+fmt(Math.round(member.balance*0.20));
+
     const lastDate = localStorage.getItem('interest_'+member.email);
     document.getElementById('last-interest').textContent = lastDate
       ? new Date(lastDate).toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'})
       : 'Never';
+
     renderTransactions();
     renderNotifications();
   }
 
   function renderTransactions() {
     const allTx = [];
+
+    // Deposits
     deposits.filter(d=>d.memberEmail===member.email).forEach(d=>{
       allTx.push({ icon:'⬇️', type:'deposit', label:'M-Pesa Deposit', amount:d.amount, date:d.submittedAt||'—', status:d.status, sign:'+' });
     });
+
+    // Withdrawals
     withdrawals.filter(w=>w.memberEmail===member.email).forEach(w=>{
-      allTx.push({ icon:'⬆️', type:'withdraw', label:'Withdrawal', amount:w.amount, date:w.date||'—', status:w.status, sign:'-' });
+      allTx.push({ icon:'⬆️', type:'withdraw', label:'Withdrawal Request', amount:w.amount, date:w.date||'—', status:w.status, sign:'-' });
     });
+
+    // Interest
     (member.transactions||[]).filter(t=>t.type==='interest').forEach(t=>{
       allTx.push({ icon:'✨', type:'interest', label:'Daily Interest', amount:t.amount, date:t.date, status:'approved', sign:'+' });
     });
+
     allTx.sort((a,b)=>new Date(b.date)-new Date(a.date));
+
     const list = document.getElementById('tx-list');
     document.getElementById('tx-count').textContent = allTx.length+' records';
+
     if (!allTx.length) {
       list.innerHTML = `<div style="color:var(--muted);font-size:13px;text-align:center;padding:28px 0;">No transactions yet.<br/>Make your first deposit!</div>`;
       return;
     }
+
     list.innerHTML = allTx.map(tx=>`
       <div class="tx-item">
         <div class="tx-icon ${tx.type}">${tx.icon}</div>
@@ -576,19 +537,30 @@
 
   function renderNotifications() {
     const notifs = [];
+
     deposits.filter(d=>d.memberEmail===member.email).forEach(d=>{
-      if (d.status==='approved')      notifs.push({ type:'approved', msg:`✅ Deposit of KES ${fmt(d.amount)} approved!` });
-      else if (d.status==='rejected') notifs.push({ type:'rejected', msg:`❌ Deposit of KES ${fmt(d.amount)} was rejected.` });
-      else                            notifs.push({ type:'pending',  msg:`⏳ Deposit of KES ${fmt(d.amount)} pending approval.` });
+      if (d.status==='approved')
+        notifs.push({ type:'approved', msg:`✅ Deposit of KES ${fmt(d.amount)} approved & credited to your balance!` });
+      else if (d.status==='rejected')
+        notifs.push({ type:'rejected', msg:`❌ Deposit of KES ${fmt(d.amount)} was rejected by admin.` });
+      else
+        notifs.push({ type:'pending', msg:`⏳ Deposit of KES ${fmt(d.amount)} pending admin approval.` });
     });
+
     withdrawals.filter(w=>w.memberEmail===member.email).forEach(w=>{
-      if (w.status==='paid')          notifs.push({ type:'paid',     msg:`💳 Withdrawal of KES ${fmt(w.amount)} paid to ${w.phone}!` });
-      else if (w.status==='approved') notifs.push({ type:'approved', msg:`✅ Withdrawal of KES ${fmt(w.amount)} approved. Payment coming soon.` });
-      else if (w.status==='rejected') notifs.push({ type:'rejected', msg:`❌ Withdrawal of KES ${fmt(w.amount)} rejected. Balance refunded.` });
-      else                            notifs.push({ type:'pending',  msg:`⏳ Withdrawal of KES ${fmt(w.amount)} pending.` });
+      if (w.status==='paid')
+        notifs.push({ type:'paid', msg:`💳 Withdrawal of KES ${fmt(w.amount)} has been paid to ${w.phone}!` });
+      else if (w.status==='approved')
+        notifs.push({ type:'approved', msg:`✅ Withdrawal of KES ${fmt(w.amount)} approved. Payment coming soon.` });
+      else if (w.status==='rejected')
+        notifs.push({ type:'rejected', msg:`❌ Withdrawal of KES ${fmt(w.amount)} rejected. Balance refunded.` });
+      else
+        notifs.push({ type:'pending', msg:`⏳ Withdrawal of KES ${fmt(w.amount)} pending admin approval.` });
     });
+
     const hasNew = notifs.some(n=>n.type!=='pending');
     document.getElementById('notif-dot').classList.toggle('show', hasNew);
+
     const list = document.getElementById('notif-list');
     if (!notifs.length) { list.innerHTML='<div class="notif-empty">No notifications yet.</div>'; return; }
     list.innerHTML = notifs.reverse().map(n=>`
@@ -603,9 +575,7 @@
       document.getElementById('notif-panel').classList.remove('open');
   });
 
-  // ══════════════════════════════
-  //  WITHDRAW — interest only
-  // ══════════════════════════════
+  // WITHDRAW
   function openWithdraw() {
     document.getElementById('w-amount').value = '';
     document.getElementById('w-phone').value  = '';
@@ -613,11 +583,11 @@
     const warnEl    = document.getElementById('withdraw-warn');
     const submitBtn = document.getElementById('w-submit-btn');
     if (available < 500) {
-      warnEl.textContent = `⚠️ Not enough interest yet. Need min KES 500. Current interest: KES ${fmt(available)}. Apply daily interest to grow it!`;
-      submitBtn.disabled = true; submitBtn.style.opacity = '0.4';
+      warnEl.textContent = `⚠️ Not enough interest yet. Need min KES 500. Current: KES ${fmt(available)}. Apply daily interest to grow!`;
+      submitBtn.disabled=true; submitBtn.style.opacity='0.4';
     } else {
-      warnEl.textContent = `✅ Available interest to withdraw: KES ${fmt(available)}`;
-      submitBtn.disabled = false; submitBtn.style.opacity = '1';
+      warnEl.textContent = `✅ Available to withdraw: KES ${fmt(available)}`;
+      submitBtn.disabled=false; submitBtn.style.opacity='1';
     }
     document.getElementById('withdraw-modal').classList.add('open');
   }
@@ -634,26 +604,21 @@
     if (!phone)                    return showToast('Enter your M-Pesa number','red');
 
     withdrawals = JSON.parse(localStorage.getItem('sacco_withdrawals')||'[]');
-    withdrawals.push({
-      id:Date.now().toString(), memberName:member.name,
-      memberEmail:member.email, amount:amt, phone,
-      status:'pending', date:today
-    });
+    withdrawals.push({ id:Date.now().toString(), memberName:member.name, memberEmail:member.email, amount:amt, phone, status:'pending', date:today });
     localStorage.setItem('sacco_withdrawals',JSON.stringify(withdrawals));
+
     member.interestEarned -= amt;
     member.balance        -= amt;
     saveAll(); render(); closeWithdraw();
     showToast(`KES ${fmt(amt)} withdrawal submitted! Awaiting admin 📩`,'green');
   }
 
-  // ══════════════════════════════
-  //  INTEREST — once per day
-  // ══════════════════════════════
+  // INTEREST — once per day, 20% p.a.
   function applyInterest() {
     const todayKey    = new Date().toISOString().slice(0,10);
     const lastApplied = localStorage.getItem('interest_'+member.email);
     if (lastApplied===todayKey) return showToast('Interest already applied today. Come back tomorrow! 📅','red');
-    const interest = Math.round(member.balance*(0.10/365));
+    const interest = Math.round(member.balance*(0.20/365));
     if (interest<=0) return showToast('Deposit funds first to earn interest!','red');
     const today = new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'});
     member.balance        += interest;
@@ -667,9 +632,10 @@
   function refreshAll() { render(); showToast('Refreshed ✓','green'); }
   function logout() { localStorage.removeItem('sacco_current'); window.location.href='index.html'; }
 
-  document.getElementById('withdraw-modal').addEventListener('click',function(e){
-    if(e.target===this) closeWithdraw();
-  });
+  document.getElementById('withdraw-modal').addEventListener('click',function(e){ if(e.target===this) closeWithdraw(); });
+
+  // Auto refresh every 30 seconds to pick up admin approvals
+  setInterval(render, 30000);
 
   render();
 </script>
