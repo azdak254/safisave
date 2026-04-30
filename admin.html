@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
   <title>SafiSave – Admin Panel</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
   <style>
@@ -11,12 +11,13 @@
     body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;min-height:100vh}
     body::before{content:'';position:fixed;top:0;left:0;width:100%;height:300px;background:radial-gradient(ellipse at 80% 0%,rgba(255,214,0,0.05) 0%,transparent 60%);pointer-events:none;z-index:0}
 
+    /* SIDEBAR */
     .sidebar{position:fixed;top:0;left:0;width:220px;height:100vh;background:var(--card);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:28px 16px;z-index:10}
     .logo{display:flex;align-items:center;gap:10px;margin-bottom:8px;padding:0 6px}
-    .logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--yellow),#FFA000);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 20px rgba(255,214,0,0.2)}
+    .logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--yellow),#FFA000);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
     .logo h1{font-family:'Syne',sans-serif;font-size:18px;font-weight:800}
     .logo h1 span{color:var(--yellow)}
-    .admin-badge{margin:0 6px 28px;background:rgba(255,214,0,0.1);border:1px solid rgba(255,214,0,0.2);color:var(--yellow);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;display:inline-block}
+    .admin-badge{margin:0 6px 24px;background:rgba(255,214,0,0.1);border:1px solid rgba(255,214,0,0.2);color:var(--yellow);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;display:inline-block}
     .nav{flex:1}
     .nav-item{display:flex;align-items:center;gap:11px;padding:11px 14px;border-radius:10px;color:var(--muted);font-size:14px;font-weight:500;cursor:pointer;transition:all 0.2s;margin-bottom:4px;border:none;background:transparent;width:100%;text-align:left}
     .nav-item:hover{background:#1f1f1f;color:var(--white)}
@@ -26,22 +27,23 @@
     .user-chip{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:#1c1c1c}
     .avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--yellow),#FFA000);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#000}
     .user-name{font-size:13px;font-weight:600}
-    .user-role{font-size:11px;color:var(--yellow)}
+    .user-role-text{font-size:11px;color:var(--yellow)}
 
-    .main{margin-left:220px;padding:28px 28px 40px;position:relative;z-index:1}
-    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+    /* MAIN */
+    .main{margin-left:220px;padding:24px 24px 40px;position:relative;z-index:1}
+    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
     .topbar h2{font-family:'Syne',sans-serif;font-size:22px;font-weight:800}
     .topbar p{color:var(--muted);font-size:13px;margin-top:2px}
     .icon-btn{width:38px;height:38px;border-radius:10px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:background 0.2s}
     .icon-btn:hover{background:#1f1f1f}
 
     /* STATS */
-    .stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:28px}
-    .stat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;animation:fadeUp 0.4s ease both}
+    .stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px}
+    .stat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;animation:fadeUp 0.4s ease both}
     @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-    .stat-icon{font-size:22px;margin-bottom:10px}
-    .stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px}
-    .stat-value{font-family:'Syne',sans-serif;font-size:20px;font-weight:800}
+    .stat-icon{font-size:22px;margin-bottom:8px}
+    .stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+    .stat-value{font-family:'Syne',sans-serif;font-size:18px;font-weight:800}
     .stat-value.green{color:var(--green)}
     .stat-value.yellow{color:var(--yellow)}
     .stat-value.red{color:var(--red)}
@@ -49,82 +51,77 @@
 
     /* TWO COL */
     .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
-    .three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:24px}
-
-    .panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px}
-    .panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+    .panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:20px}
+    .panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
     .panel-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700}
+    .refresh-btn{background:transparent;border:none;color:var(--yellow);font-size:12px;font-weight:600;cursor:pointer}
 
     /* REQUEST CARDS */
-    .req-card{background:#1a1a1a;border-radius:14px;padding:16px;margin-bottom:12px}
+    .req-card{background:#1a1a1a;border-radius:12px;padding:14px;margin-bottom:10px}
     .req-card:last-child{margin-bottom:0}
-    .req-card.deposit-card{border:1px solid rgba(0,200,83,0.25)}
-    .req-card.withdraw-card{border:1px solid rgba(255,79,79,0.25)}
-
-    .req-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-    .req-name{font-weight:700;font-size:14px}
-    .req-date{font-size:11px;color:var(--muted)}
-    .req-amount{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;margin-bottom:4px}
+    .req-card.dep{border:1px solid rgba(0,200,83,0.2)}
+    .req-card.wit{border:1px solid rgba(255,79,79,0.2)}
+    .req-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+    .req-name{font-weight:700;font-size:13px}
+    .req-date{font-size:10px;color:var(--muted)}
+    .req-amount{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:4px}
     .req-amount.green{color:var(--green)}
     .req-amount.red{color:var(--red)}
-    .req-detail{font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.6}
+    .req-detail{font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.6}
     .req-detail strong{color:var(--white)}
-
-    .req-screenshot{width:100%;max-height:180px;object-fit:cover;border-radius:10px;margin-bottom:12px;cursor:pointer;transition:transform 0.2s;border:1px solid var(--border)}
-    .req-screenshot:hover{transform:scale(1.02)}
-
-    .req-actions{display:flex;gap:8px}
-    .btn-approve{flex:1;padding:10px;background:rgba(0,200,83,0.12);border:1px solid rgba(0,200,83,0.3);color:var(--green);font-weight:700;font-size:12px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.2s}
+    .req-screenshot{width:100%;max-height:160px;object-fit:cover;border-radius:8px;margin-bottom:10px;cursor:pointer;border:1px solid var(--border)}
+    .req-actions{display:flex;gap:6px}
+    .btn-approve{flex:1;padding:9px;background:rgba(0,200,83,0.12);border:1px solid rgba(0,200,83,0.3);color:var(--green);font-weight:700;font-size:12px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif}
     .btn-approve:hover{background:rgba(0,200,83,0.22)}
-    .btn-paid{flex:1;padding:10px;background:rgba(41,121,255,0.12);border:1px solid rgba(41,121,255,0.3);color:var(--blue);font-weight:700;font-size:12px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.2s}
+    .btn-paid{flex:1;padding:9px;background:rgba(41,121,255,0.12);border:1px solid rgba(41,121,255,0.3);color:var(--blue);font-weight:700;font-size:12px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif}
     .btn-paid:hover{background:rgba(41,121,255,0.22)}
-    .btn-reject{flex:1;padding:10px;background:rgba(255,79,79,0.1);border:1px solid rgba(255,79,79,0.3);color:var(--red);font-weight:700;font-size:12px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.2s}
+    .btn-reject{flex:1;padding:9px;background:rgba(255,79,79,0.1);border:1px solid rgba(255,79,79,0.3);color:var(--red);font-weight:700;font-size:12px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif}
     .btn-reject:hover{background:rgba(255,79,79,0.2)}
 
-    .status-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+    /* STATUS BADGES */
+    .status-badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700}
     .status-pending {background:rgba(255,214,0,0.1);color:var(--yellow);border:1px solid rgba(255,214,0,0.3)}
     .status-approved{background:rgba(0,200,83,0.1);color:var(--green);border:1px solid rgba(0,200,83,0.3)}
     .status-paid    {background:rgba(41,121,255,0.1);color:var(--blue);border:1px solid rgba(41,121,255,0.3)}
     .status-rejected{background:rgba(255,79,79,0.1);color:var(--red);border:1px solid rgba(255,79,79,0.3)}
 
-    .empty-state{text-align:center;padding:32px 0;color:var(--muted);font-size:13px}
-    .empty-state div{font-size:32px;margin-bottom:8px}
-
     /* MEMBERS TABLE */
-    .search-box{background:#1c1c1c;border:1px solid var(--border);border-radius:8px;padding:8px 14px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;width:200px;transition:border-color 0.2s}
+    .search-box{background:#1c1c1c;border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;width:180px}
     .search-box:focus{border-color:var(--yellow)}
     .search-box::placeholder{color:#444}
     table{width:100%;border-collapse:collapse}
-    th{text-align:left;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;padding:0 12px 12px;border-bottom:1px solid var(--border)}
-    td{padding:13px 12px;font-size:13px;border-bottom:1px solid #1a1a1a;vertical-align:middle}
+    th{text-align:left;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;padding:0 10px 12px;border-bottom:1px solid var(--border)}
+    td{padding:12px 10px;font-size:13px;border-bottom:1px solid #1a1a1a;vertical-align:middle}
     tr:last-child td{border-bottom:none}
     tr:hover td{background:#1a1a1a}
     .member-cell{display:flex;align-items:center;gap:10px}
-    .member-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--dark-green));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#000;flex-shrink:0}
+    .member-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--dark-green));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#000;flex-shrink:0}
     .member-name{font-weight:600;font-size:13px}
-    .member-email{font-size:11px;color:var(--muted)}
+    .member-email{font-size:10px;color:var(--muted)}
     .amount-green{color:var(--green);font-weight:600}
-    .tbl-btn{padding:5px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:opacity 0.2s}
-    .tbl-btn:hover{opacity:0.8}
+    .tbl-btn{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:none}
     .tbl-btn.view  {background:rgba(0,200,83,0.1);color:var(--green)}
     .tbl-btn.credit{background:rgba(255,214,0,0.1);color:var(--yellow)}
     .tbl-btn.remove{background:rgba(255,79,79,0.1);color:var(--red)}
 
+    /* EMPTY STATE */
+    .empty-state{text-align:center;padding:28px 0;color:var(--muted);font-size:13px}
+    .empty-state div{font-size:28px;margin-bottom:8px}
+
     /* QUICK ACTIONS */
-    .action-grid{display:flex;flex-direction:column;gap:10px}
-    .admin-action-btn{padding:13px;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:opacity 0.2s;text-align:left}
-    .admin-action-btn:hover{opacity:0.85}
+    .action-grid{display:flex;flex-direction:column;gap:8px}
+    .admin-btn{padding:12px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:none;text-align:left}
 
     /* MODAL */
     .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);z-index:100;display:none;align-items:center;justify-content:center}
     .modal-overlay.open{display:flex}
-    .modal{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px 24px;width:100%;max-width:400px;animation:fadeUp 0.3s ease;max-height:90vh;overflow-y:auto}
-    .modal h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:6px}
-    .modal p{color:var(--muted);font-size:13px;margin-bottom:16px}
+    .modal{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:26px 22px;width:100%;max-width:380px;animation:fadeUp 0.3s ease;max-height:90vh;overflow-y:auto}
+    .modal h3{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;margin-bottom:6px}
+    .modal p{color:var(--muted);font-size:13px;margin-bottom:14px}
     .modal label{display:block;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:7px}
-    .modal input{width:100%;background:#1c1c1c;border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;margin-bottom:14px}
+    .modal input{width:100%;background:#1c1c1c;border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;margin-bottom:12px}
     .modal input:focus{border-color:var(--yellow);box-shadow:0 0 0 3px rgba(255,214,0,0.1)}
-    .detail-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}
+    .detail-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px}
     .detail-row:last-child{border-bottom:none}
     .detail-row span:first-child{color:var(--muted)}
     .detail-row span:last-child{font-weight:600}
@@ -132,14 +129,25 @@
     .modal-btns button{flex:1;padding:12px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border:none}
     .btn-cancel {background:#1c1c1c;color:var(--muted);border:1px solid var(--border)!important}
     .btn-confirm{background:linear-gradient(135deg,var(--yellow),#FFA000);color:#000}
-    .btn-confirm:hover,.btn-cancel:hover{opacity:0.85}
 
     /* TOAST */
-    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1c1c1c;border:1px solid var(--border);color:var(--white);padding:12px 20px;border-radius:12px;font-size:13px;font-weight:500;z-index:200;transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);white-space:nowrap}
+    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1c1c1c;border:1px solid var(--border);color:var(--white);padding:12px 20px;border-radius:12px;font-size:13px;font-weight:500;z-index:200;transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);white-space:nowrap;max-width:90vw;text-align:center}
     .toast.show {transform:translateX(-50%) translateY(0)}
     .toast.green{border-color:rgba(0,200,83,0.4);color:var(--green)}
     .toast.red  {border-color:rgba(255,79,79,0.4);color:var(--red)}
     .toast.blue {border-color:rgba(41,121,255,0.4);color:var(--blue)}
+
+    /* MOBILE */
+    @media(max-width:768px){
+      .sidebar{display:none}
+      .main{margin-left:0;padding:14px 12px 30px}
+      .stats-row{grid-template-columns:repeat(3,1fr);gap:8px}
+      .stat-card{padding:12px}
+      .stat-value{font-size:14px}
+      .two-col{grid-template-columns:1fr;gap:14px}
+      table{font-size:12px}
+      th,td{padding:8px 6px}
+    }
   </style>
 </head>
 <body>
@@ -163,7 +171,7 @@
       <div class="avatar">AD</div>
       <div>
         <div class="user-name">Admin</div>
-        <div class="user-role">Super Admin</div>
+        <div class="user-role-text">Super Admin</div>
       </div>
     </div>
   </div>
@@ -187,7 +195,7 @@
   <div class="stats-row">
     <div class="stat-card">
       <div class="stat-icon">👥</div>
-      <div class="stat-label">Total Members</div>
+      <div class="stat-label">Members</div>
       <div class="stat-value yellow" id="stat-members">0</div>
     </div>
     <div class="stat-card">
@@ -198,30 +206,30 @@
     <div class="stat-card">
       <div class="stat-icon">⬇️</div>
       <div class="stat-label">Pending Deposits</div>
-      <div class="stat-value yellow" id="stat-dep-pending">0</div>
+      <div class="stat-value yellow" id="stat-dep">0</div>
     </div>
     <div class="stat-card">
       <div class="stat-icon">⬆️</div>
       <div class="stat-label">Pending Withdrawals</div>
-      <div class="stat-value red" id="stat-with-pending">0</div>
+      <div class="stat-value red" id="stat-wit">0</div>
     </div>
     <div class="stat-card">
       <div class="stat-icon">📈</div>
-      <div class="stat-label">Total Interest Paid</div>
+      <div class="stat-label">Total Interest</div>
       <div class="stat-value green" id="stat-interest">0</div>
     </div>
   </div>
 
-  <!-- PENDING DEPOSITS + PENDING WITHDRAWALS -->
+  <!-- PENDING DEPOSITS + WITHDRAWALS -->
   <div class="two-col">
 
     <!-- PENDING DEPOSITS -->
     <div class="panel">
       <div class="panel-header">
         <div class="panel-title">⬇️ Pending Deposits</div>
-        <span style="font-size:12px;color:var(--muted)" id="dep-count"></span>
+        <button class="refresh-btn" onclick="refreshData()">🔄 Refresh</button>
       </div>
-      <div id="pending-deposits-list">
+      <div id="pending-deposits">
         <div class="empty-state"><div>📭</div>No pending deposits</div>
       </div>
     </div>
@@ -230,71 +238,61 @@
     <div class="panel">
       <div class="panel-header">
         <div class="panel-title">⬆️ Pending Withdrawals</div>
-        <span style="font-size:12px;color:var(--muted)" id="with-count"></span>
+        <button class="refresh-btn" onclick="refreshData()">🔄 Refresh</button>
       </div>
-      <div id="pending-withdrawals-list">
+      <div id="pending-withdrawals">
         <div class="empty-state"><div>📭</div>No pending withdrawals</div>
       </div>
     </div>
 
   </div>
 
-  <!-- RECENTLY PROCESSED + QUICK ACTIONS -->
+  <!-- RECENT PROCESSED + QUICK ACTIONS -->
   <div class="two-col">
 
-    <!-- RECENTLY PROCESSED -->
     <div class="panel">
-      <div class="panel-header">
-        <div class="panel-title">✅ Recently Processed</div>
-      </div>
+      <div class="panel-title" style="margin-bottom:14px">✅ Recently Processed</div>
       <div id="processed-list">
         <div class="empty-state"><div>📋</div>Nothing processed yet</div>
       </div>
     </div>
 
-    <!-- QUICK ACTIONS -->
     <div class="panel">
-      <div class="panel-title" style="margin-bottom:16px">⚡ Admin Actions</div>
+      <div class="panel-title" style="margin-bottom:14px">⚡ Quick Actions</div>
       <div class="action-grid">
-        <button class="admin-action-btn" onclick="applyInterestAll()" style="background:rgba(0,200,83,0.1);border:1px solid rgba(0,200,83,0.3);color:var(--green)">
-          📈 Apply Daily Interest to All Members
-        </button>
-        <button class="admin-action-btn" onclick="openAddMember()" style="background:rgba(255,214,0,0.1);border:1px solid rgba(255,214,0,0.3);color:var(--yellow)">
-          ➕ Add New Member Manually
-        </button>
-        <button class="admin-action-btn" onclick="exportData()" style="background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--white)">
-          📥 Export Member Data (CSV)
-        </button>
-        <button class="admin-action-btn" onclick="clearAll()" style="background:rgba(255,79,79,0.1);border:1px solid rgba(255,79,79,0.3);color:var(--red)">
-          🗑️ Clear All Data (Reset)
-        </button>
+        <button class="admin-btn" onclick="applyInterestAll()" style="background:rgba(0,200,83,0.1);border:1px solid rgba(0,200,83,0.3);color:var(--green)">📈 Apply Daily Interest to All</button>
+        <button class="admin-btn" onclick="openAddMember()" style="background:rgba(255,214,0,0.1);border:1px solid rgba(255,214,0,0.3);color:var(--yellow)">➕ Add New Member</button>
+        <button class="admin-btn" onclick="exportData()" style="background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--white)">📥 Export CSV</button>
+        <button class="admin-btn" onclick="clearAll()" style="background:rgba(255,79,79,0.1);border:1px solid rgba(255,79,79,0.3);color:var(--red)">🗑️ Reset All Data</button>
       </div>
     </div>
 
   </div>
 
   <!-- ALL MEMBERS TABLE -->
-  <div class="panel" style="margin-bottom:24px">
+  <div class="panel">
     <div class="panel-header">
       <div class="panel-title">👥 All Members</div>
-      <input class="search-box" id="search-input" placeholder="🔍 Search member..." oninput="filterMembers()"/>
+      <input class="search-box" id="search-input" placeholder="🔍 Search..." oninput="filterMembers()"/>
     </div>
-    <table>
-      <thead>
-        <tr>
-          <th>Member</th>
-          <th>Phone</th>
-          <th>Balance</th>
-          <th>Interest</th>
-          <th>Deposited</th>
-          <th>Joined</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="members-tbody">
-        <tr><td colspan="7"><div class="empty-state"><div>👥</div>No members yet</div></td></tr>
-      </tbody>
-    </table>
+    <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>Member</th>
+            <th>Phone</th>
+            <th>Balance</th>
+            <th>Interest</th>
+            <th>Deposited</th>
+            <th>Joined</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="members-tbody">
+          <tr><td colspan="7"><div class="empty-state"><div>👥</div>No members yet</div></td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
 </main>
@@ -305,7 +303,7 @@
     <h3>👤 Member Details</h3>
     <p>Full account information</p>
     <div id="member-detail-content"></div>
-    <div class="modal-btns" style="margin-top:16px">
+    <div class="modal-btns" style="margin-top:14px">
       <button class="btn-cancel" onclick="closeModal('view-modal')">Close</button>
     </div>
   </div>
@@ -329,7 +327,7 @@
 <div class="modal-overlay" id="add-modal">
   <div class="modal">
     <h3>➕ Add New Member</h3>
-    <p>Manually register a new member</p>
+    <p>Register a new member manually</p>
     <label>Full Name</label>
     <input type="text" id="add-name" placeholder="John Kamau"/>
     <label>Email</label>
@@ -348,21 +346,18 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  // ── Data ──
+  // DATA HELPERS
   function getMembers()    { return JSON.parse(localStorage.getItem('sacco_members')     || '[]'); }
   function getDeposits()   { return JSON.parse(localStorage.getItem('sacco_deposits')    || '[]'); }
   function getWithdrawals(){ return JSON.parse(localStorage.getItem('sacco_withdrawals') || '[]'); }
-
   function saveMembers(m)    { localStorage.setItem('sacco_members',     JSON.stringify(m)); }
   function saveDeposits(d)   { localStorage.setItem('sacco_deposits',    JSON.stringify(d)); }
   function saveWithdrawals(w){ localStorage.setItem('sacco_withdrawals', JSON.stringify(w)); }
-
   function fmt(n) { return Number(n||0).toLocaleString(); }
 
   let allMembers = [];
   let creditTargetEmail = '';
 
-  // ── Main render ──
   function refreshData() {
     allMembers = getMembers();
     document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-KE',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
@@ -374,36 +369,26 @@
   }
 
   function renderStats() {
-    const deps   = getDeposits();
-    const withs  = getWithdrawals();
+    const deps  = getDeposits();
+    const withs = getWithdrawals();
     const totalSavings  = allMembers.reduce((s,m)=>s+(m.balance||0),0);
     const totalInterest = allMembers.reduce((s,m)=>s+(m.interestEarned||0),0);
-    const depPending    = deps.filter(d=>d.status==='pending').length;
-    const withPending   = withs.filter(w=>w.status==='pending').length;
-
-    document.getElementById('stat-members').textContent     = allMembers.length;
-    document.getElementById('stat-savings').textContent     = 'KES '+fmt(totalSavings);
-    document.getElementById('stat-dep-pending').textContent = depPending;
-    document.getElementById('stat-with-pending').textContent= withPending;
-    document.getElementById('stat-interest').textContent    = 'KES '+fmt(totalInterest);
+    document.getElementById('stat-members').textContent = allMembers.length;
+    document.getElementById('stat-savings').textContent = 'KES '+fmt(totalSavings);
+    document.getElementById('stat-dep').textContent     = deps.filter(d=>d.status==='pending').length;
+    document.getElementById('stat-wit').textContent     = withs.filter(w=>w.status==='pending').length;
+    document.getElementById('stat-interest').textContent= 'KES '+fmt(totalInterest);
   }
 
   // ═══════════════════════════════════════════════
-  //  PENDING DEPOSITS — admin approves/rejects
+  //  PENDING DEPOSITS
   // ═══════════════════════════════════════════════
   function renderPendingDeposits() {
-    const deps    = getDeposits();
-    const pending = deps.filter(d=>d.status==='pending');
-    const list    = document.getElementById('pending-deposits-list');
-    document.getElementById('dep-count').textContent = pending.length + ' pending';
-
-    if (!pending.length) {
-      list.innerHTML = '<div class="empty-state"><div>📭</div>No pending deposits</div>';
-      return;
-    }
-
+    const pending = getDeposits().filter(d=>d.status==='pending');
+    const list    = document.getElementById('pending-deposits');
+    if (!pending.length) { list.innerHTML='<div class="empty-state"><div>📭</div>No pending deposits</div>'; return; }
     list.innerHTML = pending.map(d=>`
-      <div class="req-card deposit-card">
+      <div class="req-card dep">
         <div class="req-header">
           <div class="req-name">${d.memberName}</div>
           <span class="status-badge status-pending">⏳ Pending</span>
@@ -411,10 +396,11 @@
         <div class="req-amount green">KES ${fmt(d.amount)}</div>
         <div class="req-detail">
           Code: <strong>${d.code||'—'}</strong><br/>
-          Submitted: <strong>${d.submittedAt||'—'}</strong><br/>
-          ${d.note ? 'Note: <strong>'+d.note+'</strong>' : ''}
+          Email: <strong>${d.memberEmail}</strong><br/>
+          Date: <strong>${d.submittedAt||'—'}</strong>
+          ${d.note?'<br/>Note: <strong>'+d.note+'</strong>':''}
         </div>
-        ${d.screenshot ? `<img class="req-screenshot" src="${d.screenshot}" alt="Screenshot" onclick="viewScreenshot('${d.id}','deposit')"/>` : ''}
+        ${d.screenshot?`<img class="req-screenshot" src="${d.screenshot}" onclick="viewScreenshot('${d.id}','deposit')"/>`:''}
         <div class="req-actions">
           <button class="btn-approve" onclick="approveDeposit('${d.id}')">✅ Approve & Credit</button>
           <button class="btn-reject"  onclick="rejectDeposit('${d.id}')">❌ Reject</button>
@@ -422,54 +408,60 @@
       </div>`).join('');
   }
 
+  // ══════════════════════════════════════════════════
+  //  APPROVE DEPOSIT — credits member balance immediately
+  // ══════════════════════════════════════════════════
   function approveDeposit(id) {
     const deps = getDeposits();
     const idx  = deps.findIndex(d=>d.id===id);
     if (idx<0) return;
     const dep = deps[idx];
+
+    // Mark approved — creditedToMember=false so dashboard syncs it
     dep.status = 'approved';
+    dep.creditedToMember = false;
     saveDeposits(deps);
 
-    // Credit member balance
+    // Also directly credit member balance right now
     const members = getMembers();
     const mIdx    = members.findIndex(m=>m.email===dep.memberEmail);
     if (mIdx>=0) {
       members[mIdx].balance        = (members[mIdx].balance||0) + dep.amount;
       members[mIdx].totalDeposited = (members[mIdx].totalDeposited||0) + dep.amount;
       members[mIdx].transactions   = members[mIdx].transactions||[];
-      members[mIdx].transactions.push({ type:'deposit', label:'M-Pesa Deposit (Approved)', amount:dep.amount, date:new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'}) });
+      members[mIdx].transactions.push({
+        type:'deposit', label:'M-Pesa Deposit (Approved)',
+        amount:dep.amount,
+        date:new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'})
+      });
+      // Mark credited
+      deps[idx].creditedToMember = true;
+      saveDeposits(deps);
       saveMembers(members);
     }
 
     refreshData();
-    showToast(`Deposit of KES ${fmt(dep.amount)} approved & credited to ${dep.memberName} ✓`, 'green');
+    showToast(`✅ Deposit of KES ${fmt(dep.amount)} approved & credited to ${dep.memberName}!`,'green');
   }
 
   function rejectDeposit(id) {
-    if (!confirm('Reject this deposit request?')) return;
+    if (!confirm('Reject this deposit?')) return;
     const deps = getDeposits();
     const idx  = deps.findIndex(d=>d.id===id);
     if (idx>=0) { deps[idx].status='rejected'; saveDeposits(deps); }
     refreshData();
-    showToast('Deposit rejected', 'red');
+    showToast('Deposit rejected','red');
   }
 
   // ═══════════════════════════════════════════════
-  //  PENDING WITHDRAWALS — approve → paid
+  //  PENDING WITHDRAWALS
   // ═══════════════════════════════════════════════
   function renderPendingWithdrawals() {
-    const withs   = getWithdrawals();
-    const pending = withs.filter(w=>w.status==='pending');
-    const list    = document.getElementById('pending-withdrawals-list');
-    document.getElementById('with-count').textContent = pending.length + ' pending';
-
-    if (!pending.length) {
-      list.innerHTML = '<div class="empty-state"><div>📭</div>No pending withdrawals</div>';
-      return;
-    }
-
+    const pending = getWithdrawals().filter(w=>w.status==='pending');
+    const list    = document.getElementById('pending-withdrawals');
+    if (!pending.length) { list.innerHTML='<div class="empty-state"><div>📭</div>No pending withdrawals</div>'; return; }
     list.innerHTML = pending.map(w=>`
-      <div class="req-card withdraw-card">
+      <div class="req-card wit">
         <div class="req-header">
           <div class="req-name">${w.memberName}</div>
           <span class="status-badge status-pending">⏳ Pending</span>
@@ -492,90 +484,73 @@
     const withs = getWithdrawals();
     const idx   = withs.findIndex(w=>w.id===id);
     if (idx<0) return;
-    withs[idx].status = 'approved';
+    withs[idx].status='approved';
     saveWithdrawals(withs);
     refreshData();
-    showToast(`Withdrawal approved! Now send KES ${fmt(withs[idx].amount)} to ${withs[idx].phone} then click "Mark Paid"`, 'green');
+    showToast(`Approved! Send KES ${fmt(withs[idx].amount)} to ${withs[idx].phone} then click Mark Paid`,'green');
   }
 
   function markPaid(id) {
     const withs = getWithdrawals();
     const idx   = withs.findIndex(w=>w.id===id);
     if (idx<0) return;
-    withs[idx].status = 'paid';
+    withs[idx].status='paid';
     saveWithdrawals(withs);
     refreshData();
-    showToast(`KES ${fmt(withs[idx].amount)} marked as PAID to ${withs[idx].phone} 💳`, 'blue');
+    showToast(`KES ${fmt(withs[idx].amount)} marked as PAID to ${withs[idx].phone} 💳`,'blue');
   }
 
   function rejectWithdrawal(id) {
-    if (!confirm('Reject this withdrawal? Balance will be refunded to member.')) return;
+    if (!confirm('Reject and refund this withdrawal?')) return;
     const withs   = getWithdrawals();
     const idx     = withs.findIndex(w=>w.id===id);
     if (idx<0) return;
     const w = withs[idx];
-    w.status = 'rejected';
+    w.status='rejected';
     saveWithdrawals(withs);
-
-    // Refund interest to member
+    // Refund balance + interest
     const members = getMembers();
     const mIdx    = members.findIndex(m=>m.email===w.memberEmail);
     if (mIdx>=0) {
-      members[mIdx].balance        = (members[mIdx].balance||0) + w.amount;
-      members[mIdx].interestEarned = (members[mIdx].interestEarned||0) + w.amount;
+      members[mIdx].balance        = (members[mIdx].balance||0)+w.amount;
+      members[mIdx].interestEarned = (members[mIdx].interestEarned||0)+w.amount;
       members[mIdx].transactions   = members[mIdx].transactions||[];
-      members[mIdx].transactions.push({ type:'deposit', label:'Withdrawal Refunded', amount:w.amount, date:new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'}) });
+      members[mIdx].transactions.push({ type:'deposit',label:'Withdrawal Refunded',amount:w.amount,date:new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'}) });
       saveMembers(members);
     }
     refreshData();
-    showToast('Withdrawal rejected. Balance refunded to member.', 'red');
+    showToast('Withdrawal rejected. Balance refunded to member.','red');
   }
 
-  // ═══════════════════════════════════════════════
-  //  RECENTLY PROCESSED (last 6)
-  // ═══════════════════════════════════════════════
+  // RECENTLY PROCESSED
   function renderProcessed() {
     const deps  = getDeposits().filter(d=>d.status!=='pending');
     const withs = getWithdrawals().filter(w=>w.status!=='pending');
-    const all   = [
-      ...deps.map(d=>({...d, kind:'deposit'})),
-      ...withs.map(w=>({...w, kind:'withdrawal'}))
-    ].slice(-6).reverse();
-
-    const list = document.getElementById('processed-list');
-    if (!all.length) {
-      list.innerHTML = '<div class="empty-state"><div>📋</div>Nothing processed yet</div>';
-      return;
-    }
-
-    list.innerHTML = all.map(item=>{
-      const isDeposit = item.kind==='deposit';
-      const statusMap = { approved:'status-approved', paid:'status-paid', rejected:'status-rejected' };
-      const labelMap  = { approved:'✅ Approved', paid:'💳 Paid', rejected:'❌ Rejected' };
-      return `
-        <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
-          <div style="width:36px;height:36px;border-radius:10px;background:${isDeposit?'rgba(0,200,83,0.1)':'rgba(255,79,79,0.1)'};display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">
-            ${isDeposit?'⬇️':'⬆️'}
-          </div>
-          <div style="flex:1">
-            <div style="font-size:13px;font-weight:600">${item.memberName}</div>
-            <div style="font-size:11px;color:var(--muted)">${isDeposit?'Deposit':'Withdrawal'} · ${item.submittedAt||item.date||'—'}</div>
-            <span class="status-badge ${statusMap[item.status]||''}">${labelMap[item.status]||item.status}</span>
-          </div>
-          <div style="font-size:13px;font-weight:700;color:${isDeposit?'var(--green)':'var(--red)'}">
-            ${isDeposit?'+':'-'}KES ${fmt(item.amount)}
-          </div>
-        </div>`;
-    }).join('');
+    const all   = [...deps.map(d=>({...d,kind:'deposit'})),...withs.map(w=>({...w,kind:'withdrawal'}))].slice(-6).reverse();
+    const list  = document.getElementById('processed-list');
+    if (!all.length) { list.innerHTML='<div class="empty-state"><div>📋</div>Nothing processed yet</div>'; return; }
+    const statusMap = { approved:'status-approved', paid:'status-paid', rejected:'status-rejected' };
+    const labelMap  = { approved:'✅ Approved', paid:'💳 Paid', rejected:'❌ Rejected' };
+    list.innerHTML = all.map(item=>`
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)">
+        <div style="width:32px;height:32px;border-radius:8px;background:${item.kind==='deposit'?'rgba(0,200,83,0.1)':'rgba(255,79,79,0.1)'};display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
+          ${item.kind==='deposit'?'⬇️':'⬆️'}
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${item.memberName}</div>
+          <div style="font-size:10px;color:var(--muted)">${item.kind} · ${item.submittedAt||item.date||'—'}</div>
+          <span class="status-badge ${statusMap[item.status]||''}">${labelMap[item.status]||item.status}</span>
+        </div>
+        <div style="font-size:13px;font-weight:700;color:${item.kind==='deposit'?'var(--green)':'var(--red)'}">
+          ${item.kind==='deposit'?'+':'-'}KES ${fmt(item.amount)}
+        </div>
+      </div>`).join('');
   }
 
-  // ─── Members table ───
+  // MEMBERS TABLE
   function renderMembersTable(members) {
     const tbody = document.getElementById('members-tbody');
-    if (!members.length) {
-      tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div>👥</div>No members yet</div></td></tr>`;
-      return;
-    }
+    if (!members.length) { tbody.innerHTML=`<tr><td colspan="7"><div class="empty-state"><div>👥</div>No members yet</div></td></tr>`; return; }
     tbody.innerHTML = members.map(m=>{
       const initials = m.name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
       return `
@@ -587,7 +562,7 @@
           <td>KES ${fmt(m.totalDeposited)}</td>
           <td>${m.joined||'—'}</td>
           <td>
-            <div style="display:flex;gap:6px">
+            <div style="display:flex;gap:4px">
               <button class="tbl-btn view"   onclick="viewMember('${m.email}')">View</button>
               <button class="tbl-btn credit" onclick="openCredit('${m.email}')">Credit</button>
               <button class="tbl-btn remove" onclick="removeMember('${m.email}')">Remove</button>
@@ -602,7 +577,6 @@
     renderMembersTable(allMembers.filter(m=>m.name.toLowerCase().includes(q)||m.email.toLowerCase().includes(q)||(m.phone||'').includes(q)));
   }
 
-  // ─── View member ───
   function viewMember(email) {
     const m = allMembers.find(x=>x.email===email);
     if (!m) return;
@@ -618,7 +592,6 @@
     openModal('view-modal');
   }
 
-  // ─── Credit member ───
   function openCredit(email) {
     creditTargetEmail = email;
     const m = allMembers.find(x=>x.email===email);
@@ -636,14 +609,13 @@
     members[idx].balance        = (members[idx].balance||0)+amt;
     members[idx].totalDeposited = (members[idx].totalDeposited||0)+amt;
     members[idx].transactions   = members[idx].transactions||[];
-    members[idx].transactions.push({ type:'deposit', label:'Admin Credit', amount:amt, date:new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'}) });
+    members[idx].transactions.push({ type:'deposit',label:'Admin Credit',amount:amt,date:new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'}) });
     saveMembers(members);
     refreshData();
     closeModal('credit-modal');
     showToast(`KES ${fmt(amt)} credited to ${members[idx].name} ✓`,'green');
   }
 
-  // ─── Remove member ───
   function removeMember(email) {
     if (!confirm('Remove this member?')) return;
     saveMembers(getMembers().filter(m=>m.email!==email));
@@ -651,7 +623,6 @@
     showToast('Member removed','red');
   }
 
-  // ─── Add member ───
   function openAddMember() { openModal('add-modal'); }
 
   function confirmAddMember() {
@@ -670,13 +641,12 @@
     showToast(`${name} added ✓`,'green');
   }
 
-  // ─── Apply interest all ───
   function applyInterestAll() {
-    const members = getMembers();
+    const members=getMembers();
     if (!members.length) return showToast('No members found','red');
-    const rate  = 0.10/365;
-    const today = new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'});
-    let count = 0;
+    const rate=0.20/365;
+    const today=new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'});
+    let count=0;
     members.forEach(m=>{
       const interest=Math.round((m.balance||0)*rate);
       if (interest>0) {
@@ -692,49 +662,39 @@
     showToast(`Daily interest applied to ${count} member(s) ✓`,'green');
   }
 
-  // ─── Export CSV ───
   function exportData() {
     const members=getMembers();
-    if (!members.length) return showToast('No data to export','red');
+    if (!members.length) return showToast('No data','red');
     const rows=[['Name','Email','Phone','Balance','Interest','Deposited','Joined']];
     members.forEach(m=>rows.push([m.name,m.email,m.phone,m.balance,m.interestEarned,m.totalDeposited,m.joined]));
-    const csv=rows.map(r=>r.join(',')).join('\n');
     const a=document.createElement('a');
-    a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-    a.download='safisave_members.csv';
-    a.click();
+    a.href=URL.createObjectURL(new Blob([rows.map(r=>r.join(',')).join('\n')],{type:'text/csv'}));
+    a.download='safisave_members.csv'; a.click();
     showToast('Exported ✓','green');
   }
 
-  // ─── Clear all ───
   function clearAll() {
-    if (!confirm('Delete ALL data? This cannot be undone.')) return;
+    if (!confirm('Delete ALL data? Cannot be undone.')) return;
     localStorage.removeItem('sacco_members');
     localStorage.removeItem('sacco_deposits');
     localStorage.removeItem('sacco_withdrawals');
-    localStorage.removeItem('sacco_current');
     refreshData();
     showToast('All data cleared','red');
   }
 
-  // ─── View screenshot ───
-  function viewScreenshot(id, type) {
-    const items = type==='deposit' ? getDeposits() : getWithdrawals();
-    const item  = items.find(x=>x.id===id);
-    if (!item||!item.screenshot) return;
-    const w = window.open();
-    w.document.write(`<img src="${item.screenshot}" style="max-width:100%;height:auto"/>`);
+  function viewScreenshot(id) {
+    const dep=getDeposits().find(d=>d.id===id);
+    if (!dep||!dep.screenshot) return;
+    const w=window.open();
+    w.document.write(`<img src="${dep.screenshot}" style="max-width:100%;height:auto"/>`);
   }
 
-  // ─── Modal helpers ───
   function openModal(id)  { document.getElementById(id).classList.add('open'); }
   function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
   document.querySelectorAll('.modal-overlay').forEach(o=>{
     o.addEventListener('click',function(e){ if(e.target===this) this.classList.remove('open'); });
   });
 
-  // ─── Toast ───
   function showToast(msg,type='') {
     const t=document.getElementById('toast');
     t.textContent=msg; t.className='toast '+type;
@@ -743,6 +703,9 @@
   }
 
   function logout() { localStorage.removeItem('sacco_current'); window.location.href='index.html'; }
+
+  // Auto refresh every 20 seconds
+  setInterval(refreshData, 20000);
 
   refreshData();
 </script>
