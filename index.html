@@ -45,6 +45,31 @@
       to   { transform: scale(1.1); }
     }
 
+    /* Loading screen */
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 14px;
+      z-index: 999;
+    }
+    .loading-screen.hidden { display: none; }
+    .spinner {
+      width: 42px; height: 42px;
+      border: 3px solid var(--border);
+      border-top-color: var(--green);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text { color: var(--muted); font-size: 13px; }
+    .loading-logo { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; }
+    .loading-logo span { color: var(--green); }
+
     .wrapper {
       position: relative;
       z-index: 1;
@@ -52,6 +77,7 @@
       max-width: 420px;
       padding: 16px;
       animation: fadeUp 0.6s ease both;
+      display: none;
     }
 
     @keyframes fadeUp {
@@ -59,10 +85,7 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    .logo {
-      text-align: center;
-      margin-bottom: 32px;
-    }
+    .logo { text-align: center; margin-bottom: 32px; }
 
     .logo-icon {
       width: 52px; height: 52px;
@@ -133,11 +156,7 @@
       margin-bottom: 6px;
     }
 
-    .form-subtitle {
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 24px;
-    }
+    .form-subtitle { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
 
     .field { margin-bottom: 16px; }
 
@@ -188,6 +207,7 @@
     }
 
     .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
     .btn-secondary {
       width: 100%;
@@ -228,6 +248,7 @@
       font-size: 13px;
       margin-bottom: 16px;
       display: none;
+      line-height: 1.5;
     }
 
     .message.success {
@@ -256,7 +277,15 @@
 </head>
 <body>
 
-<div class="wrapper">
+<!-- Loading screen -->
+<div class="loading-screen" id="loading-screen">
+  <div class="loading-logo">Safi<span>Save</span></div>
+  <div class="spinner"></div>
+  <div class="loading-text">Loading, please wait...</div>
+</div>
+
+<!-- Main content -->
+<div class="wrapper" id="main-wrapper">
   <div class="logo">
     <div class="logo-icon">💰</div>
     <h1>Safi<span>Save</span></h1>
@@ -283,7 +312,7 @@
         <label>Password</label>
         <input type="password" id="login-password" placeholder="••••••••"/>
       </div>
-      <button class="btn" onclick="handleLogin()">Login to Account</button>
+      <button class="btn" id="login-btn" onclick="handleLogin()">Login to Account</button>
       <div class="divider">or</div>
       <button class="btn-secondary" onclick="switchTab('register')">Create New Account</button>
     </div>
@@ -309,7 +338,7 @@
         <label>Password</label>
         <input type="password" id="reg-password" placeholder="Min. 6 characters"/>
       </div>
-      <button class="btn" onclick="handleRegister()">Create Account</button>
+      <button class="btn" id="register-btn" onclick="handleRegister()">Create Account</button>
       <div class="divider">or</div>
       <button class="btn-secondary" onclick="switchTab('login')">Already have an account</button>
     </div>
@@ -321,7 +350,52 @@
   </div>
 </div>
 
-<script>
+<script type="module">
+  import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+  import {
+    getFirestore,
+    doc,
+    setDoc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+  // ── Firebase Config ──
+  const firebaseConfig = {
+    apiKey:            "AIzaSyCqaRp4JNIp7DmTgo8JqOxfbGozRKxFsTw",
+    authDomain:        "safisave-2a805.firebaseapp.com",
+    databaseURL:       "https://safisave-2a805-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId:         "safisave-2a805",
+    storageBucket:     "safisave-2a805.firebasestorage.app",
+    messagingSenderId: "896636365110",
+    appId:             "1:896636365110:web:f668dd2b2d5da3b11ceb97"
+  };
+
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db   = getFirestore(app);
+
+  const ADMIN_EMAIL = 'admin@safisave.com';
+
+  // ── If already logged in, go to dashboard ──
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      window.location.href = './dashboard.html';
+    } else {
+      // Show the login/register form
+      document.getElementById('loading-screen').classList.add('hidden');
+      document.getElementById('main-wrapper').style.display = 'block';
+    }
+  });
+
+  // ── Switch between Login and Register tabs ──
   function switchTab(tab) {
     document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -329,74 +403,124 @@
     document.querySelectorAll('.tab-btn')[tab === 'login' ? 0 : 1].classList.add('active');
   }
 
-  function getMembers() {
-    return JSON.parse(localStorage.getItem('sacco_members') || '[]');
-  }
-
-  function saveMembers(members) {
-    localStorage.setItem('sacco_members', JSON.stringify(members));
-  }
-
+  // ── Show message helper ──
   function showMsg(id, type, text) {
     const el = document.getElementById(id);
-    el.className = 'message ' + type;
+    el.className  = 'message ' + type;
     el.textContent = text;
   }
 
-  function handleRegister() {
+  // ════════════════════════════════════
+  //  REGISTER
+  // ════════════════════════════════════
+  async function handleRegister() {
     const name     = document.getElementById('reg-name').value.trim();
     const email    = document.getElementById('reg-email').value.trim().toLowerCase();
     const phone    = document.getElementById('reg-phone').value.trim();
     const password = document.getElementById('reg-password').value;
 
-    if (!name || !email || !phone || !password) {
+    // Basic validation
+    if (!name || !email || !phone || !password)
       return showMsg('register-msg', 'error', 'Please fill in all fields.');
-    }
-    if (password.length < 6) {
+    if (password.length < 6)
       return showMsg('register-msg', 'error', 'Password must be at least 6 characters.');
+
+    const btn = document.getElementById('register-btn');
+    btn.disabled    = true;
+    btn.textContent = 'Creating account...';
+    showMsg('register-msg', 'success', '⏳ Creating your account, please wait...');
+
+    try {
+      // 1. Create Firebase Auth user
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      const uid  = cred.user.uid;
+
+      // 2. Save member profile in Firestore
+      const joined = new Date().toLocaleDateString('en-KE', {
+        day: '2-digit', month: 'short', year: 'numeric'
+      });
+
+      await setDoc(doc(db, 'members', uid), {
+        name,
+        email,
+        phone,
+        balance:        0,
+        totalDeposited: 0,
+        interestEarned: 0,
+        transactions:   [],
+        goals:          [],
+        joined,
+        role:      email === ADMIN_EMAIL ? 'admin' : 'member',
+        createdAt: serverTimestamp()
+      });
+
+      // 3. Sign out so they login manually with their credentials
+      await signOut(auth);
+
+      showMsg('register-msg', 'success', '✅ Account created successfully! Please login now.');
+      btn.disabled    = false;
+      btn.textContent = 'Create Account';
+
+      // Auto-fill email on login tab and switch after 2s
+      setTimeout(() => {
+        switchTab('login');
+        document.getElementById('login-email').value = email;
+      }, 2000);
+
+    } catch (err) {
+      console.error('Registration error:', err);
+      const msgs = {
+        'auth/email-already-in-use':   'This email is already registered. Please login instead.',
+        'auth/invalid-email':          'Invalid email address. Please check and try again.',
+        'auth/weak-password':          'Password is too weak. Use at least 6 characters.',
+        'auth/network-request-failed': 'Network error. Check your internet connection and try again.'
+      };
+      showMsg('register-msg', 'error', msgs[err.code] || 'Something went wrong: ' + err.message);
+      btn.disabled    = false;
+      btn.textContent = 'Create Account';
     }
-
-    const members = getMembers();
-    if (members.find(m => m.email === email)) {
-      return showMsg('register-msg', 'error', 'An account with this email already exists.');
-    }
-
-    members.push({
-      name, email, phone, password,
-      balance: 0,
-      totalDeposited: 0,
-      interestEarned: 0,
-      transactions: [],
-      joined: new Date().toLocaleDateString('en-KE', { day:'2-digit', month:'short', year:'numeric' })
-    });
-
-    saveMembers(members);
-    showMsg('register-msg', 'success', 'Account created! Please login. 🎉');
-    setTimeout(() => switchTab('login'), 1800);
   }
 
-  function handleLogin() {
+  // ════════════════════════════════════
+  //  LOGIN
+  // ════════════════════════════════════
+  async function handleLogin() {
     const email    = document.getElementById('login-email').value.trim().toLowerCase();
     const password = document.getElementById('login-password').value;
 
-    if (!email || !password) {
+    if (!email || !password)
       return showMsg('login-msg', 'error', 'Please enter your email and password.');
+
+    const btn = document.getElementById('login-btn');
+    btn.disabled    = true;
+    btn.textContent = 'Logging in...';
+    showMsg('login-msg', 'success', '⏳ Verifying your credentials...');
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      showMsg('login-msg', 'success', '✅ Login successful! Opening your dashboard...');
+      // onAuthStateChanged above will redirect to dashboard.html automatically
+
+    } catch (err) {
+      console.error('Login error:', err);
+      const msgs = {
+        'auth/invalid-credential':     'Incorrect email or password. Please try again.',
+        'auth/user-not-found':         'No account found with this email address.',
+        'auth/wrong-password':         'Incorrect password. Please try again.',
+        'auth/invalid-email':          'Invalid email address.',
+        'auth/too-many-requests':      'Too many failed attempts. Please try again later.',
+        'auth/network-request-failed': 'Network error. Check your internet connection.'
+      };
+      showMsg('login-msg', 'error', msgs[err.code] || 'Login failed: ' + err.message);
+      btn.disabled    = false;
+      btn.textContent = 'Login to Account';
     }
-
-    const members = getMembers();
-    const member  = members.find(m => m.email === email && m.password === password);
-
-    if (!member) {
-      return showMsg('login-msg', 'error', 'Incorrect email or password. Try again.');
-    }
-
-    localStorage.setItem('sacco_current', email);
-    showMsg('login-msg', 'success', 'Login successful! Opening dashboard...');
-
-    setTimeout(function() {
-      window.location.href = './dashboard.html';
-    }, 1500);
   }
+
+  // ── Expose to HTML onclick handlers ──
+  window.switchTab      = switchTab;
+  window.handleRegister = handleRegister;
+  window.handleLogin    = handleLogin;
 </script>
 
 </body>
