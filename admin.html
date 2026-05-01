@@ -160,11 +160,11 @@
   </div>
   <div class="admin-badge">⚡ Admin Panel</div>
   <nav class="nav">
-    <button class="nav-item active" onclick="location.href='admin.html'"><span class="icon">🛡️</span> Admin Panel</button>
-    <button class="nav-item"        onclick="location.href='dashboard.html'"><span class="icon">🏠</span> Dashboard</button>
-    <button class="nav-item"        onclick="location.href='mpesa.html'"><span class="icon">📱</span> M-Pesa</button>
-    <button class="nav-item"        onclick="location.href='goals.html'"><span class="icon">🎯</span> Goals</button>
-    <button class="nav-item"        onclick="logout()"><span class="icon">🚪</span> Logout</button>
+    <button class="nav-item active"  onclick="location.href='admin.html'"><span class="icon">🛡️</span> Admin Panel</button>
+    <button class="nav-item"         onclick="location.href='dashboard.html'"><span class="icon">🏠</span> Dashboard</button>
+    <button class="nav-item"         onclick="location.href='mpesa.html'"><span class="icon">📱</span> M-Pesa</button>
+    <button class="nav-item"         onclick="location.href='goals.html'"><span class="icon">🎯</span> Goals</button>
+    <button class="nav-item"         onclick="logout()"><span class="icon">🚪</span> Logout</button>
   </nav>
   <div class="sidebar-bottom">
     <div class="user-chip">
@@ -193,80 +193,45 @@
 
   <!-- STATS -->
   <div class="stats-row">
-    <div class="stat-card">
-      <div class="stat-icon">👥</div>
-      <div class="stat-label">Members</div>
-      <div class="stat-value yellow" id="stat-members">0</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">💰</div>
-      <div class="stat-label">Total Savings</div>
-      <div class="stat-value green" id="stat-savings">0</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">⬇️</div>
-      <div class="stat-label">Pending Deposits</div>
-      <div class="stat-value yellow" id="stat-dep">0</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">⬆️</div>
-      <div class="stat-label">Pending Withdrawals</div>
-      <div class="stat-value red" id="stat-wit">0</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">📈</div>
-      <div class="stat-label">Total Interest</div>
-      <div class="stat-value green" id="stat-interest">0</div>
-    </div>
+    <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-label">Members</div><div class="stat-value yellow" id="stat-members">0</div></div>
+    <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-label">Total Savings</div><div class="stat-value green" id="stat-savings">0</div></div>
+    <div class="stat-card"><div class="stat-icon">⬇️</div><div class="stat-label">Pending Deposits</div><div class="stat-value yellow" id="stat-dep">0</div></div>
+    <div class="stat-card"><div class="stat-icon">⬆️</div><div class="stat-label">Pending Withdrawals</div><div class="stat-value red" id="stat-wit">0</div></div>
+    <div class="stat-card"><div class="stat-icon">📈</div><div class="stat-label">Total Interest</div><div class="stat-value green" id="stat-interest">0</div></div>
   </div>
 
   <!-- PENDING DEPOSITS + WITHDRAWALS -->
   <div class="two-col">
-
-    <!-- PENDING DEPOSITS -->
     <div class="panel">
       <div class="panel-header">
         <div class="panel-title">⬇️ Pending Deposits</div>
         <button class="refresh-btn" onclick="refreshData()">🔄 Refresh</button>
       </div>
-      <div id="pending-deposits">
-        <div class="empty-state"><div>📭</div>No pending deposits</div>
-      </div>
+      <div id="pending-deposits"><div class="empty-state"><div>📭</div>No pending deposits</div></div>
     </div>
-
-    <!-- PENDING WITHDRAWALS -->
     <div class="panel">
       <div class="panel-header">
         <div class="panel-title">⬆️ Pending Withdrawals</div>
         <button class="refresh-btn" onclick="refreshData()">🔄 Refresh</button>
       </div>
-      <div id="pending-withdrawals">
-        <div class="empty-state"><div>📭</div>No pending withdrawals</div>
-      </div>
+      <div id="pending-withdrawals"><div class="empty-state"><div>📭</div>No pending withdrawals</div></div>
     </div>
-
   </div>
 
-  <!-- RECENT PROCESSED + QUICK ACTIONS -->
+  <!-- RECENTLY PROCESSED + QUICK ACTIONS -->
   <div class="two-col">
-
     <div class="panel">
       <div class="panel-title" style="margin-bottom:14px">✅ Recently Processed</div>
-      <div id="processed-list">
-        <div class="empty-state"><div>📋</div>Nothing processed yet</div>
-      </div>
+      <div id="processed-list"><div class="empty-state"><div>📋</div>Nothing processed yet</div></div>
     </div>
-
     <div class="panel">
       <div class="panel-title" style="margin-bottom:14px">⚡ Quick Actions</div>
       <div class="action-grid">
         <button class="admin-btn" onclick="applyInterestAll()" style="background:rgba(0,200,83,0.1);border:1px solid rgba(0,200,83,0.3);color:var(--green)">📈 Apply Daily Interest to All</button>
-        <button class="admin-btn" onclick="openAddMember()" style="background:rgba(255,214,0,0.1);border:1px solid rgba(255,214,0,0.3);color:var(--yellow)">➕ Add New Member</button>
-        <button class="admin-btn" onclick="exportData()" style="background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--white)">📥 Export CSV</button>
-        <button class="admin-btn" onclick="clearAll()" style="background:rgba(255,79,79,0.1);border:1px solid rgba(255,79,79,0.3);color:var(--red)">🗑️ Reset All Data</button>
+        <button class="admin-btn" onclick="openAddMember()"   style="background:rgba(255,214,0,0.1);border:1px solid rgba(255,214,0,0.3);color:var(--yellow)">➕ Add New Member</button>
+        <button class="admin-btn" onclick="exportCSV()"       style="background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--white)">📥 Export CSV</button>
       </div>
     </div>
-
   </div>
 
   <!-- ALL MEMBERS TABLE -->
@@ -279,13 +244,7 @@
       <table>
         <thead>
           <tr>
-            <th>Member</th>
-            <th>Phone</th>
-            <th>Balance</th>
-            <th>Interest</th>
-            <th>Deposited</th>
-            <th>Joined</th>
-            <th>Actions</th>
+            <th>Member</th><th>Phone</th><th>Balance</th><th>Interest</th><th>Deposited</th><th>Joined</th><th>Actions</th>
           </tr>
         </thead>
         <tbody id="members-tbody">
@@ -338,29 +297,80 @@
     <input type="password" id="add-password" placeholder="Min. 6 characters"/>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal('add-modal')">Cancel</button>
-      <button class="btn-confirm" onclick="confirmAddMember()">Add Member</button>
+      <button class="btn-confirm" id="add-member-btn" onclick="confirmAddMember()">Add Member</button>
     </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
-<script>
-  // DATA HELPERS
-  function getMembers()    { return JSON.parse(localStorage.getItem('sacco_members')     || '[]'); }
-  function getDeposits()   { return JSON.parse(localStorage.getItem('sacco_deposits')    || '[]'); }
-  function getWithdrawals(){ return JSON.parse(localStorage.getItem('sacco_withdrawals') || '[]'); }
-  function saveMembers(m)    { localStorage.setItem('sacco_members',     JSON.stringify(m)); }
-  function saveDeposits(d)   { localStorage.setItem('sacco_deposits',    JSON.stringify(d)); }
-  function saveWithdrawals(w){ localStorage.setItem('sacco_withdrawals', JSON.stringify(w)); }
+<script type="module">
+  import { initializeApp }   from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut, createUserWithEmailAndPassword }
+    from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+  import {
+    getFirestore, collection, doc,
+    getDocs, getDoc, setDoc, updateDoc, deleteDoc,
+    query, where, orderBy, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCqaRp4JNIp7DmTgo8JqOxfbGozRKxFsTw",
+    authDomain: "safisave-2a805.firebaseapp.com",
+    databaseURL: "https://safisave-2a805-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "safisave-2a805",
+    storageBucket: "safisave-2a805.firebasestorage.app",
+    messagingSenderId: "896636365110",
+    appId: "1:896636365110:web:f668dd2b2d5da3b11ceb97"
+  };
+
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db   = getFirestore(app);
+
+  const ADMIN_EMAIL = 'admin@safisave.com';
+
+  let allMembers       = [];
+  let allDeposits      = [];
+  let allWithdrawals   = [];
+  let creditTargetUid  = '';
+  let currentUser      = null;
+
+  // ── Auth guard: admin only ──
+  onAuthStateChanged(auth, async user => {
+    if (!user) { window.location.href = './index.html'; return; }
+    if (user.email !== ADMIN_EMAIL) { window.location.href = './dashboard.html'; return; }
+    currentUser = user;
+    document.getElementById('today-date').textContent =
+      new Date().toLocaleDateString('en-KE', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+    await refreshData();
+    setInterval(refreshData, 20000);
+  });
+
   function fmt(n) { return Number(n||0).toLocaleString(); }
 
-  let allMembers = [];
-  let creditTargetEmail = '';
+  function showToast(msg, type='') {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.className = 'toast ' + type;
+    setTimeout(()=>t.classList.add('show'), 10);
+    setTimeout(()=>t.classList.remove('show'), 4000);
+  }
 
-  function refreshData() {
-    allMembers = getMembers();
-    document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-KE',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  // ════════════════════════════════════════
+  //  LOAD ALL DATA
+  // ════════════════════════════════════════
+  async function refreshData() {
+    const [mSnap, dSnap, wSnap] = await Promise.all([
+      getDocs(collection(db, 'members')),
+      getDocs(collection(db, 'deposits')),
+      getDocs(collection(db, 'withdrawals'))
+    ]);
+
+    allMembers     = mSnap.docs.map(d => ({ uid: d.id, ...d.data() }))
+                       .filter(m => m.email !== ADMIN_EMAIL);
+    allDeposits    = dSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+    allWithdrawals = wSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
     renderStats();
     renderPendingDeposits();
     renderPendingWithdrawals();
@@ -368,27 +378,29 @@
     renderMembersTable(allMembers);
   }
 
+  // ── STATS ──
   function renderStats() {
-    const deps  = getDeposits();
-    const withs = getWithdrawals();
-    const totalSavings  = allMembers.reduce((s,m)=>s+(m.balance||0),0);
-    const totalInterest = allMembers.reduce((s,m)=>s+(m.interestEarned||0),0);
-    document.getElementById('stat-members').textContent = allMembers.length;
-    document.getElementById('stat-savings').textContent = 'KES '+fmt(totalSavings);
-    document.getElementById('stat-dep').textContent     = deps.filter(d=>d.status==='pending').length;
-    document.getElementById('stat-wit').textContent     = withs.filter(w=>w.status==='pending').length;
-    document.getElementById('stat-interest').textContent= 'KES '+fmt(totalInterest);
+    const totalSavings  = allMembers.reduce((s,m) => s+(m.balance||0), 0);
+    const totalInterest = allMembers.reduce((s,m) => s+(m.interestEarned||0), 0);
+    document.getElementById('stat-members').textContent  = allMembers.length;
+    document.getElementById('stat-savings').textContent  = 'KES '+fmt(totalSavings);
+    document.getElementById('stat-dep').textContent      = allDeposits.filter(d=>d.status==='pending').length;
+    document.getElementById('stat-wit').textContent      = allWithdrawals.filter(w=>w.status==='pending').length;
+    document.getElementById('stat-interest').textContent = 'KES '+fmt(totalInterest);
   }
 
-  // ═══════════════════════════════════════════════
+  // ════════════════════════════════════════
   //  PENDING DEPOSITS
-  // ═══════════════════════════════════════════════
+  // ════════════════════════════════════════
   function renderPendingDeposits() {
-    const pending = getDeposits().filter(d=>d.status==='pending');
+    const pending = allDeposits.filter(d => d.status === 'pending');
     const list    = document.getElementById('pending-deposits');
-    if (!pending.length) { list.innerHTML='<div class="empty-state"><div>📭</div>No pending deposits</div>'; return; }
-    list.innerHTML = pending.map(d=>`
-      <div class="req-card dep">
+    if (!pending.length) {
+      list.innerHTML = '<div class="empty-state"><div>📭</div>No pending deposits</div>';
+      return;
+    }
+    list.innerHTML = pending.map(d => `
+      <div class="req-card dep" id="dep-${d.id}">
         <div class="req-header">
           <div class="req-name">${d.memberName}</div>
           <span class="status-badge status-pending">⏳ Pending</span>
@@ -396,72 +408,62 @@
         <div class="req-amount green">KES ${fmt(d.amount)}</div>
         <div class="req-detail">
           Code: <strong>${d.code||'—'}</strong><br/>
-          Email: <strong>${d.memberEmail}</strong><br/>
+          Email: <strong>${d.memberEmail||'—'}</strong><br/>
           Date: <strong>${d.submittedAt||'—'}</strong>
-          ${d.note?'<br/>Note: <strong>'+d.note+'</strong>':''}
+          ${d.note ? '<br/>Note: <strong>'+d.note+'</strong>' : ''}
         </div>
-        ${d.screenshot?`<img class="req-screenshot" src="${d.screenshot}" onclick="viewScreenshot('${d.id}','deposit')"/>`:''}
+        ${d.screenshot ? `<img class="req-screenshot" src="${d.screenshot}" onclick="viewScreenshot('${d.id}')" alt="screenshot"/>` : ''}
         <div class="req-actions">
-          <button class="btn-approve" onclick="approveDeposit('${d.id}')">✅ Approve & Credit</button>
+          <button class="btn-approve" onclick="approveDeposit('${d.id}','${d.memberUid}',${d.amount},'${d.memberName}')">✅ Approve & Credit</button>
           <button class="btn-reject"  onclick="rejectDeposit('${d.id}')">❌ Reject</button>
         </div>
       </div>`).join('');
   }
 
-  // ══════════════════════════════════════════════════
-  //  APPROVE DEPOSIT — credits member balance immediately
-  // ══════════════════════════════════════════════════
-  function approveDeposit(id) {
-    const deps = getDeposits();
-    const idx  = deps.findIndex(d=>d.id===id);
-    if (idx<0) return;
-    const dep = deps[idx];
+  async function approveDeposit(depId, memberUid, amount, memberName) {
+    // Mark deposit approved
+    await updateDoc(doc(db,'deposits',depId), { status:'approved', creditedToMember:true });
 
-    // Mark approved — creditedToMember=false so dashboard syncs it
-    dep.status = 'approved';
-    dep.creditedToMember = false;
-    saveDeposits(deps);
-
-    // Also directly credit member balance right now
-    const members = getMembers();
-    const mIdx    = members.findIndex(m=>m.email===dep.memberEmail);
-    if (mIdx>=0) {
-      members[mIdx].balance        = (members[mIdx].balance||0) + dep.amount;
-      members[mIdx].totalDeposited = (members[mIdx].totalDeposited||0) + dep.amount;
-      members[mIdx].transactions   = members[mIdx].transactions||[];
-      members[mIdx].transactions.push({
-        type:'deposit', label:'M-Pesa Deposit (Approved)',
-        amount:dep.amount,
-        date:new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'})
+    // Credit member balance in Firestore
+    const mRef  = doc(db,'members',memberUid);
+    const mSnap = await getDoc(mRef);
+    if (mSnap.exists()) {
+      const m   = mSnap.data();
+      const txs = m.transactions||[];
+      txs.push({
+        type:'deposit', label:'M-Pesa Deposit (Approved)', amount,
+        date: new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'})
       });
-      // Mark credited
-      deps[idx].creditedToMember = true;
-      saveDeposits(deps);
-      saveMembers(members);
+      await updateDoc(mRef, {
+        balance:        (m.balance||0) + amount,
+        totalDeposited: (m.totalDeposited||0) + amount,
+        transactions:   txs
+      });
     }
 
-    refreshData();
-    showToast(`✅ Deposit of KES ${fmt(dep.amount)} approved & credited to ${dep.memberName}!`,'green');
+    await refreshData();
+    showToast(`✅ KES ${fmt(amount)} credited to ${memberName}!`, 'green');
   }
 
-  function rejectDeposit(id) {
+  async function rejectDeposit(depId) {
     if (!confirm('Reject this deposit?')) return;
-    const deps = getDeposits();
-    const idx  = deps.findIndex(d=>d.id===id);
-    if (idx>=0) { deps[idx].status='rejected'; saveDeposits(deps); }
-    refreshData();
-    showToast('Deposit rejected','red');
+    await updateDoc(doc(db,'deposits',depId), { status:'rejected' });
+    await refreshData();
+    showToast('Deposit rejected', 'red');
   }
 
-  // ═══════════════════════════════════════════════
+  // ════════════════════════════════════════
   //  PENDING WITHDRAWALS
-  // ═══════════════════════════════════════════════
+  // ════════════════════════════════════════
   function renderPendingWithdrawals() {
-    const pending = getWithdrawals().filter(w=>w.status==='pending');
+    const pending = allWithdrawals.filter(w => w.status === 'pending');
     const list    = document.getElementById('pending-withdrawals');
-    if (!pending.length) { list.innerHTML='<div class="empty-state"><div>📭</div>No pending withdrawals</div>'; return; }
-    list.innerHTML = pending.map(w=>`
-      <div class="req-card wit">
+    if (!pending.length) {
+      list.innerHTML = '<div class="empty-state"><div>📭</div>No pending withdrawals</div>';
+      return;
+    }
+    list.innerHTML = pending.map(w => `
+      <div class="req-card wit" id="wit-${w.id}">
         <div class="req-header">
           <div class="req-name">${w.memberName}</div>
           <span class="status-badge status-pending">⏳ Pending</span>
@@ -469,69 +471,69 @@
         <div class="req-amount red">KES ${fmt(w.amount)}</div>
         <div class="req-detail">
           Send to M-Pesa: <strong>${w.phone}</strong><br/>
-          Email: <strong>${w.memberEmail}</strong><br/>
-          Date: <strong>${w.date}</strong>
+          Email: <strong>${w.memberEmail||'—'}</strong><br/>
+          Date: <strong>${w.date||'—'}</strong>
         </div>
         <div class="req-actions">
-          <button class="btn-approve" onclick="approveWithdrawal('${w.id}')">✅ Approve</button>
-          <button class="btn-paid"    onclick="markPaid('${w.id}')">💳 Mark Paid</button>
-          <button class="btn-reject"  onclick="rejectWithdrawal('${w.id}')">❌ Reject & Refund</button>
+          <button class="btn-approve" onclick="approveWithdrawal('${w.id}','${w.memberUid}',${w.amount},'${w.phone}')">✅ Approve</button>
+          <button class="btn-paid"    onclick="markPaid('${w.id}',${w.amount},'${w.phone}')">💳 Mark Paid</button>
+          <button class="btn-reject"  onclick="rejectWithdrawal('${w.id}','${w.memberUid}',${w.amount})">❌ Reject & Refund</button>
         </div>
       </div>`).join('');
   }
 
-  function approveWithdrawal(id) {
-    const withs = getWithdrawals();
-    const idx   = withs.findIndex(w=>w.id===id);
-    if (idx<0) return;
-    withs[idx].status='approved';
-    saveWithdrawals(withs);
-    refreshData();
-    showToast(`Approved! Send KES ${fmt(withs[idx].amount)} to ${withs[idx].phone} then click Mark Paid`,'green');
+  async function approveWithdrawal(witId, memberUid, amount, phone) {
+    await updateDoc(doc(db,'withdrawals',witId), { status:'approved' });
+    await refreshData();
+    showToast(`Approved! Send KES ${fmt(amount)} to ${phone} then click Mark Paid`, 'green');
   }
 
-  function markPaid(id) {
-    const withs = getWithdrawals();
-    const idx   = withs.findIndex(w=>w.id===id);
-    if (idx<0) return;
-    withs[idx].status='paid';
-    saveWithdrawals(withs);
-    refreshData();
-    showToast(`KES ${fmt(withs[idx].amount)} marked as PAID to ${withs[idx].phone} 💳`,'blue');
+  async function markPaid(witId, amount, phone) {
+    await updateDoc(doc(db,'withdrawals',witId), { status:'paid' });
+    await refreshData();
+    showToast(`KES ${fmt(amount)} marked as PAID to ${phone} 💳`, 'blue');
   }
 
-  function rejectWithdrawal(id) {
+  async function rejectWithdrawal(witId, memberUid, amount) {
     if (!confirm('Reject and refund this withdrawal?')) return;
-    const withs   = getWithdrawals();
-    const idx     = withs.findIndex(w=>w.id===id);
-    if (idx<0) return;
-    const w = withs[idx];
-    w.status='rejected';
-    saveWithdrawals(withs);
-    // Refund balance + interest
-    const members = getMembers();
-    const mIdx    = members.findIndex(m=>m.email===w.memberEmail);
-    if (mIdx>=0) {
-      members[mIdx].balance        = (members[mIdx].balance||0)+w.amount;
-      members[mIdx].interestEarned = (members[mIdx].interestEarned||0)+w.amount;
-      members[mIdx].transactions   = members[mIdx].transactions||[];
-      members[mIdx].transactions.push({ type:'deposit',label:'Withdrawal Refunded',amount:w.amount,date:new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'}) });
-      saveMembers(members);
+    await updateDoc(doc(db,'withdrawals',witId), { status:'rejected' });
+
+    // Refund balance + interest back to member
+    const mRef  = doc(db,'members',memberUid);
+    const mSnap = await getDoc(mRef);
+    if (mSnap.exists()) {
+      const m   = mSnap.data();
+      const txs = m.transactions||[];
+      txs.push({
+        type:'deposit', label:'Withdrawal Refunded', amount,
+        date: new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'})
+      });
+      await updateDoc(mRef, {
+        balance:        (m.balance||0) + amount,
+        interestEarned: (m.interestEarned||0) + amount,
+        transactions:   txs
+      });
     }
-    refreshData();
-    showToast('Withdrawal rejected. Balance refunded to member.','red');
+
+    await refreshData();
+    showToast('Withdrawal rejected. Balance refunded to member.', 'red');
   }
 
-  // RECENTLY PROCESSED
+  // ── RECENTLY PROCESSED ──
   function renderProcessed() {
-    const deps  = getDeposits().filter(d=>d.status!=='pending');
-    const withs = getWithdrawals().filter(w=>w.status!=='pending');
-    const all   = [...deps.map(d=>({...d,kind:'deposit'})),...withs.map(w=>({...w,kind:'withdrawal'}))].slice(-6).reverse();
-    const list  = document.getElementById('processed-list');
-    if (!all.length) { list.innerHTML='<div class="empty-state"><div>📋</div>Nothing processed yet</div>'; return; }
+    const processed = [
+      ...allDeposits.filter(d=>d.status!=='pending').map(d=>({...d,kind:'deposit'})),
+      ...allWithdrawals.filter(w=>w.status!=='pending').map(w=>({...w,kind:'withdrawal'}))
+    ].slice(-6).reverse();
+
+    const list = document.getElementById('processed-list');
+    if (!processed.length) {
+      list.innerHTML = '<div class="empty-state"><div>📋</div>Nothing processed yet</div>';
+      return;
+    }
     const statusMap = { approved:'status-approved', paid:'status-paid', rejected:'status-rejected' };
     const labelMap  = { approved:'✅ Approved', paid:'💳 Paid', rejected:'❌ Rejected' };
-    list.innerHTML = all.map(item=>`
+    list.innerHTML = processed.map(item => `
       <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)">
         <div style="width:32px;height:32px;border-radius:8px;background:${item.kind==='deposit'?'rgba(0,200,83,0.1)':'rgba(255,79,79,0.1)'};display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">
           ${item.kind==='deposit'?'⬇️':'⬆️'}
@@ -547,15 +549,28 @@
       </div>`).join('');
   }
 
-  // MEMBERS TABLE
+  // ════════════════════════════════════════
+  //  MEMBERS TABLE
+  // ════════════════════════════════════════
   function renderMembersTable(members) {
     const tbody = document.getElementById('members-tbody');
-    if (!members.length) { tbody.innerHTML=`<tr><td colspan="7"><div class="empty-state"><div>👥</div>No members yet</div></td></tr>`; return; }
-    tbody.innerHTML = members.map(m=>{
-      const initials = m.name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+    if (!members.length) {
+      tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div>👥</div>No members yet</div></td></tr>`;
+      return;
+    }
+    tbody.innerHTML = members.map(m => {
+      const initials = (m.name||'').split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()||'??';
       return `
         <tr>
-          <td><div class="member-cell"><div class="member-avatar">${initials}</div><div><div class="member-name">${m.name}</div><div class="member-email">${m.email}</div></div></div></td>
+          <td>
+            <div class="member-cell">
+              <div class="member-avatar">${initials}</div>
+              <div>
+                <div class="member-name">${m.name||'—'}</div>
+                <div class="member-email">${m.email||'—'}</div>
+              </div>
+            </div>
+          </td>
           <td>${m.phone||'—'}</td>
           <td class="amount-green">KES ${fmt(m.balance)}</td>
           <td class="amount-green">KES ${fmt(m.interestEarned)}</td>
@@ -563,9 +578,9 @@
           <td>${m.joined||'—'}</td>
           <td>
             <div style="display:flex;gap:4px">
-              <button class="tbl-btn view"   onclick="viewMember('${m.email}')">View</button>
-              <button class="tbl-btn credit" onclick="openCredit('${m.email}')">Credit</button>
-              <button class="tbl-btn remove" onclick="removeMember('${m.email}')">Remove</button>
+              <button class="tbl-btn view"   onclick="viewMember('${m.uid}')">View</button>
+              <button class="tbl-btn credit" onclick="openCredit('${m.uid}')">Credit</button>
+              <button class="tbl-btn remove" onclick="removeMember('${m.uid}','${m.name}')">Remove</button>
             </div>
           </td>
         </tr>`;
@@ -574,15 +589,19 @@
 
   function filterMembers() {
     const q = document.getElementById('search-input').value.toLowerCase();
-    renderMembersTable(allMembers.filter(m=>m.name.toLowerCase().includes(q)||m.email.toLowerCase().includes(q)||(m.phone||'').includes(q)));
+    renderMembersTable(allMembers.filter(m =>
+      (m.name||'').toLowerCase().includes(q) ||
+      (m.email||'').toLowerCase().includes(q) ||
+      (m.phone||'').includes(q)
+    ));
   }
 
-  function viewMember(email) {
-    const m = allMembers.find(x=>x.email===email);
+  function viewMember(uid) {
+    const m = allMembers.find(x=>x.uid===uid);
     if (!m) return;
     document.getElementById('member-detail-content').innerHTML = `
-      <div class="detail-row"><span>Full Name</span><span>${m.name}</span></div>
-      <div class="detail-row"><span>Email</span><span>${m.email}</span></div>
+      <div class="detail-row"><span>Full Name</span><span>${m.name||'—'}</span></div>
+      <div class="detail-row"><span>Email</span><span>${m.email||'—'}</span></div>
       <div class="detail-row"><span>Phone</span><span>${m.phone||'—'}</span></div>
       <div class="detail-row"><span>Balance</span><span style="color:var(--green)">KES ${fmt(m.balance)}</span></div>
       <div class="detail-row"><span>Interest Earned</span><span style="color:var(--green)">KES ${fmt(m.interestEarned)}</span></div>
@@ -592,122 +611,167 @@
     openModal('view-modal');
   }
 
-  function openCredit(email) {
-    creditTargetEmail = email;
-    const m = allMembers.find(x=>x.email===email);
-    document.getElementById('credit-desc').textContent = `Adding funds to ${m.name}'s account`;
+  function openCredit(uid) {
+    creditTargetUid = uid;
+    const m = allMembers.find(x=>x.uid===uid);
+    document.getElementById('credit-desc').textContent = `Adding funds to ${m?.name||'member'}'s account`;
     document.getElementById('credit-amount').value = '';
     openModal('credit-modal');
   }
 
-  function confirmCredit() {
+  async function confirmCredit() {
     const amt = parseFloat(document.getElementById('credit-amount').value);
     if (!amt||amt<=0) return showToast('Enter a valid amount','red');
-    const members = getMembers();
-    const idx = members.findIndex(m=>m.email===creditTargetEmail);
-    if (idx<0) return;
-    members[idx].balance        = (members[idx].balance||0)+amt;
-    members[idx].totalDeposited = (members[idx].totalDeposited||0)+amt;
-    members[idx].transactions   = members[idx].transactions||[];
-    members[idx].transactions.push({ type:'deposit',label:'Admin Credit',amount:amt,date:new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'}) });
-    saveMembers(members);
-    refreshData();
+
+    const mRef  = doc(db,'members',creditTargetUid);
+    const mSnap = await getDoc(mRef);
+    if (!mSnap.exists()) return showToast('Member not found','red');
+    const m   = mSnap.data();
+    const txs = m.transactions||[];
+    txs.push({
+      type:'deposit', label:'Admin Credit', amount: amt,
+      date: new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'})
+    });
+    await updateDoc(mRef, {
+      balance:        (m.balance||0)+amt,
+      totalDeposited: (m.totalDeposited||0)+amt,
+      transactions:   txs
+    });
+
+    await refreshData();
     closeModal('credit-modal');
-    showToast(`KES ${fmt(amt)} credited to ${members[idx].name} ✓`,'green');
+    showToast(`KES ${fmt(amt)} credited to ${m.name} ✓`, 'green');
   }
 
-  function removeMember(email) {
-    if (!confirm('Remove this member?')) return;
-    saveMembers(getMembers().filter(m=>m.email!==email));
-    refreshData();
-    showToast('Member removed','red');
+  async function removeMember(uid, name) {
+    if (!confirm(`Remove member "${name}"? This only removes their data record, not their Firebase Auth account.`)) return;
+    await deleteDoc(doc(db,'members',uid));
+    await refreshData();
+    showToast('Member removed', 'red');
   }
 
+  // ── ADD MEMBER ──
   function openAddMember() { openModal('add-modal'); }
 
-  function confirmAddMember() {
-    const name=document.getElementById('add-name').value.trim();
-    const email=document.getElementById('add-email').value.trim().toLowerCase();
-    const phone=document.getElementById('add-phone').value.trim();
-    const password=document.getElementById('add-password').value;
+  async function confirmAddMember() {
+    const name     = document.getElementById('add-name').value.trim();
+    const email    = document.getElementById('add-email').value.trim().toLowerCase();
+    const phone    = document.getElementById('add-phone').value.trim();
+    const password = document.getElementById('add-password').value;
+
     if (!name||!email||!phone||!password) return showToast('Fill in all fields','red');
-    if (password.length<6) return showToast('Password too short','red');
-    const members=getMembers();
-    if (members.find(m=>m.email===email)) return showToast('Email already exists','red');
-    members.push({ name,email,phone,password,balance:0,totalDeposited:0,interestEarned:0,transactions:[],joined:new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'}) });
-    saveMembers(members);
-    refreshData();
-    closeModal('add-modal');
-    showToast(`${name} added ✓`,'green');
+    if (password.length<6) return showToast('Password too short (min 6 chars)','red');
+
+    const btn = document.getElementById('add-member-btn');
+    btn.disabled = true; btn.textContent = 'Adding...';
+
+    try {
+      // Create Firebase Auth account
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      const uid  = cred.user.uid;
+      const joined = new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'});
+
+      await setDoc(doc(db,'members',uid), {
+        name, email, phone,
+        balance:0, totalDeposited:0, interestEarned:0,
+        transactions:[], joined, role:'member',
+        createdAt: serverTimestamp()
+      });
+
+      await refreshData();
+      closeModal('add-modal');
+      showToast(`${name} added successfully ✓`, 'green');
+    } catch(err) {
+      const msgs = {
+        'auth/email-already-in-use': 'Email already registered.',
+        'auth/invalid-email': 'Invalid email address.',
+        'auth/weak-password': 'Password too weak.'
+      };
+      showToast(msgs[err.code]||err.message, 'red');
+    } finally {
+      btn.disabled = false; btn.textContent = 'Add Member';
+    }
   }
 
-  function applyInterestAll() {
-    const members=getMembers();
-    if (!members.length) return showToast('No members found','red');
-    const rate=0.20/365;
-    const today=new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'});
-    let count=0;
-    members.forEach(m=>{
-      const interest=Math.round((m.balance||0)*rate);
-      if (interest>0) {
-        m.balance=(m.balance||0)+interest;
-        m.interestEarned=(m.interestEarned||0)+interest;
-        m.transactions=m.transactions||[];
-        m.transactions.push({ type:'interest',label:'Daily Interest (Admin)',amount:interest,date:today });
-        count++;
-      }
+  // ── APPLY INTEREST TO ALL ──
+  async function applyInterestAll() {
+    if (!allMembers.length) return showToast('No members found','red');
+    if (!confirm(`Apply 20% p.a. daily interest to all ${allMembers.length} member(s)?`)) return;
+
+    const rate  = 0.20 / 365;
+    const today = new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'});
+    let count = 0;
+
+    const promises = allMembers.map(async m => {
+      const interest = Math.round((m.balance||0) * rate);
+      if (interest <= 0) return;
+      const txs = m.transactions||[];
+      txs.push({ type:'interest', label:'Daily Interest (Admin)', amount:interest, date:today });
+      await updateDoc(doc(db,'members',m.uid), {
+        balance:        (m.balance||0) + interest,
+        interestEarned: (m.interestEarned||0) + interest,
+        transactions:   txs
+      });
+      count++;
     });
-    saveMembers(members);
-    refreshData();
-    showToast(`Daily interest applied to ${count} member(s) ✓`,'green');
+
+    await Promise.all(promises);
+    await refreshData();
+    showToast(`Daily interest applied to ${count} member(s) ✓`, 'green');
   }
 
-  function exportData() {
-    const members=getMembers();
-    if (!members.length) return showToast('No data','red');
-    const rows=[['Name','Email','Phone','Balance','Interest','Deposited','Joined']];
-    members.forEach(m=>rows.push([m.name,m.email,m.phone,m.balance,m.interestEarned,m.totalDeposited,m.joined]));
-    const a=document.createElement('a');
-    a.href=URL.createObjectURL(new Blob([rows.map(r=>r.join(',')).join('\n')],{type:'text/csv'}));
-    a.download='safisave_members.csv'; a.click();
-    showToast('Exported ✓','green');
+  // ── EXPORT CSV ──
+  function exportCSV() {
+    if (!allMembers.length) return showToast('No data to export','red');
+    const rows = [['Name','Email','Phone','Balance','Interest','Deposited','Joined']];
+    allMembers.forEach(m => rows.push([m.name, m.email, m.phone, m.balance, m.interestEarned, m.totalDeposited, m.joined]));
+    const csv = rows.map(r => r.map(v=>`"${v||''}"`).join(',')).join('\n');
+    const a   = document.createElement('a');
+    a.href    = URL.createObjectURL(new Blob([csv], { type:'text/csv' }));
+    a.download = 'safisave_members.csv';
+    a.click();
+    showToast('Exported ✓', 'green');
   }
 
-  function clearAll() {
-    if (!confirm('Delete ALL data? Cannot be undone.')) return;
-    localStorage.removeItem('sacco_members');
-    localStorage.removeItem('sacco_deposits');
-    localStorage.removeItem('sacco_withdrawals');
-    refreshData();
-    showToast('All data cleared','red');
-  }
-
-  function viewScreenshot(id) {
-    const dep=getDeposits().find(d=>d.id===id);
+  // ── VIEW SCREENSHOT ──
+  function viewScreenshot(depId) {
+    const dep = allDeposits.find(d=>d.id===depId);
     if (!dep||!dep.screenshot) return;
-    const w=window.open();
+    const w = window.open();
     w.document.write(`<img src="${dep.screenshot}" style="max-width:100%;height:auto"/>`);
   }
 
+  // ── MODAL HELPERS ──
   function openModal(id)  { document.getElementById(id).classList.add('open'); }
   function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-  document.querySelectorAll('.modal-overlay').forEach(o=>{
-    o.addEventListener('click',function(e){ if(e.target===this) this.classList.remove('open'); });
+  document.querySelectorAll('.modal-overlay').forEach(o => {
+    o.addEventListener('click', e => { if(e.target===o) o.classList.remove('open'); });
   });
 
-  function showToast(msg,type='') {
-    const t=document.getElementById('toast');
-    t.textContent=msg; t.className='toast '+type;
-    setTimeout(()=>t.classList.add('show'),10);
-    setTimeout(()=>t.classList.remove('show'),4000);
+  async function logout() {
+    await signOut(auth);
+    window.location.href = './index.html';
   }
 
-  function logout() { localStorage.removeItem('sacco_current'); window.location.href='index.html'; }
-
-  // Auto refresh every 20 seconds
-  setInterval(refreshData, 20000);
-
-  refreshData();
+  // Expose to onclick handlers
+  window.refreshData        = refreshData;
+  window.approveDeposit     = approveDeposit;
+  window.rejectDeposit      = rejectDeposit;
+  window.approveWithdrawal  = approveWithdrawal;
+  window.markPaid           = markPaid;
+  window.rejectWithdrawal   = rejectWithdrawal;
+  window.viewMember         = viewMember;
+  window.openCredit         = openCredit;
+  window.confirmCredit      = confirmCredit;
+  window.removeMember       = removeMember;
+  window.openAddMember      = openAddMember;
+  window.confirmAddMember   = confirmAddMember;
+  window.applyInterestAll   = applyInterestAll;
+  window.exportCSV          = exportCSV;
+  window.viewScreenshot     = viewScreenshot;
+  window.filterMembers      = filterMembers;
+  window.closeModal         = closeModal;
+  window.logout             = logout;
 </script>
 </body>
 </html>
