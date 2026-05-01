@@ -6,215 +6,154 @@
   <title>SafiSave – Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --green:#00C853; --dark-green:#007B33; --black:#0a0a0a;
-      --card:#141414; --border:#2a2a2a; --muted:#777;
-      --white:#f5f5f5; --red:#ff4f4f; --yellow:#FFD600; --blue:#2979FF;
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--green:#00C853;--dark-green:#007B33;--black:#0a0a0a;--card:#141414;--border:#2a2a2a;--muted:#777;--white:#f5f5f5;--red:#ff4f4f;--yellow:#FFD600;--blue:#2979FF}
+    body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;min-height:100vh}
+    body::before{content:'';position:fixed;top:0;left:0;width:100%;height:300px;background:radial-gradient(ellipse at 20% 0%,rgba(0,200,83,0.08) 0%,transparent 60%);pointer-events:none;z-index:0}
+    .sidebar{position:fixed;top:0;left:0;width:220px;height:100vh;background:var(--card);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:28px 16px;z-index:10}
+    .logo{display:flex;align-items:center;gap:10px;margin-bottom:36px;padding:0 6px}
+    .logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--green),var(--dark-green));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+    .logo h1{font-family:'Syne',sans-serif;font-size:18px;font-weight:800}
+    .logo h1 span{color:var(--green)}
+    .nav{flex:1}
+    .nav-item{display:flex;align-items:center;gap:11px;padding:11px 14px;border-radius:10px;color:var(--muted);font-size:14px;font-weight:500;cursor:pointer;transition:all 0.2s;margin-bottom:4px;border:none;background:transparent;width:100%;text-align:left}
+    .nav-item:hover{background:#1f1f1f;color:var(--white)}
+    .nav-item.active{background:rgba(0,200,83,0.12);color:var(--green);font-weight:600}
+    .nav-item .icon{font-size:17px;width:22px;text-align:center}
+    .sidebar-bottom{border-top:1px solid var(--border);padding-top:16px}
+    .user-chip{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:#1c1c1c}
+    .avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--dark-green));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#000;flex-shrink:0}
+    .user-info{flex:1;overflow:hidden}
+    .user-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .user-role{font-size:11px;color:var(--muted)}
+    .main{margin-left:220px;padding:28px 28px 40px;position:relative;z-index:1}
+    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+    .topbar-left h2{font-family:'Syne',sans-serif;font-size:22px;font-weight:800}
+    .topbar-left p{color:var(--muted);font-size:13px;margin-top:2px}
+    .topbar-right{display:flex;gap:10px;align-items:center}
+    .icon-btn{width:38px;height:38px;border-radius:10px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:background 0.2s;position:relative}
+    .icon-btn:hover{background:#1f1f1f}
+    .notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--red);display:none}
+    .notif-dot.show{display:block}
+    .notif-panel{position:fixed;top:70px;right:28px;width:300px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;z-index:200;display:none;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+    .notif-panel.open{display:block}
+    .notif-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;margin-bottom:12px}
+    .notif-item{padding:10px 12px;border-radius:10px;margin-bottom:8px;font-size:12px;line-height:1.5}
+    .notif-item:last-child{margin-bottom:0}
+    .notif-approved{background:rgba(0,200,83,0.08);border:1px solid rgba(0,200,83,0.2)}
+    .notif-paid{background:rgba(41,121,255,0.08);border:1px solid rgba(41,121,255,0.2)}
+    .notif-rejected{background:rgba(255,79,79,0.08);border:1px solid rgba(255,79,79,0.2)}
+    .notif-pending{background:rgba(255,214,0,0.06);border:1px solid rgba(255,214,0,0.2)}
+    .notif-empty{color:var(--muted);font-size:13px;text-align:center;padding:12px 0}
+    .notif-label{font-weight:700;display:block;margin-bottom:2px;font-size:13px}
+    .balance-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+    .balance-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;position:relative;overflow:hidden;animation:fadeUp 0.5s ease both}
+    .balance-card.main-card{background:linear-gradient(135deg,#007B33 0%,#00C853 100%);border-color:transparent}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .card-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px;color:rgba(255,255,255,0.6);margin-bottom:8px}
+    .main-card .card-label{color:rgba(0,0,0,0.6)}
+    .card-amount{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;line-height:1;margin-bottom:6px}
+    .main-card .card-amount{color:#000}
+    .card-sub{font-size:11px;color:var(--muted)}
+    .main-card .card-sub{color:rgba(0,0,0,0.5)}
+    .withdraw-notice{background:rgba(255,214,0,0.06);border:1px solid rgba(255,214,0,0.2);border-radius:12px;padding:12px 16px;margin-bottom:20px;font-size:13px;color:var(--yellow);display:flex;gap:10px;align-items:center}
+    .section-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:14px}
+    .actions-row{display:flex;gap:12px;margin-bottom:24px}
+    .action-btn{flex:1;padding:14px 10px;border-radius:14px;border:1px solid var(--border);background:var(--card);color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;transition:all 0.2s}
+    .action-btn:hover{background:#1f1f1f;border-color:var(--green);transform:translateY(-2px)}
+    .action-btn .a-icon{font-size:22px}
+    .action-btn.primary{background:rgba(0,200,83,0.1);border-color:rgba(0,200,83,0.3);color:var(--green)}
+    .bottom-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:20px}
+    .panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px}
+    .panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+    .panel-header .section-title{margin-bottom:0}
+    .tx-item{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border)}
+    .tx-item:last-child{border-bottom:none}
+    .tx-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+    .tx-icon.deposit{background:rgba(0,200,83,0.1)}
+    .tx-icon.withdraw{background:rgba(255,79,79,0.1)}
+    .tx-icon.interest{background:rgba(255,200,0,0.1)}
+    .tx-info{flex:1;min-width:0}
+    .tx-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .tx-date{font-size:11px;color:var(--muted);margin-top:1px}
+    .tx-right{text-align:right;flex-shrink:0}
+    .tx-amount{font-size:13px;font-weight:700}
+    .tx-amount.green{color:var(--green)}
+    .tx-amount.red{color:var(--red)}
+    .status-badge{display:inline-block;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700;margin-top:3px;text-transform:uppercase;letter-spacing:0.4px}
+    .status-pending{background:rgba(255,214,0,0.12);color:var(--yellow);border:1px solid rgba(255,214,0,0.3)}
+    .status-approved{background:rgba(0,200,83,0.12);color:var(--green);border:1px solid rgba(0,200,83,0.3)}
+    .status-paid{background:rgba(41,121,255,0.12);color:var(--blue);border:1px solid rgba(41,121,255,0.3)}
+    .status-rejected{background:rgba(255,79,79,0.12);color:var(--red);border:1px solid rgba(255,79,79,0.3)}
+    .interest-box{background:rgba(0,200,83,0.06);border:1px solid rgba(0,200,83,0.2);border-radius:12px;padding:16px;margin-bottom:12px}
+    .interest-label{font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px}
+    .interest-value{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--green)}
+    .interest-note{font-size:11px;color:var(--muted);margin-top:4px}
+    .rate-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:12px}
+    .rate-row:last-child{border-bottom:none}
+    .rate-row span:last-child{color:var(--green);font-weight:600}
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:100;display:none;align-items:flex-end;justify-content:center}
+    .modal-overlay.open{display:flex}
+    .modal{background:var(--card);border:1px solid var(--border);border-radius:20px 20px 0 0;padding:28px 20px 36px;width:100%;max-width:500px;animation:slideUp 0.3s ease}
+    @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+    .modal h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:6px}
+    .modal p{color:var(--muted);font-size:13px;margin-bottom:14px;line-height:1.5}
+    .modal label{display:block;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:7px}
+    .modal input{width:100%;background:#1c1c1c;border:1px solid var(--border);border-radius:10px;padding:13px 14px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:15px;outline:none;margin-bottom:12px}
+    .modal input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(0,200,83,0.1)}
+    .modal input::placeholder{color:#444}
+    .info-box{background:rgba(0,200,83,0.06);border:1px solid rgba(0,200,83,0.2);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.7}
+    .info-box strong{color:var(--green);display:block;margin-bottom:4px;font-size:13px}
+    .warn-box{background:rgba(255,214,0,0.06);border:1px solid rgba(255,214,0,0.25);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--yellow);margin-bottom:12px;line-height:1.6}
+    .modal-btns{display:flex;gap:10px;margin-top:4px}
+    .modal-btns button{flex:1;padding:14px;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;border:none}
+    .btn-cancel{background:#1c1c1c;color:var(--muted);border:1px solid var(--border)!important}
+    .btn-confirm{background:linear-gradient(135deg,var(--green),var(--dark-green));color:#000}
+    .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(80px);background:#1c1c1c;border:1px solid var(--border);color:var(--white);padding:12px 20px;border-radius:12px;font-size:13px;font-weight:500;z-index:300;transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);white-space:nowrap;max-width:90vw;text-align:center}
+    .toast.show{transform:translateX(-50%) translateY(0)}
+    .toast.green{border-color:rgba(0,200,83,0.4);color:var(--green)}
+    .toast.red{border-color:rgba(255,79,79,0.4);color:var(--red)}
+    .mobile-nav{display:none}
+    @media(max-width:768px){
+      .sidebar{display:none!important}
+      .main{margin-left:0!important;padding:14px 12px 88px!important}
+      .topbar{margin-bottom:14px}
+      .topbar-left h2{font-size:17px}
+      .topbar-left p{font-size:11px}
+      .icon-btn{width:34px;height:34px;font-size:14px}
+      .balance-row{grid-template-columns:1fr 1fr!important;gap:8px;margin-bottom:14px}
+      .balance-card{padding:12px;border-radius:12px}
+      .card-amount{font-size:15px}
+      .card-label{font-size:9px;margin-bottom:5px}
+      .card-sub{font-size:9px}
+      .withdraw-notice{font-size:11px;padding:8px 10px;margin-bottom:12px}
+      .section-title{font-size:13px;margin-bottom:8px}
+      .actions-row{gap:6px;margin-bottom:14px}
+      .action-btn{padding:10px 4px;border-radius:10px;font-size:10px;gap:4px}
+      .action-btn .a-icon{font-size:18px}
+      .bottom-grid{grid-template-columns:1fr!important;gap:12px}
+      .panel{padding:12px;border-radius:12px}
+      .tx-item{gap:8px;padding:9px 0}
+      .tx-icon{width:30px;height:30px;font-size:13px}
+      .tx-name{font-size:12px}
+      .tx-date{font-size:10px}
+      .tx-amount{font-size:11px}
+      .status-badge{font-size:9px;padding:1px 6px}
+      .interest-value{font-size:20px}
+      .rate-row{font-size:11px;padding:7px 0}
+      .notif-panel{right:8px;left:8px;width:auto;top:60px}
+      .toast{bottom:76px;font-size:11px;padding:9px 14px}
+      .mobile-nav{display:flex!important;position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);z-index:100;padding:5px 0 10px;box-shadow:0 -4px 24px rgba(0,0,0,0.5);justify-content:space-around;align-items:center}
+      .mob-btn{flex:1;display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:transparent;border:none;cursor:pointer;padding:3px 1px;-webkit-tap-highlight-color:transparent;min-width:0}
+      .mob-icon{font-size:19px;line-height:1;display:block;text-align:center}
+      .mob-label{font-family:'DM Sans',sans-serif;font-size:9px;font-weight:600;color:var(--muted);display:block;text-align:center;white-space:nowrap;line-height:1.2}
+      .mob-btn.active .mob-label{color:var(--green)}
     }
-    body { background:var(--black); color:var(--white); font-family:'DM Sans',sans-serif; min-height:100vh; }
-    body::before { content:''; position:fixed; top:0; left:0; width:100%; height:300px; background:radial-gradient(ellipse at 20% 0%,rgba(0,200,83,0.08) 0%,transparent 60%); pointer-events:none; z-index:0; }
-
-    /* SIDEBAR */
-    .sidebar { position:fixed; top:0; left:0; width:220px; height:100vh; background:var(--card); border-right:1px solid var(--border); display:flex; flex-direction:column; padding:28px 16px; z-index:10; }
-    .logo { display:flex; align-items:center; gap:10px; margin-bottom:36px; padding:0 6px; }
-    .logo-icon { width:38px; height:38px; background:linear-gradient(135deg,var(--green),var(--dark-green)); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; }
-    .logo h1 { font-family:'Syne',sans-serif; font-size:18px; font-weight:800; }
-    .logo h1 span { color:var(--green); }
-    .nav { flex:1; }
-    .nav-item { display:flex; align-items:center; gap:11px; padding:11px 14px; border-radius:10px; color:var(--muted); font-size:14px; font-weight:500; cursor:pointer; transition:all 0.2s; margin-bottom:4px; border:none; background:transparent; width:100%; text-align:left; }
-    .nav-item:hover { background:#1f1f1f; color:var(--white); }
-    .nav-item.active { background:rgba(0,200,83,0.12); color:var(--green); font-weight:600; }
-    .nav-item .icon { font-size:17px; width:22px; text-align:center; }
-    .sidebar-bottom { border-top:1px solid var(--border); padding-top:16px; }
-    .user-chip { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; background:#1c1c1c; }
-    .avatar { width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,var(--green),var(--dark-green)); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; color:#000; flex-shrink:0; }
-    .user-info { flex:1; overflow:hidden; }
-    .user-name { font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .user-role { font-size:11px; color:var(--muted); }
-
-    /* MAIN */
-    .main { margin-left:220px; padding:28px 28px 40px; position:relative; z-index:1; }
-
-    /* TOPBAR */
-    .topbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
-    .topbar-left h2 { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; }
-    .topbar-left p  { color:var(--muted); font-size:13px; margin-top:2px; }
-    .topbar-right   { display:flex; gap:10px; align-items:center; }
-    .icon-btn { width:38px; height:38px; border-radius:10px; background:var(--card); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; transition:background 0.2s; position:relative; }
-    .icon-btn:hover { background:#1f1f1f; }
-    .notif-dot { position:absolute; top:6px; right:6px; width:8px; height:8px; border-radius:50%; background:var(--red); display:none; }
-    .notif-dot.show { display:block; }
-
-    /* NOTIFICATION PANEL */
-    .notif-panel { position:fixed; top:70px; right:28px; width:300px; background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px; z-index:200; display:none; box-shadow:0 8px 32px rgba(0,0,0,0.4); }
-    .notif-panel.open { display:block; }
-    .notif-title { font-family:'Syne',sans-serif; font-size:14px; font-weight:800; margin-bottom:12px; }
-    .notif-item { padding:10px 12px; border-radius:10px; margin-bottom:8px; font-size:12px; line-height:1.5; }
-    .notif-item:last-child { margin-bottom:0; }
-    .notif-approved { background:rgba(0,200,83,0.08); border:1px solid rgba(0,200,83,0.2); }
-    .notif-paid     { background:rgba(41,121,255,0.08); border:1px solid rgba(41,121,255,0.2); }
-    .notif-rejected { background:rgba(255,79,79,0.08); border:1px solid rgba(255,79,79,0.2); }
-    .notif-pending  { background:rgba(255,214,0,0.06); border:1px solid rgba(255,214,0,0.2); }
-    .notif-empty    { color:var(--muted); font-size:13px; text-align:center; padding:12px 0; }
-    .notif-label    { font-weight:700; display:block; margin-bottom:2px; font-size:13px; }
-
-    /* BALANCE CARDS */
-    .balance-row { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:20px; }
-    .balance-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:18px; position:relative; overflow:hidden; animation:fadeUp 0.5s ease both; }
-    .balance-card.main-card { background:linear-gradient(135deg,#007B33 0%,#00C853 100%); border-color:transparent; }
-    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-    .card-label  { font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:0.5px; color:rgba(255,255,255,0.6); margin-bottom:8px; }
-    .main-card .card-label { color:rgba(0,0,0,0.6); }
-    .card-amount { font-family:'Syne',sans-serif; font-size:20px; font-weight:800; line-height:1; margin-bottom:6px; }
-    .main-card .card-amount { color:#000; }
-    .card-sub { font-size:11px; color:var(--muted); }
-    .main-card .card-sub { color:rgba(0,0,0,0.5); }
-
-    /* WITHDRAW NOTICE */
-    .withdraw-notice { background:rgba(255,214,0,0.06); border:1px solid rgba(255,214,0,0.2); border-radius:12px; padding:12px 16px; margin-bottom:20px; font-size:13px; color:var(--yellow); display:flex; gap:10px; align-items:center; }
-
-    /* QUICK ACTIONS */
-    .section-title { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; margin-bottom:14px; }
-    .actions-row { display:flex; gap:12px; margin-bottom:24px; }
-    .action-btn { flex:1; padding:14px 10px; border-radius:14px; border:1px solid var(--border); background:var(--card); color:var(--white); font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:8px; transition:all 0.2s; }
-    .action-btn:hover { background:#1f1f1f; border-color:var(--green); transform:translateY(-2px); }
-    .action-btn .a-icon { font-size:22px; }
-    .action-btn.primary { background:rgba(0,200,83,0.1); border-color:rgba(0,200,83,0.3); color:var(--green); }
-
-    /* BOTTOM GRID */
-    .bottom-grid { display:grid; grid-template-columns:1.4fr 1fr; gap:20px; }
-    .panel { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:18px; }
-    .panel-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
-    .panel-header .section-title { margin-bottom:0; }
-
-    /* TRANSACTIONS */
-    .tx-item { display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1px solid var(--border); }
-    .tx-item:last-child { border-bottom:none; }
-    .tx-icon { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
-    .tx-icon.deposit  { background:rgba(0,200,83,0.1); }
-    .tx-icon.withdraw { background:rgba(255,79,79,0.1); }
-    .tx-icon.interest { background:rgba(255,200,0,0.1); }
-    .tx-info { flex:1; min-width:0; }
-    .tx-name { font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .tx-date { font-size:11px; color:var(--muted); margin-top:1px; }
-    .tx-right { text-align:right; flex-shrink:0; }
-    .tx-amount { font-size:13px; font-weight:700; }
-    .tx-amount.green { color:var(--green); }
-    .tx-amount.red   { color:var(--red); }
-
-    /* STATUS BADGES */
-    .status-badge { display:inline-block; padding:2px 7px; border-radius:20px; font-size:10px; font-weight:700; margin-top:3px; text-transform:uppercase; letter-spacing:0.4px; }
-    .status-pending  { background:rgba(255,214,0,0.12);  color:var(--yellow); border:1px solid rgba(255,214,0,0.3); }
-    .status-approved { background:rgba(0,200,83,0.12);   color:var(--green);  border:1px solid rgba(0,200,83,0.3); }
-    .status-paid     { background:rgba(41,121,255,0.12); color:var(--blue);   border:1px solid rgba(41,121,255,0.3); }
-    .status-rejected { background:rgba(255,79,79,0.12);  color:var(--red);    border:1px solid rgba(255,79,79,0.3); }
-
-    /* INTEREST PANEL */
-    .interest-box { background:rgba(0,200,83,0.06); border:1px solid rgba(0,200,83,0.2); border-radius:12px; padding:16px; margin-bottom:12px; }
-    .interest-label { font-size:11px; color:var(--muted); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px; }
-    .interest-value { font-family:'Syne',sans-serif; font-size:24px; font-weight:800; color:var(--green); }
-    .interest-note  { font-size:11px; color:var(--muted); margin-top:4px; }
-    .rate-row { display:flex; justify-content:space-between; padding:9px 0; border-bottom:1px solid var(--border); font-size:12px; }
-    .rate-row:last-child { border-bottom:none; }
-    .rate-row span:last-child { color:var(--green); font-weight:600; }
-
-    /* MODAL */
-    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); z-index:100; display:none; align-items:flex-end; justify-content:center; }
-    .modal-overlay.open { display:flex; }
-    .modal { background:var(--card); border:1px solid var(--border); border-radius:20px 20px 0 0; padding:28px 20px 36px; width:100%; max-width:500px; animation:slideUp 0.3s ease; }
-    @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
-    .modal h3 { font-family:'Syne',sans-serif; font-size:18px; font-weight:800; margin-bottom:6px; }
-    .modal p  { color:var(--muted); font-size:13px; margin-bottom:14px; line-height:1.5; }
-    .modal label { display:block; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:7px; }
-    .modal input { width:100%; background:#1c1c1c; border:1px solid var(--border); border-radius:10px; padding:13px 14px; color:var(--white); font-family:'DM Sans',sans-serif; font-size:15px; outline:none; margin-bottom:12px; }
-    .modal input:focus { border-color:var(--green); box-shadow:0 0 0 3px rgba(0,200,83,0.1); }
-    .modal input::placeholder { color:#444; }
-    .info-box { background:rgba(0,200,83,0.06); border:1px solid rgba(0,200,83,0.2); border-radius:10px; padding:12px 14px; font-size:12px; color:var(--muted); margin-bottom:12px; line-height:1.7; }
-    .info-box strong { color:var(--green); display:block; margin-bottom:4px; font-size:13px; }
-    .warn-box { background:rgba(255,214,0,0.06); border:1px solid rgba(255,214,0,0.25); border-radius:10px; padding:12px 14px; font-size:12px; color:var(--yellow); margin-bottom:12px; line-height:1.6; }
-    .modal-btns { display:flex; gap:10px; margin-top:4px; }
-    .modal-btns button { flex:1; padding:14px; border-radius:12px; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600; cursor:pointer; border:none; }
-    .btn-cancel  { background:#1c1c1c; color:var(--muted); border:1px solid var(--border)!important; }
-    .btn-confirm { background:linear-gradient(135deg,var(--green),var(--dark-green)); color:#000; }
-
-    /* TOAST */
-    .toast { position:fixed; bottom:80px; left:50%; transform:translateX(-50%) translateY(80px); background:#1c1c1c; border:1px solid var(--border); color:var(--white); padding:12px 20px; border-radius:12px; font-size:13px; font-weight:500; z-index:300; transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1); white-space:nowrap; max-width:90vw; text-align:center; }
-    .toast.show  { transform:translateX(-50%) translateY(0); }
-    .toast.green { border-color:rgba(0,200,83,0.4); color:var(--green); }
-    .toast.red   { border-color:rgba(255,79,79,0.4); color:var(--red); }
-
-    /* MOBILE NAV — hidden on desktop */
-    .mobile-nav { display:none; }
-
-    /* MOBILE RESPONSIVE */
-    @media (max-width:768px) {
-      .sidebar { display:none !important; }
-      .main { margin-left:0 !important; padding:14px 12px 88px !important; }
-      .topbar { margin-bottom:14px; }
-      .topbar-left h2 { font-size:17px; }
-      .topbar-left p  { font-size:11px; }
-      .icon-btn { width:34px; height:34px; font-size:14px; }
-      .balance-row { grid-template-columns:1fr 1fr !important; gap:8px; margin-bottom:14px; }
-      .balance-card { padding:12px; border-radius:12px; }
-      .card-amount  { font-size:15px; }
-      .card-label   { font-size:9px; margin-bottom:5px; }
-      .card-sub     { font-size:9px; }
-      .withdraw-notice { font-size:11px; padding:8px 10px; margin-bottom:12px; }
-      .section-title { font-size:13px; margin-bottom:8px; }
-      .actions-row   { gap:6px; margin-bottom:14px; }
-      .action-btn    { padding:10px 4px; border-radius:10px; font-size:10px; gap:4px; }
-      .action-btn .a-icon { font-size:18px; }
-      .bottom-grid { grid-template-columns:1fr !important; gap:12px; }
-      .panel       { padding:12px; border-radius:12px; }
-      .tx-item     { gap:8px; padding:9px 0; }
-      .tx-icon     { width:30px; height:30px; font-size:13px; }
-      .tx-name     { font-size:12px; }
-      .tx-date     { font-size:10px; }
-      .tx-amount   { font-size:11px; }
-      .status-badge { font-size:9px; padding:1px 6px; }
-      .interest-value { font-size:20px; }
-      .rate-row { font-size:11px; padding:7px 0; }
-      .notif-panel { right:8px; left:8px; width:auto; top:60px; }
-      .toast { bottom:76px; font-size:11px; padding:9px 14px; }
-
-      /* MOBILE NAV */
-      .mobile-nav {
-        display:flex !important;
-        position:fixed; bottom:0; left:0; right:0;
-        background:var(--card);
-        border-top:1px solid var(--border);
-        z-index:100;
-        padding:5px 0 10px;
-        box-shadow:0 -4px 24px rgba(0,0,0,0.5);
-        justify-content:space-around;
-        align-items:center;
-      }
-
-      .mob-btn {
-        flex:1; display:flex !important; flex-direction:column;
-        align-items:center; justify-content:center;
-        gap:2px; background:transparent; border:none;
-        cursor:pointer; padding:3px 1px;
-        -webkit-tap-highlight-color:transparent;
-        min-width:0;
-      }
-
-      .mob-icon  { font-size:19px; line-height:1; display:block; text-align:center; }
-      .mob-label { font-family:'DM Sans',sans-serif; font-size:9px; font-weight:600; color:var(--muted); display:block; text-align:center; white-space:nowrap; line-height:1.2; }
-      .mob-btn.active .mob-label { color:var(--green); }
-    }
-
-    @media (max-width:360px) {
-      .mob-icon  { font-size:16px; }
-      .mob-label { font-size:8px; }
-      .card-amount { font-size:13px; }
-    }
+    @media(max-width:360px){.mob-icon{font-size:16px}.mob-label{font-size:8px}.card-amount{font-size:13px}}
   </style>
 </head>
 <body>
 
-<!-- DESKTOP SIDEBAR -->
 <aside class="sidebar">
   <div class="logo">
     <div class="logo-icon">💰</div>
@@ -222,9 +161,8 @@
   </div>
   <nav class="nav" id="desktop-nav">
     <button class="nav-item active" onclick="location.href='dashboard.html'"><span class="icon">🏠</span> Dashboard</button>
-    <button class="nav-item"        onclick="location.href='mpesa.html'"><span class="icon">📱</span> M-Pesa Deposit</button>
-    <button class="nav-item"        onclick="location.href='goals.html'"><span class="icon">🎯</span> Goals</button>
-    <!-- Admin nav item injected here by JS only for admin users -->
+    <button class="nav-item" onclick="location.href='mpesa.html'"><span class="icon">📱</span> M-Pesa Deposit</button>
+    <button class="nav-item" onclick="location.href='goals.html'"><span class="icon">🎯</span> Goals</button>
   </nav>
   <div class="sidebar-bottom">
     <div class="user-chip">
@@ -237,15 +175,12 @@
   </div>
 </aside>
 
-<!-- NOTIFICATION PANEL -->
 <div class="notif-panel" id="notif-panel">
   <div class="notif-title">🔔 Notifications</div>
   <div id="notif-list"><div class="notif-empty">No notifications yet.</div></div>
 </div>
 
-<!-- MAIN -->
 <main class="main">
-
   <div class="topbar">
     <div class="topbar-left">
       <h2>Hello, <span id="greeting-name">there</span> 👋</h2>
@@ -258,7 +193,6 @@
     </div>
   </div>
 
-  <!-- BALANCE CARDS -->
   <div class="balance-row">
     <div class="balance-card main-card">
       <div class="card-label">Total Balance</div>
@@ -282,12 +216,10 @@
     </div>
   </div>
 
-  <!-- WITHDRAW NOTICE -->
   <div class="withdraw-notice">
     ⚠️ You can only withdraw from your <strong style="color:var(--yellow)">&nbsp;interest earned</strong>. &nbsp;Deposit principal is locked in savings.
   </div>
 
-  <!-- QUICK ACTIONS -->
   <div class="section-title">Quick Actions</div>
   <div class="actions-row">
     <button class="action-btn primary" onclick="location.href='mpesa.html'">
@@ -301,7 +233,6 @@
     </button>
   </div>
 
-  <!-- BOTTOM GRID -->
   <div class="bottom-grid">
     <div class="panel">
       <div class="panel-header">
@@ -312,7 +243,6 @@
         <div style="color:var(--muted);font-size:13px;text-align:center;padding:28px 0;">No transactions yet.<br/>Make your first deposit!</div>
       </div>
     </div>
-
     <div class="panel">
       <div class="section-title">📈 Interest</div>
       <div class="interest-box">
@@ -329,33 +259,16 @@
   </div>
 </main>
 
-<!-- ═══ MOBILE BOTTOM NAV ═══ -->
 <nav class="mobile-nav" id="mobile-nav">
-  <button class="mob-btn active" onclick="location.href='dashboard.html'">
-    <span class="mob-icon">🏠</span><span class="mob-label">Home</span>
-  </button>
-  <button class="mob-btn" onclick="location.href='mpesa.html'">
-    <span class="mob-icon">📱</span><span class="mob-label">Deposit</span>
-  </button>
-  <button class="mob-btn" onclick="openWithdraw()">
-    <span class="mob-icon">⬆️</span><span class="mob-label">Withdraw</span>
-  </button>
-  <button class="mob-btn" onclick="applyInterest()">
-    <span class="mob-icon">📈</span><span class="mob-label">Interest</span>
-  </button>
-  <button class="mob-btn" onclick="location.href='goals.html'">
-    <span class="mob-icon">🎯</span><span class="mob-label">Goals</span>
-  </button>
-  <button class="mob-btn" onclick="toggleNotif()">
-    <span class="mob-icon">🔔</span><span class="mob-label">Alerts</span>
-  </button>
-  <!-- No admin button here — injected by JS only for admin users -->
-  <button class="mob-btn" onclick="logout()">
-    <span class="mob-icon">🚪</span><span class="mob-label">Logout</span>
-  </button>
+  <button class="mob-btn active" onclick="location.href='dashboard.html'"><span class="mob-icon">🏠</span><span class="mob-label">Home</span></button>
+  <button class="mob-btn" onclick="location.href='mpesa.html'"><span class="mob-icon">📱</span><span class="mob-label">Deposit</span></button>
+  <button class="mob-btn" onclick="openWithdraw()"><span class="mob-icon">⬆️</span><span class="mob-label">Withdraw</span></button>
+  <button class="mob-btn" onclick="applyInterest()"><span class="mob-icon">📈</span><span class="mob-label">Interest</span></button>
+  <button class="mob-btn" onclick="location.href='goals.html'"><span class="mob-icon">🎯</span><span class="mob-label">Goals</span></button>
+  <button class="mob-btn" onclick="toggleNotif()"><span class="mob-icon">🔔</span><span class="mob-label">Alerts</span></button>
+  <button class="mob-btn" onclick="logout()"><span class="mob-icon">🚪</span><span class="mob-label">Logout</span></button>
 </nav>
 
-<!-- WITHDRAW MODAL -->
 <div class="modal-overlay" id="withdraw-modal">
   <div class="modal">
     <h3>⬆️ Withdraw Interest</h3>
@@ -380,136 +293,133 @@
 
 <div class="toast" id="toast"></div>
 
-<script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut }
+    from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, query, where, getDocs, addDoc, serverTimestamp, orderBy }
+    from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCqaRp4JNIp7DmTgo8JqOxfbGozRKxFsTw",
+    authDomain: "safisave-2a805.firebaseapp.com",
+    databaseURL: "https://safisave-2a805-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "safisave-2a805",
+    storageBucket: "safisave-2a805.firebasestorage.app",
+    messagingSenderId: "896636365110",
+    appId: "1:896636365110:web:f668dd2b2d5da3b11ceb97"
+  };
+
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db   = getFirestore(app);
+
   const ADMIN_EMAIL = 'admin@safisave.com';
-
-  let members     = JSON.parse(localStorage.getItem('sacco_members')     || '[]');
-  let deposits    = JSON.parse(localStorage.getItem('sacco_deposits')    || '[]');
-  let withdrawals = JSON.parse(localStorage.getItem('sacco_withdrawals') || '[]');
-  const currentEmail = localStorage.getItem('sacco_current');
-  let member = members.find(m => m.email === currentEmail);
-
-  if (!member) { member = { name:'Demo Member', email:'demo@demo.com', balance:0, totalDeposited:0, interestEarned:0, joined:'29 Apr 2026', transactions:[] }; }
-  if (!member.transactions)   member.transactions   = [];
-  if (!member.totalDeposited) member.totalDeposited = 0;
-  if (!member.interestEarned) member.interestEarned = 0;
-
-  // ══════════════════════════════════════
-  //  ADMIN CHECK — inject admin UI only for admin
-  // ══════════════════════════════════════
-  const isAdmin = currentEmail === ADMIN_EMAIL;
-
-  if (isAdmin) {
-    // Update role label
-    document.getElementById('user-role-label').textContent = 'Admin';
-
-    // Inject Admin button into desktop sidebar nav
-    const desktopNav = document.getElementById('desktop-nav');
-    const adminNavBtn = document.createElement('button');
-    adminNavBtn.className = 'nav-item';
-    adminNavBtn.innerHTML = '<span class="icon">🛡️</span> Admin Panel';
-    adminNavBtn.onclick = () => location.href = 'admin.html';
-    desktopNav.appendChild(adminNavBtn);
-
-    // Inject Admin button into mobile nav (before the Logout button)
-    const mobileNav = document.getElementById('mobile-nav');
-    const logoutBtn = mobileNav.lastElementChild; // the logout button
-    const adminMobBtn = document.createElement('button');
-    adminMobBtn.className = 'mob-btn';
-    adminMobBtn.innerHTML = '<span class="mob-icon">🛡️</span><span class="mob-label" style="color:var(--yellow)">Admin</span>';
-    adminMobBtn.onclick = () => location.href = 'admin.html';
-    mobileNav.insertBefore(adminMobBtn, logoutBtn);
-  }
-  // If NOT admin — no admin buttons appear anywhere
+  let currentUser = null;
+  let memberData  = null;
 
   function fmt(n) { return Number(n||0).toLocaleString(); }
 
   function showToast(msg, type='') {
     const t = document.getElementById('toast');
-    t.textContent = msg; t.className = 'toast '+type;
+    t.textContent = msg; t.className = 'toast ' + type;
     setTimeout(()=>t.classList.add('show'),10);
     setTimeout(()=>t.classList.remove('show'),3500);
   }
 
-  function saveAll() {
-    const idx = members.findIndex(m=>m.email===member.email);
-    if (idx>=0) { members[idx]=member; localStorage.setItem('sacco_members',JSON.stringify(members)); }
+  onAuthStateChanged(auth, async user => {
+    if (!user) { window.location.href = './index.html'; return; }
+    currentUser = user;
+    await loadMember();
+    await render();
+    setInterval(render, 30000);
+  });
+
+  async function loadMember() {
+    const snap = await getDoc(doc(db, 'members', currentUser.uid));
+    if (snap.exists()) {
+      memberData = { uid: currentUser.uid, ...snap.data() };
+    } else {
+      // Fallback: create minimal doc
+      memberData = { uid: currentUser.uid, name: currentUser.email, email: currentUser.email, balance:0, totalDeposited:0, interestEarned:0, transactions:[], joined:'—' };
+    }
+
+    const isAdmin = currentUser.email === ADMIN_EMAIL;
+    if (isAdmin) {
+      document.getElementById('user-role-label').textContent = 'Admin';
+      const desktopNav = document.getElementById('desktop-nav');
+      const btn = document.createElement('button');
+      btn.className = 'nav-item';
+      btn.innerHTML = '<span class="icon">🛡️</span> Admin Panel';
+      btn.onclick = () => location.href = 'admin.html';
+      desktopNav.appendChild(btn);
+
+      const mobileNav = document.getElementById('mobile-nav');
+      const logoutBtn = mobileNav.lastElementChild;
+      const adminBtn = document.createElement('button');
+      adminBtn.className = 'mob-btn';
+      adminBtn.innerHTML = '<span class="mob-icon">🛡️</span><span class="mob-label" style="color:var(--yellow)">Admin</span>';
+      adminBtn.onclick = () => location.href = 'admin.html';
+      mobileNav.insertBefore(adminBtn, logoutBtn);
+    }
   }
 
-  function reloadData() {
-    members     = JSON.parse(localStorage.getItem('sacco_members')     || '[]');
-    deposits    = JSON.parse(localStorage.getItem('sacco_deposits')    || '[]');
-    withdrawals = JSON.parse(localStorage.getItem('sacco_withdrawals') || '[]');
-    member = members.find(m=>m.email===currentEmail) || member;
-    if (!member.interestEarned) member.interestEarned = 0;
-    if (!member.totalDeposited) member.totalDeposited = 0;
-  }
+  async function render() {
+    // Re-fetch fresh data
+    const snap = await getDoc(doc(db, 'members', currentUser.uid));
+    if (snap.exists()) memberData = { uid: currentUser.uid, ...snap.data() };
 
-  // ══════════════════════════════════════
-  //  AUTO-CREDIT — when admin approves deposit,
-  //  balance updates automatically on member dashboard
-  // ══════════════════════════════════════
-  function syncApprovedDeposits() {
-    reloadData();
-    const myDeposits = deposits.filter(d => d.memberEmail === member.email);
-    myDeposits.forEach(d => {
-      if (d.status === 'approved' && !d.creditedToMember) {
-        member.balance        = (member.balance||0) + d.amount;
-        member.totalDeposited = (member.totalDeposited||0) + d.amount;
-        const allDeps = JSON.parse(localStorage.getItem('sacco_deposits')||'[]');
-        const idx = allDeps.findIndex(x=>x.id===d.id);
-        if (idx>=0) { allDeps[idx].creditedToMember = true; localStorage.setItem('sacco_deposits',JSON.stringify(allDeps)); }
-        saveAll();
-      }
-    });
-  }
+    const firstName = (memberData.name||'').split(' ')[0] || 'there';
+    const initials  = (memberData.name||'').split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase() || '??';
 
-  function render() {
-    syncApprovedDeposits();
-    reloadData();
-
-    const firstName = member.name.split(' ')[0];
-    const initials  = member.name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
     document.getElementById('greeting-name').textContent   = firstName;
-    document.getElementById('sidebar-name').textContent    = member.name;
+    document.getElementById('sidebar-name').textContent    = memberData.name||'';
     document.getElementById('avatar-initials').textContent = initials;
-    document.getElementById('member-since').textContent    = member.joined||'—';
+    document.getElementById('member-since').textContent    = memberData.joined||'—';
     document.getElementById('today-date').textContent      = new Date().toLocaleDateString('en-KE',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-    document.getElementById('main-balance').textContent    = 'KES '+fmt(member.balance);
-    document.getElementById('interest-earned').textContent = 'KES '+fmt(member.interestEarned);
-    document.getElementById('total-deposited').textContent = 'KES '+fmt(member.totalDeposited);
-    document.getElementById('withdrawable').textContent    = 'KES '+fmt(member.interestEarned);
-    document.getElementById('interest-withdrawable').textContent = 'KES '+fmt(member.interestEarned);
-    document.getElementById('projected-gain').textContent  = 'KES '+fmt(Math.round(member.balance*0.20));
+    document.getElementById('main-balance').textContent    = 'KES '+fmt(memberData.balance);
+    document.getElementById('interest-earned').textContent = 'KES '+fmt(memberData.interestEarned);
+    document.getElementById('total-deposited').textContent = 'KES '+fmt(memberData.totalDeposited);
+    document.getElementById('withdrawable').textContent    = 'KES '+fmt(memberData.interestEarned);
+    document.getElementById('interest-withdrawable').textContent = 'KES '+fmt(memberData.interestEarned);
+    document.getElementById('projected-gain').textContent  = 'KES '+fmt(Math.round((memberData.balance||0)*0.20));
 
-    const lastDate = localStorage.getItem('interest_'+member.email);
+    const lastKey = 'interest_' + currentUser.uid;
+    const lastDate = localStorage.getItem(lastKey);
     document.getElementById('last-interest').textContent = lastDate
       ? new Date(lastDate).toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'})
       : 'Never';
 
-    renderTransactions();
-    renderNotifications();
+    await renderTransactions();
+    await renderNotifications();
   }
 
-  function renderTransactions() {
+  async function renderTransactions() {
     const allTx = [];
 
-    deposits.filter(d=>d.memberEmail===member.email).forEach(d=>{
-      allTx.push({ icon:'⬇️', type:'deposit', label:'M-Pesa Deposit', amount:d.amount, date:d.submittedAt||'—', status:d.status, sign:'+' });
+    // Fetch deposits
+    const dSnap = await getDocs(query(collection(db,'deposits'), where('memberUid','==',currentUser.uid)));
+    dSnap.forEach(d => {
+      const data = d.data();
+      allTx.push({ icon:'⬇️', type:'deposit', label:'M-Pesa Deposit', amount:data.amount, date:data.submittedAt||'—', status:data.status, sign:'+' });
     });
 
-    withdrawals.filter(w=>w.memberEmail===member.email).forEach(w=>{
-      allTx.push({ icon:'⬆️', type:'withdraw', label:'Withdrawal Request', amount:w.amount, date:w.date||'—', status:w.status, sign:'-' });
+    // Fetch withdrawals
+    const wSnap = await getDocs(query(collection(db,'withdrawals'), where('memberUid','==',currentUser.uid)));
+    wSnap.forEach(w => {
+      const data = w.data();
+      allTx.push({ icon:'⬆️', type:'withdraw', label:'Withdrawal Request', amount:data.amount, date:data.date||'—', status:data.status, sign:'-' });
     });
 
-    (member.transactions||[]).filter(t=>t.type==='interest').forEach(t=>{
+    // Interest from member doc
+    (memberData.transactions||[]).filter(t=>t.type==='interest').forEach(t => {
       allTx.push({ icon:'✨', type:'interest', label:'Daily Interest', amount:t.amount, date:t.date, status:'approved', sign:'+' });
     });
 
-    allTx.sort((a,b)=>new Date(b.date)-new Date(a.date));
+    allTx.sort((a,b) => new Date(b.date) - new Date(a.date));
 
     const list = document.getElementById('tx-list');
-    document.getElementById('tx-count').textContent = allTx.length+' records';
+    document.getElementById('tx-count').textContent = allTx.length + ' records';
 
     if (!allTx.length) {
       list.innerHTML = `<div style="color:var(--muted);font-size:13px;text-align:center;padding:28px 0;">No transactions yet.<br/>Make your first deposit!</div>`;
@@ -532,35 +442,39 @@
 
   function statusBadge(s) {
     const map = {
-      pending:  `<span class="status-badge status-pending">⏳ Pending</span>`,
-      approved: `<span class="status-badge status-approved">✅ Approved</span>`,
-      paid:     `<span class="status-badge status-paid">💳 Paid</span>`,
-      rejected: `<span class="status-badge status-rejected">❌ Rejected</span>`
+      pending: `<span class="status-badge status-pending">⏳ Pending</span>`,
+      approved:`<span class="status-badge status-approved">✅ Approved</span>`,
+      paid:    `<span class="status-badge status-paid">💳 Paid</span>`,
+      rejected:`<span class="status-badge status-rejected">❌ Rejected</span>`
     };
     return map[s]||'';
   }
 
-  function renderNotifications() {
+  async function renderNotifications() {
     const notifs = [];
 
-    deposits.filter(d=>d.memberEmail===member.email).forEach(d=>{
-      if (d.status==='approved')
-        notifs.push({ type:'approved', msg:`✅ Deposit of KES ${fmt(d.amount)} approved & credited to your balance!` });
-      else if (d.status==='rejected')
-        notifs.push({ type:'rejected', msg:`❌ Deposit of KES ${fmt(d.amount)} was rejected by admin.` });
+    const dSnap = await getDocs(query(collection(db,'deposits'), where('memberUid','==',currentUser.uid)));
+    dSnap.forEach(d => {
+      const data = d.data();
+      if (data.status==='approved')
+        notifs.push({ type:'approved', msg:`✅ Deposit of KES ${fmt(data.amount)} approved & credited!` });
+      else if (data.status==='rejected')
+        notifs.push({ type:'rejected', msg:`❌ Deposit of KES ${fmt(data.amount)} was rejected.` });
       else
-        notifs.push({ type:'pending', msg:`⏳ Deposit of KES ${fmt(d.amount)} pending admin approval.` });
+        notifs.push({ type:'pending', msg:`⏳ Deposit of KES ${fmt(data.amount)} pending approval.` });
     });
 
-    withdrawals.filter(w=>w.memberEmail===member.email).forEach(w=>{
-      if (w.status==='paid')
-        notifs.push({ type:'paid', msg:`💳 Withdrawal of KES ${fmt(w.amount)} has been paid to ${w.phone}!` });
-      else if (w.status==='approved')
-        notifs.push({ type:'approved', msg:`✅ Withdrawal of KES ${fmt(w.amount)} approved. Payment coming soon.` });
-      else if (w.status==='rejected')
-        notifs.push({ type:'rejected', msg:`❌ Withdrawal of KES ${fmt(w.amount)} rejected. Balance refunded.` });
+    const wSnap = await getDocs(query(collection(db,'withdrawals'), where('memberUid','==',currentUser.uid)));
+    wSnap.forEach(w => {
+      const data = w.data();
+      if (data.status==='paid')
+        notifs.push({ type:'paid', msg:`💳 Withdrawal of KES ${fmt(data.amount)} has been paid to ${data.phone}!` });
+      else if (data.status==='approved')
+        notifs.push({ type:'approved', msg:`✅ Withdrawal of KES ${fmt(data.amount)} approved. Payment coming soon.` });
+      else if (data.status==='rejected')
+        notifs.push({ type:'rejected', msg:`❌ Withdrawal of KES ${fmt(data.amount)} rejected. Balance refunded.` });
       else
-        notifs.push({ type:'pending', msg:`⏳ Withdrawal of KES ${fmt(w.amount)} pending admin approval.` });
+        notifs.push({ type:'pending', msg:`⏳ Withdrawal of KES ${fmt(data.amount)} pending approval.` });
     });
 
     const hasNew = notifs.some(n=>n.type!=='pending');
@@ -575,20 +489,19 @@
   }
 
   function toggleNotif() { document.getElementById('notif-panel').classList.toggle('open'); }
-  document.addEventListener('click',function(e){
-    if(!e.target.closest('.icon-btn')&&!e.target.closest('.notif-panel')&&!e.target.closest('.mob-btn'))
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.icon-btn') && !e.target.closest('.notif-panel') && !e.target.closest('.mob-btn'))
       document.getElementById('notif-panel').classList.remove('open');
   });
 
-  // WITHDRAW
   function openWithdraw() {
     document.getElementById('w-amount').value = '';
     document.getElementById('w-phone').value  = '';
-    const available = member.interestEarned||0;
+    const available = memberData ? (memberData.interestEarned||0) : 0;
     const warnEl    = document.getElementById('withdraw-warn');
     const submitBtn = document.getElementById('w-submit-btn');
     if (available < 500) {
-      warnEl.textContent = `⚠️ Not enough interest yet. Need min KES 500. Current: KES ${fmt(available)}. Apply daily interest to grow!`;
+      warnEl.textContent = `⚠️ Not enough interest yet. Need min KES 500. Current: KES ${fmt(available)}.`;
       submitBtn.disabled=true; submitBtn.style.opacity='0.4';
     } else {
       warnEl.textContent = `✅ Available to withdraw: KES ${fmt(available)}`;
@@ -599,50 +512,76 @@
 
   function closeWithdraw() { document.getElementById('withdraw-modal').classList.remove('open'); }
 
-  function submitWithdraw() {
+  async function submitWithdraw() {
     const amt   = parseFloat(document.getElementById('w-amount').value);
     const phone = document.getElementById('w-phone').value.trim();
     const today = new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'});
-    if (!amt||amt<=0)              return showToast('Enter a valid amount','red');
-    if (amt<500)                   return showToast('Minimum withdrawal is KES 500','red');
-    if (amt>member.interestEarned) return showToast(`Max withdrawable: KES ${fmt(member.interestEarned)}`,'red');
-    if (!phone)                    return showToast('Enter your M-Pesa number','red');
+    if (!amt||amt<=0)               return showToast('Enter a valid amount','red');
+    if (amt<500)                    return showToast('Minimum withdrawal is KES 500','red');
+    if (amt>(memberData.interestEarned||0)) return showToast(`Max withdrawable: KES ${fmt(memberData.interestEarned)}`,'red');
+    if (!phone)                     return showToast('Enter your M-Pesa number','red');
 
-    withdrawals = JSON.parse(localStorage.getItem('sacco_withdrawals')||'[]');
-    withdrawals.push({ id:Date.now().toString(), memberName:member.name, memberEmail:member.email, amount:amt, phone, status:'pending', date:today });
-    localStorage.setItem('sacco_withdrawals',JSON.stringify(withdrawals));
+    await addDoc(collection(db,'withdrawals'), {
+      memberUid:   currentUser.uid,
+      memberName:  memberData.name,
+      memberEmail: memberData.email,
+      amount: amt, phone,
+      status: 'pending',
+      date:   today,
+      createdAt: serverTimestamp()
+    });
 
-    member.interestEarned -= amt;
-    member.balance        -= amt;
-    saveAll(); render(); closeWithdraw();
-    showToast(`KES ${fmt(amt)} withdrawal submitted! Awaiting admin 📩`,'green');
+    const newInterest = (memberData.interestEarned||0) - amt;
+    const newBalance  = (memberData.balance||0) - amt;
+    await updateDoc(doc(db,'members',currentUser.uid), {
+      interestEarned: newInterest,
+      balance: newBalance
+    });
+
+    await render(); closeWithdraw();
+    showToast(`KES ${fmt(amt)} withdrawal submitted! Awaiting admin 📩`, 'green');
   }
 
-  // INTEREST — once per day, 20% p.a.
-  function applyInterest() {
+  async function applyInterest() {
     const todayKey    = new Date().toISOString().slice(0,10);
-    const lastApplied = localStorage.getItem('interest_'+member.email);
+    const lastKey     = 'interest_' + currentUser.uid;
+    const lastApplied = localStorage.getItem(lastKey);
     if (lastApplied===todayKey) return showToast('Interest already applied today. Come back tomorrow! 📅','red');
-    const interest = Math.round(member.balance*(0.20/365));
+    const interest = Math.round((memberData.balance||0)*(0.20/365));
     if (interest<=0) return showToast('Deposit funds first to earn interest!','red');
     const today = new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'});
-    member.balance        += interest;
-    member.interestEarned += interest;
-    member.transactions.push({ type:'interest', label:'Daily Interest (20% p.a.)', amount:interest, date:today });
-    localStorage.setItem('interest_'+member.email, todayKey);
-    saveAll(); render();
-    showToast(`KES ${fmt(interest)} interest added ✓`,'green');
+
+    const txs = memberData.transactions || [];
+    txs.push({ type:'interest', label:'Daily Interest (20% p.a.)', amount:interest, date:today });
+
+    await updateDoc(doc(db,'members',currentUser.uid), {
+      balance:        (memberData.balance||0) + interest,
+      interestEarned: (memberData.interestEarned||0) + interest,
+      transactions:   txs
+    });
+
+    localStorage.setItem(lastKey, todayKey);
+    await render();
+    showToast(`KES ${fmt(interest)} interest added ✓`, 'green');
   }
 
-  function refreshAll() { render(); showToast('Refreshed ✓','green'); }
-  function logout() { localStorage.removeItem('sacco_current'); window.location.href='index.html'; }
+  async function refreshAll() { await render(); showToast('Refreshed ✓','green'); }
 
-  document.getElementById('withdraw-modal').addEventListener('click',function(e){ if(e.target===this) closeWithdraw(); });
+  async function logout() {
+    await signOut(auth);
+    window.location.href = './index.html';
+  }
 
-  // Auto refresh every 30 seconds to pick up admin approvals
-  setInterval(render, 30000);
+  document.getElementById('withdraw-modal').addEventListener('click', e => { if(e.target===document.getElementById('withdraw-modal')) closeWithdraw(); });
 
-  render();
+  // Expose
+  window.toggleNotif    = toggleNotif;
+  window.openWithdraw   = openWithdraw;
+  window.closeWithdraw  = closeWithdraw;
+  window.submitWithdraw = submitWithdraw;
+  window.applyInterest  = applyInterest;
+  window.refreshAll     = refreshAll;
+  window.logout         = logout;
 </script>
 </body>
 </html>
