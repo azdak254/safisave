@@ -6,451 +6,105 @@
   <title>SafiSave – Goals Tracker</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --green: #00C853;
-      --dark-green: #007B33;
-      --black: #0a0a0a;
-      --card: #141414;
-      --border: #2a2a2a;
-      --muted: #777;
-      --white: #f5f5f5;
-      --blue: #2979FF;
-      --purple: #9C27B0;
-      --orange: #FF6D00;
-      --red: #ff4f4f;
-      --yellow: #FFD600;
-    }
-
-    body {
-      background: var(--black);
-      color: var(--white);
-      font-family: 'DM Sans', sans-serif;
-      min-height: 100vh;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 300px;
-      background: radial-gradient(ellipse at 60% 0%, rgba(41,121,255,0.07) 0%, transparent 60%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* SIDEBAR */
-    .sidebar {
-      position: fixed;
-      top: 0; left: 0;
-      width: 220px; height: 100vh;
-      background: var(--card);
-      border-right: 1px solid var(--border);
-      display: flex; flex-direction: column;
-      padding: 28px 16px;
-      z-index: 10;
-    }
-
-    .logo {
-      display: flex; align-items: center; gap: 10px;
-      margin-bottom: 36px; padding: 0 6px;
-    }
-
-    .logo-icon {
-      width: 38px; height: 38px;
-      background: linear-gradient(135deg, var(--green), var(--dark-green));
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px;
-      box-shadow: 0 0 20px rgba(0,200,83,0.25);
-    }
-
-    .logo h1 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; }
-    .logo h1 span { color: var(--green); }
-
-    .nav { flex: 1; }
-
-    .nav-item {
-      display: flex; align-items: center; gap: 11px;
-      padding: 11px 14px; border-radius: 10px;
-      color: var(--muted); font-size: 14px; font-weight: 500;
-      cursor: pointer; transition: all 0.2s;
-      margin-bottom: 4px; border: none;
-      background: transparent; width: 100%; text-align: left;
-    }
-
-    .nav-item:hover { background: #1f1f1f; color: var(--white); }
-    .nav-item.active { background: rgba(0,200,83,0.1); color: var(--green); font-weight: 600; }
-    .nav-item .icon { font-size: 17px; width: 22px; text-align: center; }
-
-    .sidebar-bottom { border-top: 1px solid var(--border); padding-top: 16px; }
-
-    .user-chip {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 12px; border-radius: 10px; background: #1c1c1c;
-    }
-
-    .avatar {
-      width: 34px; height: 34px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--green), var(--dark-green));
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 13px; color: #000;
-    }
-
-    .user-name { font-size: 13px; font-weight: 600; }
-    .user-role { font-size: 11px; color: var(--muted); }
-
-    /* MAIN */
-    .main {
-      margin-left: 220px;
-      padding: 28px 28px 40px;
-      position: relative; z-index: 1;
-    }
-
-    .topbar {
-      display: flex; align-items: center;
-      justify-content: space-between;
-      margin-bottom: 28px;
-    }
-
-    .topbar h2 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; }
-    .topbar p  { color: var(--muted); font-size: 13px; margin-top: 2px; }
-
-    .icon-btn {
-      width: 38px; height: 38px; border-radius: 10px;
-      background: var(--card); border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; font-size: 16px; transition: background 0.2s;
-    }
-
-    .icon-btn:hover { background: #1f1f1f; }
-
-    /* SUMMARY CARDS */
-    .summary-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-bottom: 28px;
-    }
-
-    .sum-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      animation: fadeUp 0.4s ease both;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .sum-icon  { font-size: 24px; margin-bottom: 10px; }
-    .sum-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-    .sum-value { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; }
-
-    /* ADD GOAL BUTTON */
-    .add-goal-btn {
-      width: 100%;
-      padding: 15px;
-      background: linear-gradient(135deg, var(--green), var(--dark-green));
-      color: #000;
-      font-family: 'Syne', sans-serif;
-      font-size: 15px; font-weight: 800;
-      border: none; border-radius: 14px;
-      cursor: pointer; margin-bottom: 24px;
-      box-shadow: 0 4px 20px rgba(0,200,83,0.25);
-      transition: opacity 0.2s, transform 0.1s;
-    }
-
-    .add-goal-btn:hover { opacity: 0.9; transform: translateY(-1px); }
-
-    /* GOALS GRID */
-    .goals-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .goal-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 20px;
-      animation: fadeUp 0.4s ease both;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .goal-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      border-radius: 18px 18px 0 0;
-    }
-
-    .goal-card.color-green::before  { background: var(--green); }
-    .goal-card.color-blue::before   { background: var(--blue); }
-    .goal-card.color-purple::before { background: var(--purple); }
-    .goal-card.color-orange::before { background: var(--orange); }
-    .goal-card.color-yellow::before { background: var(--yellow); }
-    .goal-card.color-red::before    { background: var(--red); }
-
-    .goal-header {
-      display: flex; justify-content: space-between;
-      align-items: flex-start; margin-bottom: 14px;
-    }
-
-    .goal-emoji { font-size: 28px; }
-
-    .goal-menu { position: relative; }
-
-    .goal-menu-btn {
-      background: transparent; border: none;
-      color: var(--muted); font-size: 18px;
-      cursor: pointer; padding: 2px 6px;
-      border-radius: 6px; transition: background 0.2s;
-    }
-
-    .goal-menu-btn:hover { background: #1f1f1f; color: var(--white); }
-
-    .goal-dropdown {
-      position: absolute; right: 0; top: 30px;
-      background: #1c1c1c;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-      display: none;
-      z-index: 10;
-      min-width: 130px;
-    }
-
-    .goal-dropdown.open { display: block; }
-
-    .goal-dropdown button {
-      width: 100%; padding: 10px 14px;
-      background: transparent; border: none;
-      color: var(--white); font-size: 13px;
-      text-align: left; cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .goal-dropdown button:hover { background: #2a2a2a; }
-    .goal-dropdown button.danger { color: var(--red); }
-
-    .goal-name {
-      font-family: 'Syne', sans-serif;
-      font-size: 16px; font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .goal-category {
-      font-size: 11px; color: var(--muted);
-      text-transform: uppercase; letter-spacing: 0.5px;
-      margin-bottom: 16px;
-    }
-
-    /* Progress bar */
-    .progress-wrap {
-      background: #1c1c1c;
-      border-radius: 99px;
-      height: 8px;
-      margin-bottom: 10px;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      height: 100%;
-      border-radius: 99px;
-      transition: width 0.6s ease;
-    }
-
-    .goal-amounts {
-      display: flex; justify-content: space-between;
-      font-size: 12px; color: var(--muted);
-      margin-bottom: 14px;
-    }
-
-    .goal-amounts span:last-child { font-weight: 600; color: var(--white); }
-
-    .goal-percent {
-      font-family: 'Syne', sans-serif;
-      font-size: 28px; font-weight: 800;
-      margin-bottom: 4px;
-    }
-
-    .goal-deadline {
-      font-size: 12px; color: var(--muted);
-      margin-bottom: 16px;
-    }
-
-    .goal-deadline span { color: var(--white); font-weight: 500; }
-
-    .contribute-btn {
-      width: 100%;
-      padding: 10px;
-      border-radius: 10px;
-      background: rgba(0,200,83,0.1);
-      border: 1px solid rgba(0,200,83,0.2);
-      color: var(--green);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px; font-weight: 600;
-      cursor: pointer; transition: all 0.2s;
-    }
-
-    .contribute-btn:hover {
-      background: rgba(0,200,83,0.2);
-      transform: translateY(-1px);
-    }
-
-    .contribute-btn:disabled {
-      opacity: 0.4; cursor: not-allowed;
-      transform: none;
-    }
-
-    .completed-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      background: rgba(0,200,83,0.1);
-      border: 1px solid rgba(0,200,83,0.3);
-      color: var(--green);
-      font-size: 12px; font-weight: 600;
-      padding: 5px 12px; border-radius: 20px;
-      width: 100%; justify-content: center;
-    }
-
-    .empty-goals {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 60px 0;
-      color: var(--muted);
-    }
-
-    .empty-goals div { font-size: 48px; margin-bottom: 12px; }
-    .empty-goals p   { font-size: 15px; }
-    .empty-goals small { font-size: 13px; margin-top: 6px; display: block; }
-
-    /* MODAL */
-    .modal-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.75);
-      backdrop-filter: blur(4px);
-      z-index: 100;
-      display: none; align-items: center; justify-content: center;
-    }
-
-    .modal-overlay.open { display: flex; }
-
-    .modal {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 28px 24px;
-      width: 100%; max-width: 400px;
-      animation: fadeUp 0.3s ease;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    .modal h3 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 6px; }
-    .modal p  { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
-
-    .modal label {
-      display: block; font-size: 12px; color: var(--muted);
-      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 7px;
-    }
-
-    .modal input, .modal select {
-      width: 100%;
-      background: #1c1c1c;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px 14px;
-      color: var(--white);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px; outline: none;
-      margin-bottom: 14px;
-      appearance: none;
-    }
-
-    .modal input:focus, .modal select:focus {
-      border-color: var(--green);
-      box-shadow: 0 0 0 3px rgba(0,200,83,0.1);
-    }
-
-    .modal select option { background: #1c1c1c; }
-
-    /* Emoji picker */
-    .emoji-picker {
-      display: flex; flex-wrap: wrap; gap: 8px;
-      margin-bottom: 14px;
-    }
-
-    .emoji-opt {
-      width: 38px; height: 38px;
-      border-radius: 10px;
-      background: #1c1c1c;
-      border: 1px solid var(--border);
-      font-size: 20px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.2s;
-    }
-
-    .emoji-opt:hover, .emoji-opt.selected {
-      border-color: var(--green);
-      background: rgba(0,200,83,0.1);
-    }
-
-    /* Color picker */
-    .color-picker {
-      display: flex; gap: 8px; margin-bottom: 14px;
-    }
-
-    .color-opt {
-      width: 28px; height: 28px; border-radius: 50%;
-      cursor: pointer; border: 2px solid transparent;
-      transition: all 0.2s;
-    }
-
-    .color-opt.selected { border-color: var(--white); transform: scale(1.2); }
-
-    .modal-btns { display: flex; gap: 10px; margin-top: 8px; }
-
-    .modal-btns button {
-      flex: 1; padding: 12px; border-radius: 10px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px; font-weight: 600;
-      cursor: pointer; border: none;
-    }
-
-    .btn-cancel  { background: #1c1c1c; color: var(--muted); border: 1px solid var(--border) !important; }
-    .btn-confirm { background: linear-gradient(135deg, var(--green), var(--dark-green)); color: #000; }
-    .btn-confirm:hover { opacity: 0.9; }
-    .btn-cancel:hover  { opacity: 0.8; }
-
-    /* Toast */
-    .toast {
-      position: fixed; bottom: 24px; left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: #1c1c1c; border: 1px solid var(--border);
-      color: var(--white); padding: 12px 20px;
-      border-radius: 12px; font-size: 13px; font-weight: 500;
-      z-index: 200;
-      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
-      white-space: nowrap;
-    }
-
-    .toast.show   { transform: translateX(-50%) translateY(0); }
-    .toast.green  { border-color: rgba(0,200,83,0.4);  color: var(--green); }
-    .toast.red    { border-color: rgba(255,79,79,0.4); color: var(--red); }
-    .toast.yellow { border-color: rgba(255,214,0,0.4); color: var(--yellow); }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--green:#00C853;--dark-green:#007B33;--black:#0a0a0a;--card:#141414;--border:#2a2a2a;--muted:#777;--white:#f5f5f5;--blue:#2979FF;--purple:#9C27B0;--orange:#FF6D00;--red:#ff4f4f;--yellow:#FFD600}
+    body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;min-height:100vh}
+    body::before{content:'';position:fixed;top:0;left:0;width:100%;height:300px;background:radial-gradient(ellipse at 60% 0%,rgba(41,121,255,0.07) 0%,transparent 60%);pointer-events:none;z-index:0}
+    .sidebar{position:fixed;top:0;left:0;width:220px;height:100vh;background:var(--card);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:28px 16px;z-index:10}
+    .logo{display:flex;align-items:center;gap:10px;margin-bottom:36px;padding:0 6px}
+    .logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--green),var(--dark-green));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 20px rgba(0,200,83,0.25)}
+    .logo h1{font-family:'Syne',sans-serif;font-size:18px;font-weight:800}
+    .logo h1 span{color:var(--green)}
+    .nav{flex:1}
+    .nav-item{display:flex;align-items:center;gap:11px;padding:11px 14px;border-radius:10px;color:var(--muted);font-size:14px;font-weight:500;cursor:pointer;transition:all 0.2s;margin-bottom:4px;border:none;background:transparent;width:100%;text-align:left}
+    .nav-item:hover{background:#1f1f1f;color:var(--white)}
+    .nav-item.active{background:rgba(0,200,83,0.1);color:var(--green);font-weight:600}
+    .nav-item .icon{font-size:17px;width:22px;text-align:center}
+    .sidebar-bottom{border-top:1px solid var(--border);padding-top:16px}
+    .user-chip{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:#1c1c1c}
+    .avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--dark-green));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#000}
+    .user-name{font-size:13px;font-weight:600}
+    .user-role{font-size:11px;color:var(--muted)}
+    .main{margin-left:220px;padding:28px 28px 40px;position:relative;z-index:1}
+    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+    .topbar h2{font-family:'Syne',sans-serif;font-size:22px;font-weight:800}
+    .topbar p{color:var(--muted);font-size:13px;margin-top:2px}
+    .icon-btn{width:38px;height:38px;border-radius:10px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:background 0.2s}
+    .icon-btn:hover{background:#1f1f1f}
+    .summary-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+    .sum-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;animation:fadeUp 0.4s ease both}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    .sum-icon{font-size:24px;margin-bottom:10px}
+    .sum-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+    .sum-value{font-family:'Syne',sans-serif;font-size:22px;font-weight:800}
+    .add-goal-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--green),var(--dark-green));color:#000;font-family:'Syne',sans-serif;font-size:15px;font-weight:800;border:none;border-radius:14px;cursor:pointer;margin-bottom:24px;box-shadow:0 4px 20px rgba(0,200,83,0.25);transition:opacity 0.2s,transform 0.1s}
+    .add-goal-btn:hover{opacity:0.9;transform:translateY(-1px)}
+    .goals-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .goal-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:20px;animation:fadeUp 0.4s ease both;position:relative;overflow:hidden}
+    .goal-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:18px 18px 0 0}
+    .goal-card.color-green::before{background:var(--green)}
+    .goal-card.color-blue::before{background:var(--blue)}
+    .goal-card.color-purple::before{background:var(--purple)}
+    .goal-card.color-orange::before{background:var(--orange)}
+    .goal-card.color-yellow::before{background:var(--yellow)}
+    .goal-card.color-red::before{background:var(--red)}
+    .goal-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+    .goal-emoji{font-size:28px}
+    .goal-menu{position:relative}
+    .goal-menu-btn{background:transparent;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:2px 6px;border-radius:6px;transition:background 0.2s}
+    .goal-menu-btn:hover{background:#1f1f1f;color:var(--white)}
+    .goal-dropdown{position:absolute;right:0;top:30px;background:#1c1c1c;border:1px solid var(--border);border-radius:10px;overflow:hidden;display:none;z-index:10;min-width:130px}
+    .goal-dropdown.open{display:block}
+    .goal-dropdown button{width:100%;padding:10px 14px;background:transparent;border:none;color:var(--white);font-size:13px;text-align:left;cursor:pointer;transition:background 0.2s}
+    .goal-dropdown button:hover{background:#2a2a2a}
+    .goal-dropdown button.danger{color:var(--red)}
+    .goal-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:4px}
+    .goal-category{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:16px}
+    .progress-wrap{background:#1c1c1c;border-radius:99px;height:8px;margin-bottom:10px;overflow:hidden}
+    .progress-bar{height:100%;border-radius:99px;transition:width 0.6s ease}
+    .goal-amounts{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:14px}
+    .goal-amounts span:last-child{font-weight:600;color:var(--white)}
+    .goal-percent{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;margin-bottom:4px}
+    .goal-deadline{font-size:12px;color:var(--muted);margin-bottom:16px}
+    .goal-deadline span{color:var(--white);font-weight:500}
+    .contribute-btn{width:100%;padding:10px;border-radius:10px;background:rgba(0,200,83,0.1);border:1px solid rgba(0,200,83,0.2);color:var(--green);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
+    .contribute-btn:hover{background:rgba(0,200,83,0.2);transform:translateY(-1px)}
+    .contribute-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none}
+    .completed-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(0,200,83,0.1);border:1px solid rgba(0,200,83,0.3);color:var(--green);font-size:12px;font-weight:600;padding:5px 12px;border-radius:20px;width:100%;justify-content:center}
+    .empty-goals{grid-column:1/-1;text-align:center;padding:60px 0;color:var(--muted)}
+    .empty-goals div{font-size:48px;margin-bottom:12px}
+    .empty-goals p{font-size:15px}
+    .empty-goals small{font-size:13px;margin-top:6px;display:block}
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);z-index:100;display:none;align-items:center;justify-content:center}
+    .modal-overlay.open{display:flex}
+    .modal{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px 24px;width:100%;max-width:400px;animation:fadeUp 0.3s ease;max-height:90vh;overflow-y:auto}
+    .modal h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:6px}
+    .modal p{color:var(--muted);font-size:13px;margin-bottom:20px}
+    .modal label{display:block;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:7px}
+    .modal input,.modal select{width:100%;background:#1c1c1c;border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;margin-bottom:14px;appearance:none}
+    .modal input:focus,.modal select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(0,200,83,0.1)}
+    .modal select option{background:#1c1c1c}
+    .emoji-picker{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+    .emoji-opt{width:38px;height:38px;border-radius:10px;background:#1c1c1c;border:1px solid var(--border);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+    .emoji-opt:hover,.emoji-opt.selected{border-color:var(--green);background:rgba(0,200,83,0.1)}
+    .color-picker{display:flex;gap:8px;margin-bottom:14px}
+    .color-opt{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all 0.2s}
+    .color-opt.selected{border-color:var(--white);transform:scale(1.2)}
+    .modal-btns{display:flex;gap:10px;margin-top:8px}
+    .modal-btns button{flex:1;padding:12px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border:none}
+    .btn-cancel{background:#1c1c1c;color:var(--muted);border:1px solid var(--border)!important}
+    .btn-confirm{background:linear-gradient(135deg,var(--green),var(--dark-green));color:#000}
+    .btn-confirm:hover{opacity:0.9}
+    .btn-cancel:hover{opacity:0.8}
+    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1c1c1c;border:1px solid var(--border);color:var(--white);padding:12px 20px;border-radius:12px;font-size:13px;font-weight:500;z-index:200;transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);white-space:nowrap}
+    .toast.show{transform:translateX(-50%) translateY(0)}
+    .toast.green{border-color:rgba(0,200,83,0.4);color:var(--green)}
+    .toast.red{border-color:rgba(255,79,79,0.4);color:var(--red)}
+    .toast.yellow{border-color:rgba(255,214,0,0.4);color:var(--yellow)}
   </style>
 </head>
 <body>
 
-<!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="logo">
     <div class="logo-icon">💰</div>
@@ -458,26 +112,21 @@
   </div>
   <nav class="nav">
     <button class="nav-item" onclick="location.href='dashboard.html'"><span class="icon">🏠</span> Dashboard</button>
-    <button class="nav-item"><span class="icon">💳</span> Savings</button>
-    <button class="nav-item"><span class="icon">📈</span> Investments</button>
-    <button class="nav-item"><span class="icon">🔄</span> Transactions</button>
+    <button class="nav-item" onclick="location.href='mpesa.html'"><span class="icon">📱</span> M-Pesa</button>
     <button class="nav-item active"><span class="icon">🎯</span> Goals</button>
-    <button class="nav-item"><span class="icon">⚙️</span> Settings</button>
   </nav>
   <div class="sidebar-bottom">
     <div class="user-chip">
       <div class="avatar" id="avatar">JK</div>
       <div>
         <div class="user-name" id="sidebar-name">John Kamau</div>
-        <div class="user-role">Member · P1</div>
+        <div class="user-role">Member</div>
       </div>
     </div>
   </div>
 </aside>
 
-<!-- MAIN -->
 <main class="main">
-
   <div class="topbar">
     <div>
       <h2>🎯 Savings Goals</h2>
@@ -489,44 +138,18 @@
     </div>
   </div>
 
-  <!-- SUMMARY -->
   <div class="summary-row">
-    <div class="sum-card">
-      <div class="sum-icon">🎯</div>
-      <div class="sum-label">Total Goals</div>
-      <div class="sum-value" id="sum-total">0</div>
-    </div>
-    <div class="sum-card">
-      <div class="sum-icon">✅</div>
-      <div class="sum-label">Completed</div>
-      <div class="sum-value" style="color:var(--green)" id="sum-done">0</div>
-    </div>
-    <div class="sum-card">
-      <div class="sum-icon">💰</div>
-      <div class="sum-label">Total Saved</div>
-      <div class="sum-value" style="color:var(--green)" id="sum-saved">KES 0</div>
-    </div>
-    <div class="sum-card">
-      <div class="sum-icon">🏁</div>
-      <div class="sum-label">Total Target</div>
-      <div class="sum-value" id="sum-target">KES 0</div>
-    </div>
+    <div class="sum-card"><div class="sum-icon">🎯</div><div class="sum-label">Total Goals</div><div class="sum-value" id="sum-total">0</div></div>
+    <div class="sum-card"><div class="sum-icon">✅</div><div class="sum-label">Completed</div><div class="sum-value" style="color:var(--green)" id="sum-done">0</div></div>
+    <div class="sum-card"><div class="sum-icon">💰</div><div class="sum-label">Total Saved</div><div class="sum-value" style="color:var(--green)" id="sum-saved">KES 0</div></div>
+    <div class="sum-card"><div class="sum-icon">🏁</div><div class="sum-label">Total Target</div><div class="sum-value" id="sum-target">KES 0</div></div>
   </div>
 
-  <!-- ADD GOAL -->
-  <button class="add-goal-btn" onclick="openAddGoal()">
-    ➕ Create New Savings Goal
-  </button>
+  <button class="add-goal-btn" onclick="openAddGoal()">➕ Create New Savings Goal</button>
 
-  <!-- GOALS GRID -->
   <div class="goals-grid" id="goals-grid">
-    <div class="empty-goals">
-      <div>🎯</div>
-      <p>No goals yet!</p>
-      <small>Click "Create New Savings Goal" to get started.</small>
-    </div>
+    <div class="empty-goals"><div>🎯</div><p>No goals yet!</p><small>Click "Create New Savings Goal" to get started.</small></div>
   </div>
-
 </main>
 
 <!-- ADD GOAL MODAL -->
@@ -534,10 +157,8 @@
   <div class="modal">
     <h3>🎯 New Savings Goal</h3>
     <p>Set a target and track your progress</p>
-
     <label>Goal Name</label>
     <input type="text" id="goal-name" placeholder="e.g. Buy a Laptop, Emergency Fund"/>
-
     <label>Category</label>
     <select id="goal-category">
       <option value="Education">📚 Education</option>
@@ -551,7 +172,6 @@
       <option value="Wedding">💍 Wedding</option>
       <option value="Other">🎯 Other</option>
     </select>
-
     <label>Choose Icon</label>
     <div class="emoji-picker" id="emoji-picker">
       <div class="emoji-opt selected" data-emoji="🎯" onclick="selectEmoji(this)">🎯</div>
@@ -565,7 +185,6 @@
       <div class="emoji-opt" data-emoji="💼" onclick="selectEmoji(this)">💼</div>
       <div class="emoji-opt" data-emoji="🚨" onclick="selectEmoji(this)">🚨</div>
     </div>
-
     <label>Card Color</label>
     <div class="color-picker">
       <div class="color-opt selected" data-color="green"  style="background:var(--green)"  onclick="selectColor(this)"></div>
@@ -575,16 +194,12 @@
       <div class="color-opt" data-color="yellow" style="background:var(--yellow)" onclick="selectColor(this)"></div>
       <div class="color-opt" data-color="red"    style="background:var(--red)"    onclick="selectColor(this)"></div>
     </div>
-
     <label>Target Amount (KES)</label>
     <input type="number" id="goal-target" placeholder="e.g. 50000" min="1"/>
-
     <label>Initial Savings (KES)</label>
     <input type="number" id="goal-saved" placeholder="e.g. 5000 (or 0)" min="0"/>
-
     <label>Deadline</label>
     <input type="date" id="goal-deadline"/>
-
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal('add-modal')">Cancel</button>
       <button class="btn-confirm" onclick="confirmAddGoal()">Create Goal</button>
@@ -608,75 +223,83 @@
 
 <div class="toast" id="toast"></div>
 
-<script>
-  // ── Auth ──
-  const currentEmail = localStorage.getItem('sacco_current');
-  let members = JSON.parse(localStorage.getItem('sacco_members') || '[]');
-  let member  = members.find(m => m.email === currentEmail);
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut }
+    from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+  import { getFirestore, doc, getDoc, updateDoc }
+    from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
-  // Demo fallback
-  if (!member) {
-    member = { name: 'John Kamau', email: 'demo@demo.com', balance: 15400, goals: [] };
-  }
+  const firebaseConfig = {
+    apiKey: "AIzaSyCqaRp4JNIp7DmTgo8JqOxfbGozRKxFsTw",
+    authDomain: "safisave-2a805.firebaseapp.com",
+    projectId: "safisave-2a805",
+    storageBucket: "safisave-2a805.firebasestorage.app",
+    messagingSenderId: "896636365110",
+    appId: "1:896636365110:web:f668dd2b2d5da3b11ceb97"
+  };
 
-  if (!member.goals) member.goals = [];
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db   = getFirestore(app);
 
-  // Set user info
-  const firstName = member.name.split(' ')[0];
-  const initials  = member.name.split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase();
-  document.getElementById('avatar').textContent      = initials;
-  document.getElementById('sidebar-name').textContent = member.name;
-
-  // ── State ──
+  let currentUser = null;
+  let memberData  = null;
   let selectedEmoji = '🎯';
   let selectedColor = 'green';
   let contributeGoalId = null;
 
-  const colorMap = {
-    green: '#00C853', blue: '#2979FF',
-    purple: '#9C27B0', orange: '#FF6D00',
-    yellow: '#FFD600', red: '#ff4f4f'
-  };
+  const colorMap = { green:'#00C853', blue:'#2979FF', purple:'#9C27B0', orange:'#FF6D00', yellow:'#FFD600', red:'#ff4f4f' };
 
-  // ── Render ──
+  function fmt(n) { return Number(n||0).toLocaleString(); }
+  function showToast(msg, type='') {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.className = 'toast '+type;
+    setTimeout(()=>t.classList.add('show'),10);
+    setTimeout(()=>t.classList.remove('show'),3000);
+  }
+
+  onAuthStateChanged(auth, async user => {
+    if (!user) { window.location.href='./index.html'; return; }
+    currentUser = user;
+    const snap = await getDoc(doc(db,'members',user.uid));
+    if (snap.exists()) memberData = { uid:user.uid, ...snap.data() };
+    else memberData = { uid:user.uid, name:user.email, email:user.email, goals:[] };
+    if (!memberData.goals) memberData.goals = [];
+
+    const initials = (memberData.name||'').split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()||'??';
+    document.getElementById('avatar').textContent       = initials;
+    document.getElementById('sidebar-name').textContent = memberData.name||'';
+    render();
+  });
+
+  async function saveGoals() {
+    await updateDoc(doc(db,'members',currentUser.uid), { goals: memberData.goals });
+  }
+
   function render() {
-    const goals = member.goals || [];
-
-    // Summary
-    const done       = goals.filter(g => g.saved >= g.target).length;
-    const totalSaved = goals.reduce((s, g) => s + (g.saved || 0), 0);
-    const totalTgt   = goals.reduce((s, g) => s + (g.target || 0), 0);
-
+    const goals = memberData.goals||[];
+    const done        = goals.filter(g=>g.saved>=g.target).length;
+    const totalSaved  = goals.reduce((s,g)=>s+(g.saved||0),0);
+    const totalTgt    = goals.reduce((s,g)=>s+(g.target||0),0);
     document.getElementById('sum-total').textContent  = goals.length;
     document.getElementById('sum-done').textContent   = done;
-    document.getElementById('sum-saved').textContent  = 'KES ' + fmt(totalSaved);
-    document.getElementById('sum-target').textContent = 'KES ' + fmt(totalTgt);
+    document.getElementById('sum-saved').textContent  = 'KES '+fmt(totalSaved);
+    document.getElementById('sum-target').textContent = 'KES '+fmt(totalTgt);
 
-    // Goals grid
     const grid = document.getElementById('goals-grid');
-
     if (!goals.length) {
-      grid.innerHTML = `
-        <div class="empty-goals">
-          <div>🎯</div>
-          <p>No goals yet!</p>
-          <small>Click "Create New Savings Goal" to get started.</small>
-        </div>`;
+      grid.innerHTML = `<div class="empty-goals"><div>🎯</div><p>No goals yet!</p><small>Click "Create New Savings Goal" to get started.</small></div>`;
       return;
     }
-
-    grid.innerHTML = goals.map(g => {
-      const pct       = Math.min(100, Math.round((g.saved / g.target) * 100));
-      const remaining = Math.max(0, g.target - g.saved);
-      const done      = g.saved >= g.target;
-      const color     = colorMap[g.color] || colorMap.green;
-
-      const deadlineStr = g.deadline
-        ? new Date(g.deadline).toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'})
-        : 'No deadline';
-
+    grid.innerHTML = goals.map(g=>{
+      const pct       = Math.min(100, Math.round((g.saved/g.target)*100));
+      const remaining = Math.max(0, g.target-g.saved);
+      const done      = g.saved>=g.target;
+      const color     = colorMap[g.color]||colorMap.green;
+      const deadlineStr = g.deadline ? new Date(g.deadline).toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'}) : 'No deadline';
       return `
-        <div class="goal-card color-${g.color}" style="animation-delay:${Math.random()*0.2}s">
+        <div class="goal-card color-${g.color}">
           <div class="goal-header">
             <div class="goal-emoji">${g.emoji}</div>
             <div class="goal-menu">
@@ -688,155 +311,113 @@
               </div>
             </div>
           </div>
-
           <div class="goal-name">${g.name}</div>
           <div class="goal-category">${g.category}</div>
-
           <div class="goal-percent" style="color:${color}">${pct}%</div>
-
           <div class="progress-wrap">
-            <div class="progress-bar" style="width:${pct}%; background:${color}"></div>
+            <div class="progress-bar" style="width:${pct}%;background:${color}"></div>
           </div>
-
           <div class="goal-amounts">
             <span>Saved: KES ${fmt(g.saved)}</span>
             <span>Target: KES ${fmt(g.target)}</span>
           </div>
-
-          <div class="goal-deadline">
-            📅 Deadline: <span>${deadlineStr}</span>
-          </div>
-
+          <div class="goal-deadline">📅 Deadline: <span>${deadlineStr}</span></div>
           ${done
             ? `<div class="completed-badge">🎉 Goal Achieved!</div>`
-            : `<button class="contribute-btn" onclick="contributeToGoal('${g.id}')">
-                 ➕ Add Savings · KES ${fmt(remaining)} remaining
-               </button>`
+            : `<button class="contribute-btn" onclick="contributeToGoal('${g.id}')">➕ Add Savings · KES ${fmt(remaining)} remaining</button>`
           }
         </div>`;
     }).join('');
   }
 
-  function fmt(n) { return Number(n || 0).toLocaleString(); }
-
-  // ── Save ──
-  function saveData() {
-    const idx = members.findIndex(m => m.email === member.email);
-    if (idx >= 0) {
-      members[idx] = member;
-      localStorage.setItem('sacco_members', JSON.stringify(members));
-    }
-  }
-
-  // ── Add Goal ──
   function openAddGoal() {
-    document.getElementById('goal-name').value     = '';
-    document.getElementById('goal-target').value   = '';
-    document.getElementById('goal-saved').value    = '';
+    document.getElementById('goal-name').value = '';
+    document.getElementById('goal-target').value = '';
+    document.getElementById('goal-saved').value = '';
     document.getElementById('goal-deadline').value = '';
-    selectedEmoji = '🎯';
-    selectedColor = 'green';
-    document.querySelectorAll('.emoji-opt').forEach(e => e.classList.remove('selected'));
+    selectedEmoji='🎯'; selectedColor='green';
+    document.querySelectorAll('.emoji-opt').forEach(e=>e.classList.remove('selected'));
     document.querySelector('[data-emoji="🎯"]').classList.add('selected');
-    document.querySelectorAll('.color-opt').forEach(c => c.classList.remove('selected'));
+    document.querySelectorAll('.color-opt').forEach(c=>c.classList.remove('selected'));
     document.querySelector('[data-color="green"]').classList.add('selected');
     openModal('add-modal');
   }
 
-  function confirmAddGoal() {
+  async function confirmAddGoal() {
     const name     = document.getElementById('goal-name').value.trim();
     const category = document.getElementById('goal-category').value;
     const target   = parseFloat(document.getElementById('goal-target').value);
-    const saved    = parseFloat(document.getElementById('goal-saved').value) || 0;
+    const saved    = parseFloat(document.getElementById('goal-saved').value)||0;
     const deadline = document.getElementById('goal-deadline').value;
+    if (!name)            return showToast('Enter a goal name','red');
+    if (!target||target<=0) return showToast('Enter a valid target amount','red');
+    if (saved>target)     return showToast('Saved amount cannot exceed target','red');
 
-    if (!name)          return showToast('Enter a goal name', 'red');
-    if (!target || target <= 0) return showToast('Enter a valid target amount', 'red');
-    if (saved > target) return showToast('Saved amount cannot exceed target', 'red');
-
-    member.goals.push({
-      id: Date.now().toString(),
-      name, category, target, saved,
-      deadline, emoji: selectedEmoji, color: selectedColor,
-      createdAt: new Date().toLocaleDateString('en-KE')
-    });
-
-    saveData();
+    memberData.goals.push({ id:Date.now().toString(), name, category, target, saved, deadline, emoji:selectedEmoji, color:selectedColor, createdAt:new Date().toLocaleDateString('en-KE') });
+    await saveGoals();
     render();
     closeModal('add-modal');
-    showToast(`Goal "${name}" created! 🎯`, 'green');
+    showToast(`Goal "${name}" created! 🎯`,'green');
   }
 
-  // ── Contribute ──
   function contributeToGoal(id) {
     contributeGoalId = id;
-    const g = member.goals.find(x => x.id === id);
+    const g = memberData.goals.find(x=>x.id===id);
     document.getElementById('contribute-title').textContent = `${g.emoji} Add to "${g.name}"`;
-    document.getElementById('contribute-desc').textContent  = `KES ${fmt(Math.max(0, g.target - g.saved))} remaining to reach your goal.`;
+    document.getElementById('contribute-desc').textContent  = `KES ${fmt(Math.max(0,g.target-g.saved))} remaining to reach your goal.`;
     document.getElementById('contribute-amount').value = '';
     closeAllMenus();
     openModal('contribute-modal');
   }
 
-  function confirmContribute() {
+  async function confirmContribute() {
     const amt = parseFloat(document.getElementById('contribute-amount').value);
-    if (!amt || amt <= 0) return showToast('Enter a valid amount', 'red');
-
-    const g = member.goals.find(x => x.id === contributeGoalId);
+    if (!amt||amt<=0) return showToast('Enter a valid amount','red');
+    const g = memberData.goals.find(x=>x.id===contributeGoalId);
     if (!g) return;
-
-    g.saved = (g.saved || 0) + amt;
-
-    const isComplete = g.saved >= g.target;
-    saveData();
+    g.saved = (g.saved||0)+amt;
+    const isComplete = g.saved>=g.target;
+    await saveGoals();
     render();
     closeModal('contribute-modal');
-
-    if (isComplete) {
-      showToast(`🎉 Goal "${g.name}" completed! Congratulations!`, 'green');
-    } else {
-      showToast(`KES ${fmt(amt)} added to "${g.name}" ✓`, 'green');
-    }
+    if (isComplete) showToast(`🎉 Goal "${g.name}" completed! Congratulations!`,'green');
+    else showToast(`KES ${fmt(amt)} added to "${g.name}" ✓`,'green');
   }
 
-  // ── Delete ──
-  function deleteGoal(id) {
-    const g = member.goals.find(x => x.id === id);
+  async function deleteGoal(id) {
+    const g = memberData.goals.find(x=>x.id===id);
     if (!confirm(`Delete goal "${g.name}"?`)) return;
-    member.goals = member.goals.filter(x => x.id !== id);
-    saveData();
+    memberData.goals = memberData.goals.filter(x=>x.id!==id);
+    await saveGoals();
     render();
-    showToast('Goal deleted', 'red');
+    showToast('Goal deleted','red');
     closeAllMenus();
   }
 
-  // ── Edit (simple) ──
-  function editGoal(id) {
+  async function editGoal(id) {
     closeAllMenus();
-    const g = member.goals.find(x => x.id === id);
+    const g = memberData.goals.find(x=>x.id===id);
     const newTarget = parseFloat(prompt(`Edit target for "${g.name}" (current: KES ${fmt(g.target)}):`, g.target));
-    if (!newTarget || newTarget <= 0) return;
-    if (newTarget < g.saved) return showToast('Target cannot be less than amount already saved', 'red');
+    if (!newTarget||newTarget<=0) return;
+    if (newTarget<g.saved) return showToast('Target cannot be less than amount already saved','red');
     g.target = newTarget;
-    saveData();
+    await saveGoals();
     render();
-    showToast('Goal updated ✓', 'green');
+    showToast('Goal updated ✓','green');
   }
 
-  // ── Emoji & Color pickers ──
   function selectEmoji(el) {
-    document.querySelectorAll('.emoji-opt').forEach(e => e.classList.remove('selected'));
+    document.querySelectorAll('.emoji-opt').forEach(e=>e.classList.remove('selected'));
     el.classList.add('selected');
     selectedEmoji = el.dataset.emoji;
   }
 
   function selectColor(el) {
-    document.querySelectorAll('.color-opt').forEach(c => c.classList.remove('selected'));
+    document.querySelectorAll('.color-opt').forEach(c=>c.classList.remove('selected'));
     el.classList.add('selected');
     selectedColor = el.dataset.color;
   }
 
-  // ── Menu ──
   function toggleMenu(id) {
     const menu = document.getElementById(id);
     const isOpen = menu.classList.contains('open');
@@ -845,38 +426,31 @@
   }
 
   function closeAllMenus() {
-    document.querySelectorAll('.goal-dropdown').forEach(m => m.classList.remove('open'));
+    document.querySelectorAll('.goal-dropdown').forEach(m=>m.classList.remove('open'));
   }
 
-  document.addEventListener('click', function(e) {
-    if (!e.target.closest('.goal-menu')) closeAllMenus();
-  });
+  document.addEventListener('click', e => { if (!e.target.closest('.goal-menu')) closeAllMenus(); });
 
-  // ── Modal helpers ──
   function openModal(id)  { document.getElementById(id).classList.add('open'); }
   function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-  document.querySelectorAll('.modal-overlay').forEach(o => {
-    o.addEventListener('click', function(e) {
-      if (e.target === this) this.classList.remove('open');
-    });
+  document.querySelectorAll('.modal-overlay').forEach(o=>{
+    o.addEventListener('click', e=>{ if(e.target===o) o.classList.remove('open'); });
   });
 
-  // ── Toast ──
-  function showToast(msg, type = '') {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = 'toast ' + type;
-    setTimeout(() => t.classList.add('show'), 10);
-    setTimeout(() => t.classList.remove('show'), 3000);
-  }
+  async function logout() { await signOut(auth); window.location.href='./index.html'; }
 
-  function logout() {
-    localStorage.removeItem('sacco_current');
-    window.location.href = 'index.html';
-  }
-
-  render();
+  window.openAddGoal        = openAddGoal;
+  window.confirmAddGoal     = confirmAddGoal;
+  window.contributeToGoal   = contributeToGoal;
+  window.confirmContribute  = confirmContribute;
+  window.deleteGoal         = deleteGoal;
+  window.editGoal           = editGoal;
+  window.selectEmoji        = selectEmoji;
+  window.selectColor        = selectColor;
+  window.toggleMenu         = toggleMenu;
+  window.closeModal         = closeModal;
+  window.logout             = logout;
 </script>
 </body>
 </html>
