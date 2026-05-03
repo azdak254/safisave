@@ -197,7 +197,7 @@
     <div class="balance-card main-card">
       <div class="card-label">Total Balance</div>
       <div class="card-amount" id="main-balance">KES 0</div>
-      <div class="card-sub">20% p.a. daily</div>
+      <div class="card-sub">4% daily interest</div>
     </div>
     <div class="balance-card">
       <div class="card-label">Interest Earned</div>
@@ -250,11 +250,11 @@
         <div class="interest-value" id="interest-withdrawable">KES 0</div>
         <div class="interest-note">Min. KES 500</div>
       </div>
-      <div class="rate-row"><span>Rate</span><span>20% p.a.</span></div>
-      <div class="rate-row"><span>Type</span><span>Daily</span></div>
+      <div class="rate-row"><span>Rate</span><span>4% / Day</span></div>
+      <div class="rate-row"><span>Type</span><span>Daily (Tiered)</span></div>
       <div class="rate-row"><span>Joined</span><span id="member-since">—</span></div>
       <div class="rate-row"><span>Last Interest</span><span id="last-interest">Never</span></div>
-      <div class="rate-row"><span>Annual Gain</span><span id="projected-gain">KES 0</span></div>
+      <div class="rate-row"><span>Daily Earning</span><span id="projected-gain">KES 0</span></div>
     </div>
   </div>
 </main>
@@ -318,6 +318,20 @@
   let currentUser = null;
   let memberData  = null;
 
+  // ── Safi Save Tiered Interest Table ──
+  // KES 20 per KES 500 deposited = 4% / day
+  function getSafiInterest(totalDeposited) {
+    const dep = totalDeposited || 0;
+    if (dep >= 20000) return 800;
+    if (dep >= 10000) return 400;
+    if (dep >= 5000)  return 200;
+    if (dep >= 3000)  return 120;
+    if (dep >= 2000)  return 80;
+    if (dep >= 1000)  return 40;
+    if (dep >= 500)   return 20;
+    return 0;
+  }
+
   function fmt(n) { return Number(n||0).toLocaleString(); }
 
   function showToast(msg, type='') {
@@ -340,7 +354,6 @@
     if (snap.exists()) {
       memberData = { uid: currentUser.uid, ...snap.data() };
     } else {
-      // Fallback: create minimal doc
       memberData = { uid: currentUser.uid, name: currentUser.email, email: currentUser.email, balance:0, totalDeposited:0, interestEarned:0, transactions:[], joined:'—' };
     }
 
@@ -365,7 +378,6 @@
   }
 
   async function render() {
-    // Re-fetch fresh data
     const snap = await getDoc(doc(db, 'members', currentUser.uid));
     if (snap.exists()) memberData = { uid: currentUser.uid, ...snap.data() };
 
@@ -382,7 +394,10 @@
     document.getElementById('total-deposited').textContent = 'KES '+fmt(memberData.totalDeposited);
     document.getElementById('withdrawable').textContent    = 'KES '+fmt(memberData.interestEarned);
     document.getElementById('interest-withdrawable').textContent = 'KES '+fmt(memberData.interestEarned);
-    document.getElementById('projected-gain').textContent  = 'KES '+fmt(Math.round((memberData.balance||0)*0.20));
+
+    // Show the daily earning based on current deposit bracket
+    const dailyEarning = getSafiInterest(memberData.totalDeposited);
+    document.getElementById('projected-gain').textContent = dailyEarning > 0 ? 'KES '+fmt(dailyEarning)+'/day' : 'KES 0';
 
     const lastKey = 'interest_' + currentUser.uid;
     const lastDate = localStorage.getItem(lastKey);
@@ -397,21 +412,18 @@
   async function renderTransactions() {
     const allTx = [];
 
-    // Fetch deposits
     const dSnap = await getDocs(query(collection(db,'deposits'), where('memberUid','==',currentUser.uid)));
     dSnap.forEach(d => {
       const data = d.data();
       allTx.push({ icon:'⬇️', type:'deposit', label:'M-Pesa Deposit', amount:data.amount, date:data.submittedAt||'—', status:data.status, sign:'+' });
     });
 
-    // Fetch withdrawals
     const wSnap = await getDocs(query(collection(db,'withdrawals'), where('memberUid','==',currentUser.uid)));
     wSnap.forEach(w => {
       const data = w.data();
       allTx.push({ icon:'⬆️', type:'withdraw', label:'Withdrawal Request', amount:data.amount, date:data.date||'—', status:data.status, sign:'-' });
     });
 
-    // Interest from member doc
     (memberData.transactions||[]).filter(t=>t.type==='interest').forEach(t => {
       allTx.push({ icon:'✨', type:'interest', label:'Daily Interest', amount:t.amount, date:t.date, status:'approved', sign:'+' });
     });
@@ -542,17 +554,34 @@
     showToast(`KES ${fmt(amt)} withdrawal submitted! Awaiting admin 📩`, 'green');
   }
 
+  // ══════════════════════════════════════════════════
+  //  APPLY INTEREST — Safi Save Tiered Table (4%/day)
+  //  KES 500 → KES 20 | KES 1,000 → KES 40 | etc.
+  // ══════════════════════════════════════════════════
   async function applyInterest() {
     const todayKey    = new Date().toISOString().slice(0,10);
     const lastKey     = 'interest_' + currentUser.uid;
     const lastApplied = localStorage.getItem(lastKey);
-    if (lastApplied===todayKey) return showToast('Interest already applied today. Come back tomorrow! 📅','red');
-    const interest = Math.round((memberData.balance||0)*(0.20/365));
-    if (interest<=0) return showToast('Deposit funds first to earn interest!','red');
-    const today = new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'});
 
-    const txs = memberData.transactions || [];
-    txs.push({ type:'interest', label:'Daily Interest (20% p.a.)', amount:interest, date:today });
+    if (lastApplied === todayKey) {
+      return showToast('Interest already applied today. Come back tomorrow! 📅', 'red');
+    }
+
+    const deposit  = memberData.totalDeposited || 0;
+    const interest = getSafiInterest(deposit);
+
+    if (interest <= 0) {
+      return showToast('Deposit at least KES 500 first to earn interest!', 'red');
+    }
+
+    const today = new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'});
+    const txs   = memberData.transactions || [];
+    txs.push({
+      type:   'interest',
+      label:  `Daily Interest (4% – KES ${fmt(deposit)} deposit)`,
+      amount: interest,
+      date:   today
+    });
 
     await updateDoc(doc(db,'members',currentUser.uid), {
       balance:        (memberData.balance||0) + interest,
@@ -562,7 +591,7 @@
 
     localStorage.setItem(lastKey, todayKey);
     await render();
-    showToast(`KES ${fmt(interest)} interest added ✓`, 'green');
+    showToast(`✅ KES ${fmt(interest)} interest added to your account!`, 'green');
   }
 
   async function refreshAll() { await render(); showToast('Refreshed ✓','green'); }
@@ -572,9 +601,10 @@
     window.location.href = './index.html';
   }
 
-  document.getElementById('withdraw-modal').addEventListener('click', e => { if(e.target===document.getElementById('withdraw-modal')) closeWithdraw(); });
+  document.getElementById('withdraw-modal').addEventListener('click', e => {
+    if(e.target===document.getElementById('withdraw-modal')) closeWithdraw();
+  });
 
-  // Expose
   window.toggleNotif    = toggleNotif;
   window.openWithdraw   = openWithdraw;
   window.closeWithdraw  = closeWithdraw;
