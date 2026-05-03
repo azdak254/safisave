@@ -11,7 +11,6 @@
     body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;min-height:100vh}
     body::before{content:'';position:fixed;top:0;left:0;width:100%;height:300px;background:radial-gradient(ellipse at 80% 0%,rgba(255,214,0,0.05) 0%,transparent 60%);pointer-events:none;z-index:0}
 
-    /* SIDEBAR */
     .sidebar{position:fixed;top:0;left:0;width:220px;height:100vh;background:var(--card);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:28px 16px;z-index:10}
     .logo{display:flex;align-items:center;gap:10px;margin-bottom:8px;padding:0 6px}
     .logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--yellow),#FFA000);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
@@ -29,7 +28,6 @@
     .user-name{font-size:13px;font-weight:600}
     .user-role-text{font-size:11px;color:var(--yellow)}
 
-    /* MAIN */
     .main{margin-left:220px;padding:24px 24px 40px;position:relative;z-index:1}
     .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
     .topbar h2{font-family:'Syne',sans-serif;font-size:22px;font-weight:800}
@@ -37,7 +35,6 @@
     .icon-btn{width:38px;height:38px;border-radius:10px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:background 0.2s}
     .icon-btn:hover{background:#1f1f1f}
 
-    /* STATS */
     .stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px}
     .stat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;animation:fadeUp 0.4s ease both}
     @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
@@ -49,14 +46,12 @@
     .stat-value.red{color:var(--red)}
     .stat-value.blue{color:var(--blue)}
 
-    /* TWO COL */
     .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
     .panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:20px}
     .panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
     .panel-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700}
     .refresh-btn{background:transparent;border:none;color:var(--yellow);font-size:12px;font-weight:600;cursor:pointer}
 
-    /* REQUEST CARDS */
     .req-card{background:#1a1a1a;border-radius:12px;padding:14px;margin-bottom:10px}
     .req-card:last-child{margin-bottom:0}
     .req-card.dep{border:1px solid rgba(0,200,83,0.2)}
@@ -78,14 +73,12 @@
     .btn-reject{flex:1;padding:9px;background:rgba(255,79,79,0.1);border:1px solid rgba(255,79,79,0.3);color:var(--red);font-weight:700;font-size:12px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif}
     .btn-reject:hover{background:rgba(255,79,79,0.2)}
 
-    /* STATUS BADGES */
     .status-badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700}
     .status-pending {background:rgba(255,214,0,0.1);color:var(--yellow);border:1px solid rgba(255,214,0,0.3)}
     .status-approved{background:rgba(0,200,83,0.1);color:var(--green);border:1px solid rgba(0,200,83,0.3)}
     .status-paid    {background:rgba(41,121,255,0.1);color:var(--blue);border:1px solid rgba(41,121,255,0.3)}
     .status-rejected{background:rgba(255,79,79,0.1);color:var(--red);border:1px solid rgba(255,79,79,0.3)}
 
-    /* MEMBERS TABLE */
     .search-box{background:#1c1c1c;border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;width:180px}
     .search-box:focus{border-color:var(--yellow)}
     .search-box::placeholder{color:#444}
@@ -104,15 +97,17 @@
     .tbl-btn.credit{background:rgba(255,214,0,0.1);color:var(--yellow)}
     .tbl-btn.remove{background:rgba(255,79,79,0.1);color:var(--red)}
 
-    /* EMPTY STATE */
     .empty-state{text-align:center;padding:28px 0;color:var(--muted);font-size:13px}
     .empty-state div{font-size:28px;margin-bottom:8px}
 
-    /* QUICK ACTIONS */
     .action-grid{display:flex;flex-direction:column;gap:8px}
     .admin-btn{padding:12px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:none;text-align:left}
 
-    /* MODAL */
+    /* Interest rate table info box */
+    .rate-info{background:rgba(0,200,83,0.05);border:1px solid rgba(0,200,83,0.15);border-radius:10px;padding:12px;margin-top:10px;font-size:11px;color:var(--muted);line-height:1.8}
+    .rate-info strong{color:var(--green);display:block;margin-bottom:6px;font-size:12px}
+    .rate-info span{color:var(--white)}
+
     .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);z-index:100;display:none;align-items:center;justify-content:center}
     .modal-overlay.open{display:flex}
     .modal{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:26px 22px;width:100%;max-width:380px;animation:fadeUp 0.3s ease;max-height:90vh;overflow-y:auto}
@@ -130,14 +125,12 @@
     .btn-cancel {background:#1c1c1c;color:var(--muted);border:1px solid var(--border)!important}
     .btn-confirm{background:linear-gradient(135deg,var(--yellow),#FFA000);color:#000}
 
-    /* TOAST */
     .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1c1c1c;border:1px solid var(--border);color:var(--white);padding:12px 20px;border-radius:12px;font-size:13px;font-weight:500;z-index:200;transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);white-space:nowrap;max-width:90vw;text-align:center}
     .toast.show {transform:translateX(-50%) translateY(0)}
     .toast.green{border-color:rgba(0,200,83,0.4);color:var(--green)}
     .toast.red  {border-color:rgba(255,79,79,0.4);color:var(--red)}
     .toast.blue {border-color:rgba(41,121,255,0.4);color:var(--blue)}
 
-    /* MOBILE */
     @media(max-width:768px){
       .sidebar{display:none}
       .main{margin-left:0;padding:14px 12px 30px}
@@ -152,7 +145,6 @@
 </head>
 <body>
 
-<!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="logo">
     <div class="logo-icon">🛡️</div>
@@ -177,7 +169,6 @@
   </div>
 </aside>
 
-<!-- MAIN -->
 <main class="main">
 
   <div class="topbar">
@@ -191,7 +182,6 @@
     </div>
   </div>
 
-  <!-- STATS -->
   <div class="stats-row">
     <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-label">Members</div><div class="stat-value yellow" id="stat-members">0</div></div>
     <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-label">Total Savings</div><div class="stat-value green" id="stat-savings">0</div></div>
@@ -200,7 +190,6 @@
     <div class="stat-card"><div class="stat-icon">📈</div><div class="stat-label">Total Interest</div><div class="stat-value green" id="stat-interest">0</div></div>
   </div>
 
-  <!-- PENDING DEPOSITS + WITHDRAWALS -->
   <div class="two-col">
     <div class="panel">
       <div class="panel-header">
@@ -218,7 +207,6 @@
     </div>
   </div>
 
-  <!-- RECENTLY PROCESSED + QUICK ACTIONS -->
   <div class="two-col">
     <div class="panel">
       <div class="panel-title" style="margin-bottom:14px">✅ Recently Processed</div>
@@ -231,10 +219,20 @@
         <button class="admin-btn" onclick="openAddMember()"   style="background:rgba(255,214,0,0.1);border:1px solid rgba(255,214,0,0.3);color:var(--yellow)">➕ Add New Member</button>
         <button class="admin-btn" onclick="exportCSV()"       style="background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--white)">📥 Export CSV</button>
       </div>
+      <!-- Interest rate reference table -->
+      <div class="rate-info">
+        <strong>📊 Safi Save Interest Table (4% / Day)</strong>
+        <span>KES 500 → <b style="color:var(--green)">KES 20/day</b></span><br/>
+        <span>KES 1,000 → <b style="color:var(--green)">KES 40/day</b></span><br/>
+        <span>KES 2,000 → <b style="color:var(--green)">KES 80/day</b></span><br/>
+        <span>KES 3,000 → <b style="color:var(--green)">KES 120/day</b></span><br/>
+        <span>KES 5,000 → <b style="color:var(--green)">KES 200/day</b></span><br/>
+        <span>KES 10,000 → <b style="color:var(--green)">KES 400/day</b></span><br/>
+        <span>KES 20,000 → <b style="color:var(--green)">KES 800/day</b></span>
+      </div>
     </div>
   </div>
 
-  <!-- ALL MEMBERS TABLE -->
   <div class="panel">
     <div class="panel-header">
       <div class="panel-title">👥 All Members</div>
@@ -244,11 +242,11 @@
       <table>
         <thead>
           <tr>
-            <th>Member</th><th>Phone</th><th>Balance</th><th>Interest</th><th>Deposited</th><th>Joined</th><th>Actions</th>
+            <th>Member</th><th>Phone</th><th>Balance</th><th>Interest</th><th>Deposited</th><th>Daily Earning</th><th>Joined</th><th>Actions</th>
           </tr>
         </thead>
         <tbody id="members-tbody">
-          <tr><td colspan="7"><div class="empty-state"><div>👥</div>No members yet</div></td></tr>
+          <tr><td colspan="8"><div class="empty-state"><div>👥</div>No members yet</div></td></tr>
         </tbody>
       </table>
     </div>
@@ -336,7 +334,24 @@
   let creditTargetUid  = '';
   let currentUser      = null;
 
-  // ── Auth guard: admin only ──
+  // ══════════════════════════════════════════════════
+  //  Safi Save Tiered Interest Table — 4% / Day
+  //  Deposit (KES) → Daily Interest (KES)
+  //  500 → 20 | 1,000 → 40 | 2,000 → 80
+  //  3,000 → 120 | 5,000 → 200 | 10,000 → 400 | 20,000 → 800
+  // ══════════════════════════════════════════════════
+  function getSafiInterest(totalDeposited) {
+    const dep = totalDeposited || 0;
+    if (dep >= 20000) return 800;
+    if (dep >= 10000) return 400;
+    if (dep >= 5000)  return 200;
+    if (dep >= 3000)  return 120;
+    if (dep >= 2000)  return 80;
+    if (dep >= 1000)  return 40;
+    if (dep >= 500)   return 20;
+    return 0;
+  }
+
   onAuthStateChanged(auth, async user => {
     if (!user) { window.location.href = './index.html'; return; }
     if (user.email !== ADMIN_EMAIL) { window.location.href = './dashboard.html'; return; }
@@ -356,9 +371,6 @@
     setTimeout(()=>t.classList.remove('show'), 4000);
   }
 
-  // ════════════════════════════════════════
-  //  LOAD ALL DATA
-  // ════════════════════════════════════════
   async function refreshData() {
     const [mSnap, dSnap, wSnap] = await Promise.all([
       getDocs(collection(db, 'members')),
@@ -378,7 +390,6 @@
     renderMembersTable(allMembers);
   }
 
-  // ── STATS ──
   function renderStats() {
     const totalSavings  = allMembers.reduce((s,m) => s+(m.balance||0), 0);
     const totalInterest = allMembers.reduce((s,m) => s+(m.interestEarned||0), 0);
@@ -389,9 +400,6 @@
     document.getElementById('stat-interest').textContent = 'KES '+fmt(totalInterest);
   }
 
-  // ════════════════════════════════════════
-  //  PENDING DEPOSITS
-  // ════════════════════════════════════════
   function renderPendingDeposits() {
     const pending = allDeposits.filter(d => d.status === 'pending');
     const list    = document.getElementById('pending-deposits');
@@ -421,10 +429,8 @@
   }
 
   async function approveDeposit(depId, memberUid, amount, memberName) {
-    // Mark deposit approved
     await updateDoc(doc(db,'deposits',depId), { status:'approved', creditedToMember:true });
 
-    // Credit member balance in Firestore
     const mRef  = doc(db,'members',memberUid);
     const mSnap = await getDoc(mRef);
     if (mSnap.exists()) {
@@ -452,9 +458,6 @@
     showToast('Deposit rejected', 'red');
   }
 
-  // ════════════════════════════════════════
-  //  PENDING WITHDRAWALS
-  // ════════════════════════════════════════
   function renderPendingWithdrawals() {
     const pending = allWithdrawals.filter(w => w.status === 'pending');
     const list    = document.getElementById('pending-withdrawals');
@@ -498,7 +501,6 @@
     if (!confirm('Reject and refund this withdrawal?')) return;
     await updateDoc(doc(db,'withdrawals',witId), { status:'rejected' });
 
-    // Refund balance + interest back to member
     const mRef  = doc(db,'members',memberUid);
     const mSnap = await getDoc(mRef);
     if (mSnap.exists()) {
@@ -519,7 +521,6 @@
     showToast('Withdrawal rejected. Balance refunded to member.', 'red');
   }
 
-  // ── RECENTLY PROCESSED ──
   function renderProcessed() {
     const processed = [
       ...allDeposits.filter(d=>d.status!=='pending').map(d=>({...d,kind:'deposit'})),
@@ -549,17 +550,15 @@
       </div>`).join('');
   }
 
-  // ════════════════════════════════════════
-  //  MEMBERS TABLE
-  // ════════════════════════════════════════
   function renderMembersTable(members) {
     const tbody = document.getElementById('members-tbody');
     if (!members.length) {
-      tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div>👥</div>No members yet</div></td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div>👥</div>No members yet</div></td></tr>`;
       return;
     }
     tbody.innerHTML = members.map(m => {
-      const initials = (m.name||'').split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()||'??';
+      const initials    = (m.name||'').split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()||'??';
+      const dailyEarn   = getSafiInterest(m.totalDeposited);
       return `
         <tr>
           <td>
@@ -575,6 +574,7 @@
           <td class="amount-green">KES ${fmt(m.balance)}</td>
           <td class="amount-green">KES ${fmt(m.interestEarned)}</td>
           <td>KES ${fmt(m.totalDeposited)}</td>
+          <td style="color:var(--green);font-weight:600">${dailyEarn > 0 ? 'KES '+fmt(dailyEarn)+'/day' : '—'}</td>
           <td>${m.joined||'—'}</td>
           <td>
             <div style="display:flex;gap:4px">
@@ -599,6 +599,7 @@
   function viewMember(uid) {
     const m = allMembers.find(x=>x.uid===uid);
     if (!m) return;
+    const dailyEarn = getSafiInterest(m.totalDeposited);
     document.getElementById('member-detail-content').innerHTML = `
       <div class="detail-row"><span>Full Name</span><span>${m.name||'—'}</span></div>
       <div class="detail-row"><span>Email</span><span>${m.email||'—'}</span></div>
@@ -606,6 +607,7 @@
       <div class="detail-row"><span>Balance</span><span style="color:var(--green)">KES ${fmt(m.balance)}</span></div>
       <div class="detail-row"><span>Interest Earned</span><span style="color:var(--green)">KES ${fmt(m.interestEarned)}</span></div>
       <div class="detail-row"><span>Total Deposited</span><span>KES ${fmt(m.totalDeposited)}</span></div>
+      <div class="detail-row"><span>Daily Interest</span><span style="color:var(--green)">${dailyEarn > 0 ? 'KES '+fmt(dailyEarn)+'/day' : 'No deposit yet'}</span></div>
       <div class="detail-row"><span>Transactions</span><span>${(m.transactions||[]).length}</span></div>
       <div class="detail-row"><span>Joined</span><span>${m.joined||'—'}</span></div>`;
     openModal('view-modal');
@@ -650,7 +652,6 @@
     showToast('Member removed', 'red');
   }
 
-  // ── ADD MEMBER ──
   function openAddMember() { openModal('add-modal'); }
 
   async function confirmAddMember() {
@@ -666,7 +667,6 @@
     btn.disabled = true; btn.textContent = 'Adding...';
 
     try {
-      // Create Firebase Auth account
       const cred = await createUserWithEmailAndPassword(auth, email, password);
       const uid  = cred.user.uid;
       const joined = new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'});
@@ -693,20 +693,30 @@
     }
   }
 
-  // ── APPLY INTEREST TO ALL ──
+  // ══════════════════════════════════════════════════
+  //  APPLY INTEREST TO ALL — Safi Save Tiered Table
+  //  Uses totalDeposited to find the correct bracket
+  // ══════════════════════════════════════════════════
   async function applyInterestAll() {
     if (!allMembers.length) return showToast('No members found','red');
-    if (!confirm(`Apply 20% p.a. daily interest to all ${allMembers.length} member(s)?`)) return;
+    if (!confirm(`Apply Safi Save daily interest (4%) to all ${allMembers.length} member(s)?`)) return;
 
-    const rate  = 0.20 / 365;
     const today = new Date().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'});
-    let count = 0;
+    let count   = 0;
+    let skipped = 0;
 
     const promises = allMembers.map(async m => {
-      const interest = Math.round((m.balance||0) * rate);
-      if (interest <= 0) return;
-      const txs = m.transactions||[];
-      txs.push({ type:'interest', label:'Daily Interest (Admin)', amount:interest, date:today });
+      const interest = getSafiInterest(m.totalDeposited || 0);
+      if (interest <= 0) { skipped++; return; } // No deposit or below KES 500
+
+      const txs = m.transactions || [];
+      txs.push({
+        type:   'interest',
+        label:  `Daily Interest (Admin – 4% on KES ${fmt(m.totalDeposited)})`,
+        amount: interest,
+        date:   today
+      });
+
       await updateDoc(doc(db,'members',m.uid), {
         balance:        (m.balance||0) + interest,
         interestEarned: (m.interestEarned||0) + interest,
@@ -717,14 +727,21 @@
 
     await Promise.all(promises);
     await refreshData();
-    showToast(`Daily interest applied to ${count} member(s) ✓`, 'green');
+
+    if (skipped > 0) {
+      showToast(`Interest applied to ${count} member(s). ${skipped} skipped (no deposit).`, 'green');
+    } else {
+      showToast(`✅ Daily interest applied to ${count} member(s)!`, 'green');
+    }
   }
 
-  // ── EXPORT CSV ──
   function exportCSV() {
     if (!allMembers.length) return showToast('No data to export','red');
-    const rows = [['Name','Email','Phone','Balance','Interest','Deposited','Joined']];
-    allMembers.forEach(m => rows.push([m.name, m.email, m.phone, m.balance, m.interestEarned, m.totalDeposited, m.joined]));
+    const rows = [['Name','Email','Phone','Balance','Interest','Deposited','Daily Interest','Joined']];
+    allMembers.forEach(m => rows.push([
+      m.name, m.email, m.phone, m.balance, m.interestEarned,
+      m.totalDeposited, getSafiInterest(m.totalDeposited), m.joined
+    ]));
     const csv = rows.map(r => r.map(v=>`"${v||''}"`).join(',')).join('\n');
     const a   = document.createElement('a');
     a.href    = URL.createObjectURL(new Blob([csv], { type:'text/csv' }));
@@ -733,7 +750,6 @@
     showToast('Exported ✓', 'green');
   }
 
-  // ── VIEW SCREENSHOT ──
   function viewScreenshot(depId) {
     const dep = allDeposits.find(d=>d.id===depId);
     if (!dep||!dep.screenshot) return;
@@ -741,7 +757,6 @@
     w.document.write(`<img src="${dep.screenshot}" style="max-width:100%;height:auto"/>`);
   }
 
-  // ── MODAL HELPERS ──
   function openModal(id)  { document.getElementById(id).classList.add('open'); }
   function closeModal(id) { document.getElementById(id).classList.remove('open'); }
   document.querySelectorAll('.modal-overlay').forEach(o => {
@@ -753,7 +768,6 @@
     window.location.href = './index.html';
   }
 
-  // Expose to onclick handlers
   window.refreshData        = refreshData;
   window.approveDeposit     = approveDeposit;
   window.rejectDeposit      = rejectDeposit;
